@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>July 2026 Exam</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎓</text></svg>">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@400;500&display=swap');
+
+  :root {
+    --bg:       #080810;
+    --surface:  #11111f;
+    --border:   #1e1e35;
+    --purple:   #7c3aed;
+    --purple-l: #9d5bf0;
+    --purple-d: #5b21b6;
+    --green:    #22c55e;
+    --green-d:  #16a34a;
+    --text:     #e8e8f0;
+    --muted:    #7070a0;
+    --card-hover: #16162a;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Syne', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+  }
+
+  /* grid bg */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(var(--border) 1px, transparent 1px),
+      linear-gradient(90deg, var(--border) 1px, transparent 1px);
+    background-size: 40px 40px;
+    opacity: 0.4;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .wrap { position: relative; z-index: 1; max-width: 900px; margin: 0 auto; padding: 0 20px 60px; }
+
+  /* header */
+  header {
+    padding: 48px 0 32px;
+    text-align: center;
+  }
+  header .eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--purple-l);
+    margin-bottom: 12px;
+  }
+  header h1 {
+    font-size: clamp(28px, 6vw, 48px);
+    font-weight: 800;
+    line-height: 1.1;
+    background: linear-gradient(135deg, #fff 30%, var(--purple-l));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  header p {
+    margin-top: 12px;
+    color: var(--muted);
+    font-size: 14px;
+    font-family: 'DM Mono', monospace;
+  }
+
+  /* subject tabs */
+  .tabs {
+    display: flex;
+    gap: 4px;
+    margin: 32px 0 0;
+    border-bottom: 1px solid var(--border);
+    overflow-x: auto;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .tabs::-webkit-scrollbar { display: none; }
+
+  .tab-btn {
+    flex-shrink: 0;
+    padding: 10px 20px;
+    border: none;
+    background: none;
+    color: var(--muted);
+    font-family: 'Syne', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+    transition: color .2s, border-color .2s;
+    white-space: nowrap;
+  }
+  .tab-btn:hover { color: var(--text); }
+  .tab-btn.active {
+    color: var(--purple-l);
+    border-bottom-color: var(--purple-l);
+  }
+
+  /* panels */
+  .panel { display: none; padding-top: 32px; }
+  .panel.active { display: block; }
+
+  .panel-intro {
+    margin-bottom: 24px;
+  }
+  .panel-intro h2 {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 6px;
+  }
+  .panel-intro p {
+    font-size: 13px;
+    color: var(--muted);
+    font-family: 'DM Mono', monospace;
+  }
+
+  /* topic grid */
+  .topic-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 12px;
+  }
+
+  .topic-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 16px 18px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--purple);
+    border-radius: 8px;
+    text-decoration: none;
+    color: var(--text);
+    transition: background .15s, border-left-color .15s, transform .15s;
+  }
+  .topic-card:hover {
+    background: var(--card-hover);
+    border-left-color: var(--purple-l);
+    transform: translateX(2px);
+  }
+  .topic-card .card-left { flex: 1; min-width: 0; }
+  .topic-card .num {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--purple-l);
+    letter-spacing: 1px;
+    margin-bottom: 4px;
+  }
+  .topic-card .title {
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1.35;
+    color: var(--text);
+  }
+  .topic-card .q-badge {
+    flex-shrink: 0;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    padding: 3px 8px;
+    background: rgba(124,58,237,.18);
+    color: var(--purple-l);
+    border-radius: 20px;
+    white-space: nowrap;
+  }
+
+  /* coming soon card */
+  .topic-card.soon {
+    opacity: 0.45;
+    pointer-events: none;
+    border-left-color: var(--border);
+  }
+  .topic-card.soon .q-badge {
+    background: rgba(255,255,255,.06);
+    color: var(--muted);
+  }
+
+  /* viva section */
+  .viva-section {
+    margin-top: 32px;
+    padding: 20px;
+    background: rgba(34,197,94,.07);
+    border: 1px solid rgba(34,197,94,.2);
+    border-left: 3px solid var(--green);
+    border-radius: 8px;
+  }
+  .viva-section h3 {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--green);
+    margin-bottom: 6px;
+  }
+  .viva-section p {
+    font-size: 12px;
+    color: var(--muted);
+    font-family: 'DM Mono', monospace;
+    line-height: 1.6;
+  }
+
+  /* footer */
+  footer {
+    text-align: center;
+    margin-top: 60px;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 1px;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="eyebrow">COTHM — Practice Platform</div>
+    <h1>July 2026 Exam</h1>
+    <p>Select a subject → pick a topic → start practicing</p>
+  </header>
+
+  <!-- TABS -->
+  <div class="tabs">
+    <button class="tab-btn active" onclick="switchTab('culinary', this)">🍳 Culinary Arts</button>
+    <button class="tab-btn" onclick="switchTab('english', this)">📖 English</button>
+    <button class="tab-btn" onclick="switchTab('computer', this)">💻 Computer</button>
+    <button class="tab-btn" onclick="switchTab('gpdp', this)">🌱 GPDP</button>
+  </div>
+
+  <!-- CULINARY ARTS -->
+  <div class="panel active" id="panel-culinary">
+    <div class="panel-intro">
+      <h2>Culinary Arts</h2>
+      <p>15 topics · 30–60 MCQs per topic · Commis I/II level</p>
+    </div>
+    <div class="topic-grid">
+
+      <a class="topic-card" href="culinary-01-kitchen-terminology.html">
+        <div class="card-left">
+          <div class="num">TOPIC 01</div>
+          <div class="title">Kitchen Terminology</div>
+        </div>
+        <span class="q-badge">30 Qs</span>
+      </a>
+
+      <a class="topic-card soon" href="#">
+        <div class="card-left">
+          <div class="num">TOPIC 02</div>
+          <div class="title">Hospitality Industry</div>
+        </div>
+        <span class="q-badge">Coming soon</span>
+      </a>
+
+      <a class="topic-card soon" href="#">
+        <div class="card-left">
+          <div class="num">TOPIC 03</div>
+          <div class="title">Kitchen Brigade System</div>
+        </div>
+        <span class="q-badge">Coming soon</span>
+      </a>
+
+      <a class="topic-card soon" href="#">
+        <div class="card-left">
+          <div class="num">TOPIC 04</div>
+          <div class="title">Foodborne Illnesses</div>
+        </div>
+        <span class="q-badge">Coming soon</span>
+      </a>
+
+      <a class="topic-card soon" href="#">
+        <div class="card-left">
+          <div class="num">TOPIC 05</div>
+          <div class="title">Knife Handling, Sharpening & Vegetable Cuts</div>
+        </div>
+        <span class="q-badge">Coming soon</span>
+      </a>
+
+      <a class="topic-card soon" href="#">
+        <div class="card-left">
+          <div class="num">TOPIC 06</div>
+          <div class="title">Kitchen Terminology II — Ingredients & FOH/BOH</div>
+        </div>
+        <span class="q-badge">Coming soon</span>
+      </a>
+
+      <a class="topic-card soon" href="#">
+        <div class="card-left">
+          <div class="num">TOPIC 07</div>
+          <div class="title">HACCP, Bacteria, Time & Temperature</div>
+        </div>
+        <span class="q-badge">Coming soon</span>
+      </a>
+
+      <a class="topic-card soon" href="#">
+        <div class="card-left">
+          <div class="num">TOPIC 08</div>
+          <div class="title">Cooking Methods</div>
+        </div>
+        <span class="q-badge">Coming soon</span>
+      </a>
+
+      <a class="topic-card soon" href="#">
+        <div class="card-left">
+          <div class="num">TOPIC 09</div>
+          <div class="title">5 Mother Sauces</div>
+        </div>
+        <span class="q-badge">Coming soon</span>
+      </a>
+
+      <a class="topic-card soon" href="#">
+        <div class="card-left">
+          <div class="num">TOPIC 10</div>
+          <div class="title">Stocks, Soups & Broths</div>
+        </div>
+        <span class="q-badge">Coming soon</span>
+      </a>
+
+      <a class="topic-card soon" href="#">
+        <div class="card-left">
+          <div class="num">TOPIC 11</div>
+          <div class="title">Identification — Beef, Vegetables & Poultry</div>
+        </div>
+        <span class="q-badge">Coming soon</span>
+      </a>
+
+      <a class="topic-card soon" href="#">
+        <div class="card-left">
+          <div class="num">TOPIC 12</div>
+          <div class="title">Kitchen Safety, Spoilage & Contamination</div>
+        </div>
+        <span class="q-badge">Coming soon</span>
+      </a>
+
+      <a class="topic-card soon" href="#">
+        <div class="card-left">
+          <div class="num">TOPIC 13</div>
+          <div class="title">Types of Restaurants</div>
+        </div>
+        <span class="q-badge">Coming soon</span>
+      </a>
+
+      <a class="topic-card soon" href="#">
+        <div class="card-left">
+          <div class="num">TOPIC 14</div>
+          <div class="title">Science Behind Cooking</div>
+        </div>
+        <span class="q-badge">Coming soon</span>
+      </a>
+
+      <a class="topic-card soon" href="#">
+        <div class="card-left">
+          <div class="num">TOPIC 15</div>
+          <div class="title">Personal Hygiene in the Kitchen</div>
+        </div>
+        <span class="q-badge">Coming soon</span>
+      </a>
+
+    </div>
+
+    <div class="viva-section">
+      <h3>🎤 Viva Preparation</h3>
+      <p>Viva prep questions will be added here once all MCQ topics are complete. This section covers spoken answers, definitions, and practical explanations expected in your viva exam.</p>
+    </div>
+  </div>
+
+  <!-- ENGLISH -->
+  <div class="panel" id="panel-english">
+    <div class="panel-intro">
+      <h2>English</h2>
+      <p>Topics coming soon</p>
+    </div>
+    <div class="topic-grid">
+      <div class="topic-card soon">
+        <div class="card-left">
+          <div class="num">TOPIC 01</div>
+          <div class="title">Coming Soon</div>
+        </div>
+        <span class="q-badge">—</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- COMPUTER -->
+  <div class="panel" id="panel-computer">
+    <div class="panel-intro">
+      <h2>Computer</h2>
+      <p>Topics coming soon</p>
+    </div>
+    <div class="topic-grid">
+      <div class="topic-card soon">
+        <div class="card-left">
+          <div class="num">TOPIC 01</div>
+          <div class="title">Coming Soon</div>
+        </div>
+        <span class="q-badge">—</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- GPDP -->
+  <div class="panel" id="panel-gpdp">
+    <div class="panel-intro">
+      <h2>GPDP</h2>
+      <p>Topics coming soon</p>
+    </div>
+    <div class="topic-grid">
+      <div class="topic-card soon">
+        <div class="card-left">
+          <div class="num">TOPIC 01</div>
+          <div class="title">Coming Soon</div>
+        </div>
+        <span class="q-badge">—</span>
+      </div>
+    </div>
+  </div>
+
+  <footer>COTHM · July 2026 · Practice only — not official exam material</footer>
+
+</div>
+
+<script>
+function switchTab(id, btn) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('panel-' + id).classList.add('active');
+  btn.classList.add('active');
+}
+</script>
+</body>
+</html>

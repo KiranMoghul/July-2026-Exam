@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kitchen Terminology — July 2026 Exam</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍳</text></svg>">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@400;500&display=swap');
+
+  :root {
+    --bg:      #080810;
+    --surface: #11111f;
+    --border:  #1e1e35;
+    --purple:  #7c3aed;
+    --purple-l:#9d5bf0;
+    --green:   #22c55e;
+    --red:     #ef4444;
+    --text:    #e8e8f0;
+    --muted:   #7070a0;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Syne', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(var(--border) 1px, transparent 1px),
+      linear-gradient(90deg, var(--border) 1px, transparent 1px);
+    background-size: 40px 40px;
+    opacity: 0.4;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .screen {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 660px;
+    margin: 0 auto;
+    padding: 24px 20px 48px;
+    display: none;
+  }
+  .screen.active { display: block; }
+
+  /* ── NAME SCREEN ── */
+  #name-screen {
+    text-align: center;
+    padding-top: 80px;
+  }
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    text-decoration: none;
+    letter-spacing: 1px;
+    margin-bottom: 48px;
+    transition: color .2s;
+  }
+  .back-link:hover { color: var(--purple-l); }
+
+  .subject-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--purple-l);
+    margin-bottom: 12px;
+  }
+  #name-screen h1 {
+    font-size: clamp(22px, 5vw, 36px);
+    font-weight: 800;
+    line-height: 1.15;
+    margin-bottom: 8px;
+    background: linear-gradient(135deg, #fff 30%, var(--purple-l));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  #name-screen p {
+    color: var(--muted);
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    margin-bottom: 40px;
+  }
+
+  .name-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+  }
+  .name-box input {
+    width: 100%;
+    max-width: 320px;
+    padding: 12px 16px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text);
+    font-family: 'Syne', sans-serif;
+    font-size: 15px;
+    outline: none;
+    text-align: center;
+    transition: border-color .2s;
+  }
+  .name-box input:focus { border-color: var(--purple); }
+  .name-box input::placeholder { color: var(--muted); }
+
+  .btn-primary {
+    padding: 12px 32px;
+    background: var(--purple);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-family: 'Syne', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background .2s, transform .1s;
+    letter-spacing: .5px;
+  }
+  .btn-primary:hover { background: var(--purple-l); transform: translateY(-1px); }
+  .btn-primary:active { transform: translateY(0); }
+
+  /* ── QUIZ SCREEN ── */
+  .quiz-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 24px;
+  }
+  .quiz-meta {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+  }
+  .quiz-meta span { color: var(--purple-l); font-weight: 500; }
+
+  .progress-bar {
+    width: 100%;
+    height: 3px;
+    background: var(--border);
+    border-radius: 2px;
+    margin-bottom: 32px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--purple), var(--purple-l));
+    border-radius: 2px;
+    transition: width .3s ease;
+  }
+
+  .question-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--purple-l);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  .question-text {
+    font-size: clamp(15px, 3vw, 18px);
+    font-weight: 600;
+    line-height: 1.5;
+    margin-bottom: 28px;
+    color: var(--text);
+  }
+
+  .options { display: flex; flex-direction: column; gap: 10px; }
+
+  .opt-btn {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 13px 16px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text);
+    font-family: 'Syne', sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    cursor: pointer;
+    text-align: left;
+    transition: border-color .15s, background .15s;
+    width: 100%;
+  }
+  .opt-btn:hover:not(:disabled) {
+    border-color: var(--purple);
+    background: #16162a;
+  }
+  .opt-btn .opt-letter {
+    flex-shrink: 0;
+    width: 26px;
+    height: 26px;
+    border-radius: 6px;
+    background: var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    transition: background .15s, color .15s;
+  }
+  .opt-btn:hover:not(:disabled) .opt-letter {
+    background: var(--purple);
+    color: #fff;
+  }
+
+  /* feedback states */
+  .opt-btn.correct {
+    border-color: var(--green);
+    background: rgba(34,197,94,.1);
+  }
+  .opt-btn.correct .opt-letter {
+    background: var(--green);
+    color: #fff;
+  }
+  .opt-btn.wrong {
+    border-color: var(--red);
+    background: rgba(239,68,68,.1);
+  }
+  .opt-btn.wrong .opt-letter {
+    background: var(--red);
+    color: #fff;
+  }
+  .opt-btn:disabled { cursor: default; }
+
+  /* explanation */
+  .explanation {
+    display: none;
+    margin-top: 16px;
+    padding: 14px 16px;
+    background: rgba(124,58,237,.1);
+    border: 1px solid rgba(124,58,237,.25);
+    border-left: 3px solid var(--purple);
+    border-radius: 8px;
+    font-size: 13px;
+    line-height: 1.6;
+    color: #c4b5fd;
+    font-family: 'DM Mono', monospace;
+  }
+  .explanation.show { display: block; }
+
+  .next-btn {
+    margin-top: 24px;
+    width: 100%;
+    padding: 13px;
+    background: var(--purple);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-family: 'Syne', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    display: none;
+    transition: background .2s;
+    letter-spacing: .5px;
+  }
+  .next-btn:hover { background: var(--purple-l); }
+  .next-btn.show { display: block; }
+
+  /* ── RESULTS SCREEN ── */
+  #results-screen { text-align: center; padding-top: 40px; }
+
+  .result-name {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 32px;
+  }
+
+  .score-ring {
+    position: relative;
+    width: 160px;
+    height: 160px;
+    margin: 0 auto 28px;
+  }
+  .score-ring svg { transform: rotate(-90deg); }
+  .score-ring .ring-bg { fill: none; stroke: var(--border); stroke-width: 10; }
+  .score-ring .ring-fill {
+    fill: none;
+    stroke-width: 10;
+    stroke-linecap: round;
+    transition: stroke-dashoffset 1s ease, stroke .5s;
+  }
+  .score-ring .ring-text {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  .ring-pct {
+    font-size: 34px;
+    font-weight: 800;
+    line-height: 1;
+  }
+  .ring-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    margin-top: 4px;
+    letter-spacing: 1px;
+  }
+
+  .result-title {
+    font-size: 24px;
+    font-weight: 800;
+    margin-bottom: 8px;
+  }
+  .result-sub {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
+  .result-verdict {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    padding: 8px 20px;
+    border-radius: 20px;
+    display: inline-block;
+    margin-bottom: 32px;
+  }
+  .result-verdict.pass {
+    background: rgba(34,197,94,.12);
+    color: var(--green);
+    border: 1px solid rgba(34,197,94,.3);
+  }
+  .result-verdict.fail {
+    background: rgba(239,68,68,.12);
+    color: var(--red);
+    border: 1px solid rgba(239,68,68,.3);
+  }
+
+  .result-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 40px;
+  }
+  .btn-outline {
+    padding: 11px 24px;
+    background: none;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--muted);
+    font-family: 'Syne', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: border-color .2s, color .2s;
+  }
+  .btn-outline:hover { border-color: var(--purple); color: var(--text); }
+
+  /* review */
+  .review { text-align: left; }
+  .review h3 {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 16px;
+    font-family: 'DM Mono', monospace;
+  }
+  .rv-item {
+    padding: 14px 16px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    border: 1px solid var(--border);
+  }
+  .rv-item.ok { border-color: rgba(34,197,94,.25); background: rgba(34,197,94,.05); }
+  .rv-item.miss { border-color: rgba(239,68,68,.25); background: rgba(239,68,68,.05); }
+  .rv-q { font-size: 13px; font-weight: 600; margin-bottom: 8px; line-height: 1.4; }
+  .rv-a { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--muted); line-height: 1.6; }
+  .rv-a .c { color: var(--green); }
+  .rv-a .w { color: var(--red); }
+</style>
+</head>
+<body>
+
+<!-- ── NAME SCREEN ── -->
+<div class="screen active" id="name-screen">
+  <a class="back-link" href="index.html">← Back to subjects</a>
+  <div class="subject-tag">Culinary Arts · Topic 01</div>
+  <h1>Kitchen Terminology</h1>
+  <p>30 questions · FIFO, FEFO, mise en place, station vocab · Commis I/II level</p>
+  <div class="name-box">
+    <input type="text" id="name-input" placeholder="Enter your name" maxlength="30" autocomplete="off">
+    <button class="btn-primary" onclick="startQuiz()">Start Quiz</button>
+  </div>
+</div>
+
+<!-- ── QUIZ SCREEN ── -->
+<div class="screen" id="quiz-screen">
+  <div class="quiz-header">
+    <div class="quiz-meta">Question <span id="q-num">1</span> of <span id="q-total">30</span></div>
+    <div class="quiz-meta">Score <span id="q-score">0</span></div>
+  </div>
+  <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+  <div class="question-num" id="q-label"></div>
+  <div class="question-text" id="q-text"></div>
+  <div class="options" id="options"></div>
+  <div class="explanation" id="explanation"></div>
+  <button class="next-btn" id="next-btn" onclick="nextQuestion()">Next Question →</button>
+</div>
+
+<!-- ── RESULTS SCREEN ── -->
+<div class="screen" id="results-screen">
+  <div class="result-name" id="result-name"></div>
+  <div class="score-ring">
+    <svg viewBox="0 0 160 160" width="160" height="160">
+      <circle class="ring-bg" cx="80" cy="80" r="70"/>
+      <circle class="ring-fill" id="ring-fill" cx="80" cy="80" r="70"
+        stroke-dasharray="439.82"
+        stroke-dashoffset="439.82"
+        stroke="var(--green)"/>
+    </svg>
+    <div class="ring-text">
+      <div class="ring-pct" id="ring-pct">0%</div>
+      <div class="ring-label">SCORE</div>
+    </div>
+  </div>
+  <div class="result-title" id="res-title"></div>
+  <div class="result-sub" id="res-sub"></div>
+  <div class="result-verdict" id="res-verdict"></div>
+  <div class="result-actions">
+    <button class="btn-primary" onclick="retryQuiz()">Retry →</button>
+    <button class="btn-outline" onclick="window.location.href='index.html'">All Subjects</button>
+  </div>
+  <div class="review" id="review"></div>
+</div>
+
+<script>
+const BANK = [
+  {
+    q: "What does FIFO stand for in a professional kitchen?",
+    opts: ["First In, First Out", "Fresh Ingredients For Operations", "Food Inventory For Orders", "First Item For Offering"],
+    ans: 0,
+    exp: "FIFO — First In, First Out — means the oldest stock is used before newer stock. This minimises waste and prevents spoilage in any kitchen or store."
+  },
+  {
+    q: "What does FEFO stand for, and when is it used?",
+    opts: ["Fresh Every Food Order", "First Expired, First Out", "Food Expiry For Operations", "First Entry, Final Output"],
+    ans: 1,
+    exp: "FEFO — First Expired, First Out — means items closest to their expiry date are used first. It is used alongside FIFO to control perishable food safety."
+  },
+  {
+    q: "The French term 'mise en place' means:",
+    opts: ["Clean as you go", "Put in place / Everything in its place", "Ready to serve", "Set the table"],
+    ans: 1,
+    exp: "'Mise en place' translates directly to 'put in place.' It refers to having all ingredients prepped, measured, and organised before cooking begins — a fundamental habit at Commis level."
+  },
+  {
+    q: "In kitchen communication, 'Fire!' means:",
+    opts: ["There is an emergency", "Begin cooking that order now", "The grill is too hot", "An item has been dropped"],
+    ans: 1,
+    exp: "'Fire!' is a command from the chef meaning 'start cooking that dish now.' It is used to synchronise timing across stations so all plates for a table are ready together."
+  },
+  {
+    q: "What does '86'd' mean in kitchen slang?",
+    opts: ["Table 86 has arrived", "An item is sold out or unavailable", "86 portions have been prepared", "The item needs 86 seconds more cooking"],
+    ans: 1,
+    exp: "'86'd' means an item is no longer available — either sold out or removed from the menu for that service. Staff use it to quickly communicate availability to the whole team."
+  },
+  {
+    q: "The term 'on the fly' in a kitchen means:",
+    opts: ["A dish cooked outdoors", "Something needed immediately and urgently", "A garnish added last minute", "A dish that is ready to plate"],
+    ans: 1,
+    exp: "'On the fly' means something is needed right now, usually because it was missed or incorrectly prepared. It signals urgency and takes priority over regular orders."
+  },
+  {
+    q: "What is a 'docket' in a restaurant kitchen?",
+    opts: ["A cleaning schedule", "A printed or written order ticket from the POS", "A weekly stock order", "A staff duty roster"],
+    ans: 1,
+    exp: "A docket is the order ticket — usually printed from the POS system — that tells each station what dishes to prepare for a table. It is the main communication tool between FOH and BOH."
+  },
+  {
+    q: "What is 'the pass' in a kitchen?",
+    opts: ["The hallway between kitchen and dining room", "The counter where dishes are checked and handed to servers", "The expeditor's station outside", "The area where chefs clock in"],
+    ans: 1,
+    exp: "The pass (or pass-through) is the counter between the kitchen and dining room where finished dishes are checked for quality by the chef and collected by servers for delivery."
+  },
+  {
+    q: "What does 'behind' mean when called out in a busy kitchen?",
+    opts: ["An order is running late", "A person is passing behind you — move carefully", "The dish needs more time", "An item is in the back fridge"],
+    ans: 1,
+    exp: "'Behind' is a safety call. When someone is walking behind a colleague — especially carrying hot food or sharp tools — they call 'behind' so the other person does not turn or step back unexpectedly."
+  },
+  {
+    q: "What does 'corner!' mean when shouted in a kitchen?",
+    opts: ["The prep area is in the corner", "A person is about to turn a blind corner — a warning call", "A table in the corner has a complaint", "The corner station is ready"],
+    ans: 1,
+    exp: "'Corner!' is called out before turning a blind corner while carrying hot or sharp items. It warns anyone on the other side to slow down or stop, preventing collisions."
+  },
+  {
+    q: "The term 'à la minute' refers to:",
+    opts: ["Dishes prepared one minute before service", "Food cooked to order at the moment it is requested", "A one-minute timing test for trainees", "Minute-cut vegetables"],
+    ans: 1,
+    exp: "'À la minute' is French for 'to the minute.' In a kitchen context it means a dish is prepared fresh, to order, at the moment it is requested — not pre-cooked or held."
+  },
+  {
+    q: "What is a 'station' in a professional kitchen?",
+    opts: ["The chef's office", "A designated cooking area assigned to one cook", "The dishwashing area", "The plating counter"],
+    ans: 1,
+    exp: "A station is a specific section of the kitchen assigned to one cook or team, such as the grill station, sauté station, or pastry station. Each station has its own equipment and mise en place."
+  },
+  {
+    q: "What does 'covers' mean in restaurant terminology?",
+    opts: ["The lids placed on dishes during service", "The number of guests served in a service period", "The table linen and cutlery setup", "The protective covers on equipment"],
+    ans: 1,
+    exp: "Covers refers to the number of individual guests (meals) served during a service. For example, '200 covers for dinner' means 200 guests were served. It is a key metric for kitchen planning."
+  },
+  {
+    q: "What is 'yield' in a kitchen context?",
+    opts: ["The speed of production during service", "The usable amount remaining after trimming and preparation", "The number of dishes produced per hour", "The total food cost percentage"],
+    ans: 1,
+    exp: "Yield is the usable quantity of an ingredient after trimming, peeling, cooking, or butchering. If 1 kg of chicken yields 700 g after butchering, the yield is 70%. It directly affects food cost calculations."
+  },
+  {
+    q: "What does 'portion control' mean in a professional kitchen?",
+    opts: ["Controlling the number of dishes on the menu", "Serving consistent, pre-determined amounts of each ingredient per dish", "Limiting the number of portions cooked per service", "Controlling the cooking time of each portion"],
+    ans: 1,
+    exp: "Portion control is the practice of measuring and serving a consistent, standardised amount of each component per dish. It ensures consistent quality for the guest and controls food cost for the kitchen."
+  },
+  {
+    q: "What is the purpose of a 'Bain-marie' in a kitchen?",
+    opts: ["To rapidly chill sauces and soups", "To gently heat or hold food in a water bath without direct heat", "To deep fry delicate items", "To steam vegetables under pressure"],
+    ans: 1,
+    exp: "A bain-marie is a water bath — a container of hot water in which another container of food is placed. It allows gentle, even heating and is used to hold sauces, melt chocolate, or cook custards without scorching."
+  },
+  {
+    q: "In kitchen terminology, what is a 'rondeau'?",
+    opts: ["A round plate used for dessert presentation", "A wide, shallow, straight-sided pan with two handles", "A round cutting board", "A circular garnishing tool"],
+    ans: 1,
+    exp: "A rondeau (also called a brazier) is a wide, shallow, straight-sided heavy pan with two loop handles. It is used for braising, searing large quantities, and making stocks or sauces."
+  },
+  {
+    q: "What does 'deglaze' mean in cooking?",
+    opts: ["To remove the glaze from a pan before washing", "To add liquid to a hot pan to lift the caramelised bits from the bottom", "To cool a pan rapidly under cold water", "To apply a shiny glaze to a finished dish"],
+    ans: 1,
+    exp: "Deglazing is adding liquid (wine, stock, or water) to a hot pan after searing or browning to dissolve and lift the fond — the caramelised bits stuck to the bottom. This creates the base for a pan sauce."
+  },
+  {
+    q: "What is a 'brunoise' cut?",
+    opts: ["A thin, diagonal slice", "A very fine dice of approximately 2–3 mm", "A rough chop used for stocks", "A long, thin matchstick cut"],
+    ans: 1,
+    exp: "A brunoise is a precision knife cut that produces very small cubes of approximately 2–3 mm. It is used as a fine garnish for soups, sauces, and refined dishes."
+  },
+  {
+    q: "What is a 'chiffonade' cut used for?",
+    opts: ["Cutting root vegetables into batons", "Finely shredding leafy herbs or vegetables by rolling and slicing", "Dicing onions into fine pieces", "Turning vegetables into barrel shapes"],
+    ans: 1,
+    exp: "Chiffonade is a technique for leafy greens and herbs. Leaves are stacked, rolled tightly, then sliced into thin ribbons. It is used for basil, spinach, mint, and similar ingredients."
+  },
+  {
+    q: "What does 'sauté' literally mean, and what technique does it describe?",
+    opts: ["To boil food quickly in salted water", "To jump — cooking food quickly in a small amount of fat over high heat", "To cook food slowly in its own juices", "To cook food in a covered pot with liquid"],
+    ans: 1,
+    exp: "'Sauté' comes from the French 'sauter,' meaning to jump. It describes cooking small pieces of food quickly in a small amount of fat over high heat, often tossing the pan. It is one of the most common techniques at Commis level."
+  },
+  {
+    q: "What is a 'cartouche' in professional cooking?",
+    opts: ["A piping bag used for pastry work", "A round of greaseproof paper placed directly on the surface of a liquid to slow evaporation", "A decorative paper frill placed on a bone", "A folded cloth used as a pot holder"],
+    ans: 1,
+    exp: "A cartouche is a circle of greaseproof or parchment paper cut to fit the inside of a pan and placed directly on the surface of a liquid or sauce. It slows evaporation and prevents skin formation."
+  },
+  {
+    q: "What does 'expeditor' (expo) refer to in kitchen service?",
+    opts: ["The chef who designs new menu items", "The person coordinating orders between FOH and BOH at the pass", "The senior sous chef during service", "The supplier who delivers daily orders"],
+    ans: 1,
+    exp: "The expeditor (expo) coordinates the flow of orders between the front and back of house. They call orders, check plates at the pass, and ensure tables receive all dishes simultaneously and correctly."
+  },
+  {
+    q: "What is 'tempering' in a professional kitchen?",
+    opts: ["Bringing an ingredient to the right temperature gradually before cooking or mixing", "The process of sharpening knives with a steel", "Reducing a sauce to a thicker consistency", "Cooling food rapidly in an ice bath"],
+    ans: 0,
+    exp: "Tempering means gradually adjusting the temperature of an ingredient. For example, adding warm liquid slowly to eggs prevents curdling, or raising chocolate to precise temperatures for a smooth finish."
+  },
+  {
+    q: "In a kitchen context, what is a 'roux'?",
+    opts: ["A reduction of red wine and shallots", "Equal parts fat and flour cooked together as a thickening base", "A seasoned butter used to finish sauces", "A cold emulsion of oil and egg yolk"],
+    ans: 1,
+    exp: "A roux is a cooked mixture of equal parts fat (usually butter) and flour. It is the foundational thickening agent for béchamel, velouté, and espagnole sauces. Cooking time determines white, blonde, or brown roux."
+  },
+  {
+    q: "What does 'blanching' a vegetable involve?",
+    opts: ["Cooking it in oil at a low temperature", "Briefly boiling it then plunging it into ice water to stop cooking and set colour", "Slow cooking it in a covered pan with butter", "Roasting it at very high heat for a short time"],
+    ans: 1,
+    exp: "Blanching is a two-step process: briefly boiling an ingredient then immediately transferring it to ice water. This stops enzyme activity, sets the bright green colour of vegetables, and partially cooks them."
+  },
+  {
+    q: "What does 'reduction' mean in cooking?",
+    opts: ["Lowering the oven temperature to finish a dish gently", "Simmering a liquid to evaporate water and concentrate flavour", "Decreasing the amount of salt in a dish", "Cutting an ingredient into smaller pieces"],
+    ans: 1,
+    exp: "Reduction is the process of simmering a liquid — stock, wine, sauce — to evaporate water. The result is a more concentrated flavour and thicker consistency. It is fundamental to sauce-making."
+  },
+  {
+    q: "What is the correct internal temperature for cooked chicken to be considered safe?",
+    opts: ["63°C (145°F)", "70°C (158°F)", "74°C (165°F)", "85°C (185°F)"],
+    ans: 2,
+    exp: "Chicken must reach an internal temperature of 74°C (165°F) to be safe for consumption. This temperature destroys harmful bacteria such as Salmonella. Always verify with a probe thermometer, not by colour."
+  },
+  {
+    q: "What is 'mise en place' specifically relevant to for a Commis chef during a shift?",
+    opts: ["Writing out the menu for the day", "Prepping, measuring, and organising all ingredients before service begins", "Cleaning the kitchen at the end of service", "Taking the food order from guests"],
+    ans: 1,
+    exp: "Mise en place is the primary pre-service responsibility of a Commis chef. It includes peeling, cutting, portioning, and organising all ingredients so that the chef de partie can cook efficiently during service."
+  },
+  {
+    q: "What does WHMIS stand for, as it relates to kitchen safety?",
+    opts: ["Workplace Hazardous Materials Information System", "Weekly Hygiene Monitoring and Inspection Schedule", "Waste Handling and Management in Service", "Workplace Health and Menu Implementation Standards"],
+    ans: 0,
+    exp: "WHMIS stands for Workplace Hazardous Materials Information System. It is the system used to communicate safety information about hazardous products — including cleaning chemicals — used in professional kitchens."
+  }
+];
+
+let order = [], cur = 0, picks = {}, playerName = '', score = 0;
+
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function show(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+function startQuiz() {
+  const inp = document.getElementById('name-input').value.trim();
+  playerName = inp || 'Anonymous';
+  order = shuffle(BANK.map((_, i) => i));
+  cur = 0; picks = {}; score = 0;
+  document.getElementById('q-total').textContent = BANK.length;
+  show('quiz-screen');
+  render();
+}
+
+function render() {
+  const idx = order[cur];
+  const q = BANK[idx];
+  const total = BANK.length;
+
+  document.getElementById('q-num').textContent = cur + 1;
+  document.getElementById('q-score').textContent = score;
+  document.getElementById('q-label').textContent = `Question ${cur + 1} of ${total}`;
+  document.getElementById('q-text').textContent = q.q;
+  document.getElementById('progress-fill').style.width = ((cur / total) * 100) + '%';
+  document.getElementById('explanation').className = 'explanation';
+  document.getElementById('explanation').textContent = '';
+  document.getElementById('next-btn').className = 'next-btn';
+
+  const letters = ['A', 'B', 'C', 'D'];
+  const optEl = document.getElementById('options');
+  optEl.innerHTML = '';
+  // Shuffle option display order
+  const optOrder = shuffle([0, 1, 2, 3]);
+  optOrder.forEach((oi, li) => {
+    const btn = document.createElement('button');
+    btn.className = 'opt-btn';
+    btn.dataset.opt = oi;
+    btn.innerHTML = `<span class="opt-letter">${letters[li]}</span><span>${q.opts[oi]}</span>`;
+    btn.onclick = () => selectAnswer(oi, idx);
+    optEl.appendChild(btn);
+  });
+}
+
+function selectAnswer(chosen, idx) {
+  const q = BANK[idx];
+  picks[idx] = chosen;
+  const correct = chosen === q.ans;
+  if (correct) score++;
+
+  document.getElementById('q-score').textContent = score;
+
+  // Disable all buttons, highlight
+  document.querySelectorAll('.opt-btn').forEach(btn => {
+    btn.disabled = true;
+    const oi = parseInt(btn.dataset.opt);
+    if (oi === q.ans) btn.classList.add('correct');
+    else if (oi === chosen && !correct) btn.classList.add('wrong');
+  });
+
+  // Show explanation if wrong
+  if (!correct) {
+    const expEl = document.getElementById('explanation');
+    expEl.textContent = '✗ ' + q.exp;
+    expEl.classList.add('show');
+  }
+
+  document.getElementById('next-btn').classList.add('show');
+  document.getElementById('next-btn').textContent = cur + 1 < BANK.length ? 'Next Question →' : 'See Results →';
+}
+
+function nextQuestion() {
+  cur++;
+  if (cur >= BANK.length) {
+    showResults();
+  } else {
+    render();
+    window.scrollTo(0, 0);
+  }
+}
+
+function showResults() {
+  show('results-screen');
+  const total = BANK.length;
+  const pct = Math.round((score / total) * 100);
+  const passed = pct >= 70;
+
+  document.getElementById('result-name').textContent = playerName;
+  document.getElementById('ring-pct').textContent = pct + '%';
+  document.getElementById('ring-pct').style.color = passed ? 'var(--green)' : 'var(--red)';
+  document.getElementById('ring-fill').style.stroke = passed ? 'var(--green)' : 'var(--red)';
+
+  // Animate ring
+  const circumference = 439.82;
+  setTimeout(() => {
+    document.getElementById('ring-fill').style.strokeDashoffset = circumference - (circumference * pct / 100);
+  }, 100);
+
+  document.getElementById('res-title').textContent = pct >= 90 ? 'Excellent!' : pct >= 70 ? 'Passed!' : 'Needs Work';
+  document.getElementById('res-sub').textContent = `${score} correct out of ${total} questions`;
+
+  const verdict = document.getElementById('res-verdict');
+  if (passed) {
+    verdict.textContent = '✓ You passed — score above 70%';
+    verdict.className = 'result-verdict pass';
+  } else {
+    verdict.textContent = '✗ Below 70% — please retake the quiz';
+    verdict.className = 'result-verdict fail';
+  }
+
+  // Review
+  const rv = document.getElementById('review');
+  rv.innerHTML = '<h3>Review</h3>';
+  order.forEach(idx => {
+    const q = BANK[idx];
+    const ua = picks[idx];
+    const ok = ua === q.ans;
+    const d = document.createElement('div');
+    d.className = 'rv-item ' + (ok ? 'ok' : 'miss');
+    d.innerHTML = `
+      <div class="rv-q">${q.q}</div>
+      <div class="rv-a">
+        ${ok
+          ? `<span class="c">✓ Correct: ${q.opts[q.ans]}</span>`
+          : `<span class="w">✗ You chose: ${ua !== undefined ? q.opts[ua] : 'Skipped'}</span><br>
+             <span class="c">✓ Correct: ${q.opts[q.ans]}</span><br>
+             <span style="color:var(--muted)">${q.exp}</span>`
+        }
+      </div>`;
+    rv.appendChild(d);
+  });
+}
+
+function retryQuiz() {
+  order = shuffle(order);
+  cur = 0; picks = {}; score = 0;
+  document.getElementById('q-score').textContent = 0;
+  show('quiz-screen');
+  render();
+}
+
+// Allow Enter key on name input
+document.getElementById('name-input').addEventListener('keydown', e => {
+  if (e.key === 'Enter') startQuiz();
+});
+</script>
+</body>
+</html>
