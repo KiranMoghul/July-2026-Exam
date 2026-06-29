@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hospitality Industry — July 2026 Exam</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍳</text></svg>">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@400;500&display=swap');
+  :root {
+    --bg:#080810;--surface:#11111f;--border:#1e1e35;
+    --purple:#7c3aed;--purple-l:#9d5bf0;
+    --green:#22c55e;--red:#ef4444;
+    --text:#e8e8f0;--muted:#7070a0;
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Syne',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;align-items:center;justify-content:center;}
+  body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px);background-size:40px 40px;opacity:.4;pointer-events:none;z-index:0;}
+  .screen{position:relative;z-index:1;width:100%;max-width:660px;margin:0 auto;padding:24px 20px 48px;display:none;}
+  .screen.active{display:block;}
+
+  /* NAME */
+  #name-screen{text-align:center;padding-top:80px;}
+  .back-link{display:inline-flex;align-items:center;gap:6px;font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);text-decoration:none;letter-spacing:1px;margin-bottom:48px;transition:color .2s;}
+  .back-link:hover{color:var(--purple-l);}
+  .subject-tag{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--purple-l);margin-bottom:12px;}
+  #name-screen h1{font-size:clamp(22px,5vw,36px);font-weight:800;line-height:1.15;margin-bottom:8px;background:linear-gradient(135deg,#fff 30%,var(--purple-l));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+  #name-screen p{color:var(--muted);font-family:'DM Mono',monospace;font-size:12px;margin-bottom:40px;}
+  .name-box{display:flex;flex-direction:column;align-items:center;gap:12px;}
+  .name-box input{width:100%;max-width:320px;padding:12px 16px;background:var(--surface);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:'Syne',sans-serif;font-size:15px;outline:none;text-align:center;transition:border-color .2s;}
+  .name-box input:focus{border-color:var(--purple);}
+  .name-box input::placeholder{color:var(--muted);}
+  .btn-primary{padding:12px 32px;background:var(--purple);color:#fff;border:none;border-radius:8px;font-family:'Syne',sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:background .2s,transform .1s;letter-spacing:.5px;}
+  .btn-primary:hover{background:var(--purple-l);transform:translateY(-1px);}
+
+  /* QUIZ */
+  .quiz-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;}
+  .quiz-meta{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);}
+  .quiz-meta span{color:var(--purple-l);font-weight:500;}
+  .progress-bar{width:100%;height:3px;background:var(--border);border-radius:2px;margin-bottom:32px;overflow:hidden;}
+  .progress-fill{height:100%;background:linear-gradient(90deg,var(--purple),var(--purple-l));border-radius:2px;transition:width .3s ease;}
+  .question-num{font-family:'DM Mono',monospace;font-size:10px;color:var(--purple-l);letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;}
+  .question-text{font-size:clamp(15px,3vw,18px);font-weight:600;line-height:1.5;margin-bottom:28px;color:var(--text);}
+  .options{display:flex;flex-direction:column;gap:10px;}
+  .opt-btn{display:flex;align-items:center;gap:12px;padding:13px 16px;background:var(--surface);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:'Syne',sans-serif;font-size:14px;font-weight:400;cursor:pointer;text-align:left;transition:border-color .15s,background .15s;width:100%;}
+  .opt-btn:hover:not(:disabled){border-color:var(--purple);background:#16162a;}
+  .opt-btn .opt-letter{flex-shrink:0;width:26px;height:26px;border-radius:6px;background:var(--border);display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);transition:background .15s,color .15s;}
+  .opt-btn:hover:not(:disabled) .opt-letter{background:var(--purple);color:#fff;}
+  .opt-btn.correct{border-color:var(--green);background:rgba(34,197,94,.1);}
+  .opt-btn.correct .opt-letter{background:var(--green);color:#fff;}
+  .opt-btn.wrong{border-color:var(--red);background:rgba(239,68,68,.1);}
+  .opt-btn.wrong .opt-letter{background:var(--red);color:#fff;}
+  .opt-btn:disabled{cursor:default;}
+  .explanation{display:none;margin-top:16px;padding:14px 16px;background:rgba(124,58,237,.1);border:1px solid rgba(124,58,237,.25);border-left:3px solid var(--purple);border-radius:8px;font-size:13px;line-height:1.6;color:#c4b5fd;font-family:'DM Mono',monospace;}
+  .explanation.show{display:block;}
+  .next-btn{margin-top:24px;width:100%;padding:13px;background:var(--purple);color:#fff;border:none;border-radius:8px;font-family:'Syne',sans-serif;font-size:14px;font-weight:700;cursor:pointer;display:none;transition:background .2s;letter-spacing:.5px;}
+  .next-btn:hover{background:var(--purple-l);}
+  .next-btn.show{display:block;}
+
+  /* RESULTS */
+  #results-screen{text-align:center;padding-top:40px;}
+  .result-name{font-family:'DM Mono',monospace;font-size:12px;color:var(--muted);margin-bottom:32px;}
+  .score-ring{position:relative;width:160px;height:160px;margin:0 auto 28px;}
+  .score-ring svg{transform:rotate(-90deg);}
+  .score-ring .ring-bg{fill:none;stroke:var(--border);stroke-width:10;}
+  .score-ring .ring-fill{fill:none;stroke-width:10;stroke-linecap:round;transition:stroke-dashoffset 1s ease,stroke .5s;}
+  .score-ring .ring-text{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+  .ring-pct{font-size:34px;font-weight:800;line-height:1;}
+  .ring-label{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);margin-top:4px;letter-spacing:1px;}
+  .result-title{font-size:24px;font-weight:800;margin-bottom:8px;}
+  .result-sub{font-family:'DM Mono',monospace;font-size:12px;color:var(--muted);margin-bottom:8px;}
+  .result-verdict{font-family:'DM Mono',monospace;font-size:12px;padding:8px 20px;border-radius:20px;display:inline-block;margin-bottom:32px;}
+  .result-verdict.pass{background:rgba(34,197,94,.12);color:var(--green);border:1px solid rgba(34,197,94,.3);}
+  .result-verdict.fail{background:rgba(239,68,68,.12);color:var(--red);border:1px solid rgba(239,68,68,.3);}
+  .result-actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:40px;}
+  .btn-outline{padding:11px 24px;background:none;border:1px solid var(--border);border-radius:8px;color:var(--muted);font-family:'Syne',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:border-color .2s,color .2s;}
+  .btn-outline:hover{border-color:var(--purple);color:var(--text);}
+  .review{text-align:left;}
+  .review h3{font-size:13px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:2px;margin-bottom:16px;font-family:'DM Mono',monospace;}
+  .rv-item{padding:14px 16px;border-radius:8px;margin-bottom:10px;border:1px solid var(--border);}
+  .rv-item.ok{border-color:rgba(34,197,94,.25);background:rgba(34,197,94,.05);}
+  .rv-item.miss{border-color:rgba(239,68,68,.25);background:rgba(239,68,68,.05);}
+  .rv-q{font-size:13px;font-weight:600;margin-bottom:8px;line-height:1.4;}
+  .rv-a{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);line-height:1.6;}
+  .rv-a .c{color:var(--green);}
+  .rv-a .w{color:var(--red);}
+</style>
+</head>
+<body>
+
+<!-- NAME SCREEN -->
+<div class="screen active" id="name-screen">
+  <a class="back-link" href="index.html">← Back to subjects</a>
+  <div class="subject-tag">Culinary Arts · Topic 02</div>
+  <h1>Hospitality Industry</h1>
+  <p>30 questions · Chef roles, hotel categories & departments</p>
+  <div class="name-box">
+    <input type="text" id="name-input" placeholder="Enter your name" maxlength="30" autocomplete="off">
+    <button class="btn-primary" onclick="startQuiz()">Start Quiz</button>
+  </div>
+</div>
+
+<!-- QUIZ SCREEN -->
+<div class="screen" id="quiz-screen">
+  <div class="quiz-header">
+    <div class="quiz-meta">Question <span id="q-num">1</span> of <span id="q-total">30</span></div>
+    <div class="quiz-meta">Score <span id="q-score">0</span></div>
+  </div>
+  <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+  <div class="question-num" id="q-label"></div>
+  <div class="question-text" id="q-text"></div>
+  <div class="options" id="options"></div>
+  <div class="explanation" id="explanation"></div>
+  <button class="next-btn" id="next-btn" onclick="nextQuestion()">Next Question →</button>
+</div>
+
+<!-- RESULTS SCREEN -->
+<div class="screen" id="results-screen">
+  <div class="result-name" id="result-name"></div>
+  <div class="score-ring">
+    <svg viewBox="0 0 160 160" width="160" height="160">
+      <circle class="ring-bg" cx="80" cy="80" r="70"/>
+      <circle class="ring-fill" id="ring-fill" cx="80" cy="80" r="70" stroke-dasharray="439.82" stroke-dashoffset="439.82" stroke="var(--green)"/>
+    </svg>
+    <div class="ring-text">
+      <div class="ring-pct" id="ring-pct">0%</div>
+      <div class="ring-label">SCORE</div>
+    </div>
+  </div>
+  <div class="result-title" id="res-title"></div>
+  <div class="result-sub" id="res-sub"></div>
+  <div class="result-verdict" id="res-verdict"></div>
+  <div class="result-actions">
+    <button class="btn-primary" onclick="retryQuiz()">Retry →</button>
+    <button class="btn-outline" onclick="window.location.href='index.html'">All Subjects</button>
+  </div>
+  <div class="review" id="review"></div>
+</div>
+
+<script>
+const BANK = [
+  {
+    q: "Which of the following best defines the hospitality industry?",
+    opts: ["An industry focused only on food production and delivery", "A broad sector covering accommodation, food service, travel, and tourism", "A government-regulated sector for managing public spaces", "An industry limited to five-star hotels and fine dining"],
+    ans: 1,
+    exp: "The hospitality industry is a broad service sector encompassing accommodation, food and beverage, travel, tourism, and entertainment. It is one of the world's largest employers."
+  },
+  {
+    q: "What are the three main sectors of the hospitality industry?",
+    opts: ["Cooking, cleaning, and logistics", "Accommodation, food & beverage, and travel & tourism", "Hotels, airlines, and retail", "Front of house, back of house, and administration"],
+    ans: 1,
+    exp: "The three main sectors are: Accommodation (hotels, resorts, hostels), Food & Beverage (restaurants, catering, bars), and Travel & Tourism (airlines, tour operators, attractions)."
+  },
+  {
+    q: "A five-star hotel is best described as:",
+    opts: ["A hotel with five floors or more", "A luxury property offering exceptional facilities, personalised service, and premium amenities", "Any hotel that serves international cuisine", "A hotel approved by five separate government bodies"],
+    ans: 1,
+    exp: "A five-star classification indicates a luxury hotel with superior facilities, highly personalised service, fine dining, spas, concierge, and premium room standards. Star ratings are awarded by national or international rating bodies."
+  },
+  {
+    q: "Which hotel category typically offers basic amenities, clean rooms, and limited food service — targeting budget travellers?",
+    opts: ["Five-star", "Boutique hotel", "One or two-star", "Resort hotel"],
+    ans: 2,
+    exp: "One and two-star hotels provide basic, functional accommodation at lower price points. They typically offer limited or no food service and cater to budget-conscious travellers."
+  },
+  {
+    q: "What is a 'boutique hotel'?",
+    opts: ["A hotel located inside a shopping mall", "A small, individually styled hotel with a unique design identity and personalised service", "A hotel with fewer than 10 rooms only", "A budget hotel chain"],
+    ans: 1,
+    exp: "A boutique hotel is typically small (10–100 rooms), independently operated, and distinguished by unique design, a specific theme, and personalised attention. Examples include lifestyle hotels in city centres."
+  },
+  {
+    q: "Which department in a hotel is responsible for guest check-in, check-out, and reservations?",
+    opts: ["Food & Beverage Department", "Housekeeping Department", "Front Office Department", "Maintenance Department"],
+    ans: 2,
+    exp: "The Front Office Department handles all guest-facing arrival and departure processes including reservations, check-in, check-out, concierge, and guest communications. It is the primary point of contact."
+  },
+  {
+    q: "What is the primary role of the Housekeeping Department in a hotel?",
+    opts: ["Preparing and serving food to guests", "Maintaining the cleanliness and presentation of guest rooms and public areas", "Managing reservations and bookings", "Overseeing financial operations"],
+    ans: 1,
+    exp: "Housekeeping is responsible for cleaning and maintaining guest rooms, corridors, lobbies, and all public areas. It is critical to guest satisfaction and maintaining hotel standards."
+  },
+  {
+    q: "The Food & Beverage (F&B) Department of a hotel is responsible for:",
+    opts: ["Only managing the hotel restaurant", "All food production and service operations including restaurants, bars, banquets, and room service", "Purchasing all food supplies for the hotel", "Managing guest dietary complaints only"],
+    ans: 1,
+    exp: "The F&B Department oversees all food and drink operations within the hotel — including restaurants, bars, banqueting, catering, in-room dining, and staff cafeterias. It is one of the largest revenue-generating departments."
+  },
+  {
+    q: "Which hotel department is responsible for managing employee recruitment, training, and welfare?",
+    opts: ["Front Office", "Sales & Marketing", "Human Resources (HR)", "Security"],
+    ans: 2,
+    exp: "The Human Resources Department manages all staff-related functions: recruitment, onboarding, training, performance management, payroll administration, and employee welfare and compliance."
+  },
+  {
+    q: "What does the Sales & Marketing Department of a hotel primarily do?",
+    opts: ["Manages daily guest complaints", "Promotes the hotel, generates revenue through bookings, and manages partnerships and events", "Handles all financial reporting", "Oversees kitchen operations"],
+    ans: 1,
+    exp: "Sales & Marketing drives business by promoting the hotel, managing corporate accounts, organising events, handling public relations, and overseeing digital marketing and loyalty programmes."
+  },
+  {
+    q: "What is the role of the Engineering & Maintenance Department in a hotel?",
+    opts: ["Designing new hotel construction projects", "Maintaining all physical infrastructure, equipment, and utility systems of the hotel", "Managing procurement of furniture", "Overseeing guest room interior design"],
+    ans: 1,
+    exp: "Engineering & Maintenance ensures all hotel systems — electrical, plumbing, HVAC, elevators, kitchen equipment — are operational. They carry out preventive maintenance and emergency repairs."
+  },
+  {
+    q: "The Security Department of a hotel is responsible for:",
+    opts: ["Only monitoring CCTV cameras", "Protecting guests, staff, and hotel assets, and managing emergency procedures", "Controlling access to the kitchen only", "Checking guest identification at restaurants"],
+    ans: 1,
+    exp: "The Security Department safeguards the hotel by monitoring access, conducting patrols, handling emergencies, coordinating with local authorities, and protecting guests, employees, and property."
+  },
+  {
+    q: "In hotel operations, what does 'RevPAR' stand for?",
+    opts: ["Revenue Per Available Room", "Rate of Evaluation Per Accommodation Review", "Rooms Even Pricing And Revenue", "Revenue Percentage After Repairs"],
+    ans: 0,
+    exp: "RevPAR — Revenue Per Available Room — is a key performance indicator calculated by dividing total room revenue by the number of available rooms. It measures how effectively a hotel fills its rooms at the right price."
+  },
+  {
+    q: "What is the title of the most senior chef in a hotel kitchen?",
+    opts: ["Head Chef", "Sous Chef", "Executive Chef", "Chef de Partie"],
+    ans: 2,
+    exp: "The Executive Chef holds the highest culinary position in a hotel. They oversee all food production across multiple outlets, manage culinary staff, design menus, control food costs, and represent the kitchen at management level."
+  },
+  {
+    q: "What is the primary responsibility of a Sous Chef?",
+    opts: ["Managing reservations for the restaurant", "Assisting and standing in for the Executive Chef, supervising kitchen operations", "Preparing only cold dishes and salads", "Training front of house staff"],
+    ans: 1,
+    exp: "The Sous Chef is second in command. They manage day-to-day kitchen operations, supervise the brigade, assist the Executive Chef with menu development, and take full control when the Executive Chef is absent."
+  },
+  {
+    q: "What is a 'Chef de Partie'?",
+    opts: ["A junior chef who assists all stations", "A chef responsible for a specific section or station in the kitchen", "The chef who manages only pastry", "A chef who works exclusively at events"],
+    ans: 1,
+    exp: "A Chef de Partie (also called a Station Chef or Line Cook at senior level) is in charge of a specific section of the kitchen — such as the grill, sauté, or pastry station — and manages the commis chefs assigned to that section."
+  },
+  {
+    q: "What rank does a Commis Chef hold in the kitchen brigade?",
+    opts: ["The most senior position below Executive Chef", "An entry-level or junior chef who assists Chef de Parties", "A chef who manages kitchen ordering", "A chef who only works breakfast service"],
+    ans: 1,
+    exp: "A Commis Chef is a junior, entry-level position. They assist the Chef de Partie, carry out basic preparation tasks, and are in the early stages of developing professional kitchen skills. Commis I and II indicate increasing experience."
+  },
+  {
+    q: "What is the role of a Garde Manger chef?",
+    opts: ["Managing cold food preparation including salads, charcuterie, pâtés, and cold appetisers", "Managing the grill and hot station", "Responsible for dessert production only", "Overseeing vegetable cookery"],
+    ans: 0,
+    exp: "The Garde Manger chef is responsible for the cold kitchen — producing cold appetisers, salads, charcuterie, pâtés, terrines, and decorative platters. In larger hotels this is a full department."
+  },
+  {
+    q: "What does FOH stand for in hospitality?",
+    opts: ["Food On Hold", "Front Of House", "Full Operational Hours", "Food Order Handling"],
+    ans: 1,
+    exp: "FOH stands for Front Of House — all guest-facing areas and staff including the dining room, reception, bar, and concierge. FOH staff interact directly with guests throughout their experience."
+  },
+  {
+    q: "What does BOH stand for and what does it include?",
+    opts: ["Back Of House — kitchen, stores, laundry, and all non-guest-facing areas", "Back Of Hotel — the area behind the main hotel building", "Booking Operations Hub — the reservations department", "Bottom Of Hierarchy — entry-level staff only"],
+    ans: 0,
+    exp: "BOH stands for Back Of House — all areas not visible to guests. This includes the kitchen, stores, dishwashing area, laundry, staff changing rooms, and administrative offices."
+  },
+  {
+    q: "What is an 'à la carte' restaurant?",
+    opts: ["A restaurant where all guests eat the same fixed meal", "A restaurant where guests order individual dishes from a menu, each priced separately", "A restaurant that only offers buffet service", "A restaurant open only for breakfast"],
+    ans: 1,
+    exp: "À la carte means guests choose individual dishes from the menu, each with its own price. It offers maximum choice and flexibility, and is the most common format for mid-range to fine dining restaurants."
+  },
+  {
+    q: "What is a 'table d'hôte' menu?",
+    opts: ["A menu with unlimited options at a flat rate", "A fixed-price menu with a set number of courses and limited choices", "A menu that changes daily based on market availability", "A menu available only to VIP guests"],
+    ans: 1,
+    exp: "Table d'hôte is a fixed-price menu offering a set number of courses (typically 2 or 3) with limited options per course. It is efficient for kitchens and offers guests value for money."
+  },
+  {
+    q: "What is a 'resort hotel'?",
+    opts: ["A hotel located only in mountain regions", "A self-contained property in a leisure destination offering extensive recreational facilities", "A hotel with a casino attached", "A budget property near an airport"],
+    ans: 1,
+    exp: "A resort hotel is a full-service, self-contained destination property — typically located near a beach, mountain, or natural attraction — offering accommodation, dining, leisure, spa, sports, and entertainment."
+  },
+  {
+    q: "What is the difference between a motel and a hotel?",
+    opts: ["Motels are larger than hotels", "Motels are designed for motorists with direct room access from parking; hotels offer full lobby services", "Motels always have more amenities than hotels", "There is no difference — the terms are interchangeable"],
+    ans: 1,
+    exp: "A motel (motor hotel) is designed for road travellers and features direct access from the car park to rooms, minimal public spaces, and basic amenities. Hotels have lobbies, concierge, and a wider range of services."
+  },
+  {
+    q: "Which of the following is NOT a standard hotel department?",
+    opts: ["Front Office", "Housekeeping", "Graphic Design Studio", "Food & Beverage"],
+    ans: 2,
+    exp: "A Graphic Design Studio is not a standard hotel department. The core departments are: Front Office, Housekeeping, F&B, Engineering, HR, Sales & Marketing, Finance, and Security."
+  },
+  {
+    q: "What is the role of the Purchasing Department in a hotel?",
+    opts: ["Selling hotel packages to travel agents", "Sourcing, ordering, and managing the supply of all goods and services the hotel requires", "Handling guest luggage and deliveries", "Managing the hotel's social media accounts"],
+    ans: 1,
+    exp: "The Purchasing Department is responsible for procuring all goods — food, beverages, linen, equipment, cleaning supplies — at the best price and quality. They manage supplier relationships and inventory levels."
+  },
+  {
+    q: "What is a 'concierge' in a hotel?",
+    opts: ["A staff member who cleans guest rooms", "A senior staff member who assists guests with reservations, transport, recommendations, and special requests", "The chef responsible for the cold kitchen", "The manager who handles staff payroll"],
+    ans: 1,
+    exp: "The concierge is a guest services specialist who assists with restaurant reservations, transportation, city recommendations, event tickets, and special guest needs. A skilled concierge significantly enhances the guest experience."
+  },
+  {
+    q: "What is 'occupancy rate' in hotel terms?",
+    opts: ["The number of staff scheduled per shift", "The percentage of available rooms that are sold and occupied on a given night", "The total number of guests checked in across all months", "The ratio of suites to standard rooms"],
+    ans: 1,
+    exp: "Occupancy rate is calculated as: (Rooms Occupied ÷ Rooms Available) × 100. It is a core performance metric showing how effectively a hotel is selling its room inventory."
+  },
+  {
+    q: "Which of the following best describes a 'chain hotel'?",
+    opts: ["A hotel connected by a sky bridge to another property", "A hotel that is part of a larger branded group operating multiple properties under the same brand standards", "A hotel with more than 500 rooms", "A hotel owned by a national government"],
+    ans: 1,
+    exp: "A chain hotel belongs to a brand group (e.g. Marriott, Hilton, Accor) and operates under standardised brand standards for service, design, and quality across all its properties worldwide."
+  },
+  {
+    q: "What is 'yield management' in a hotel context?",
+    opts: ["Managing the kitchen's food yield and waste reduction", "A pricing strategy that adjusts room rates based on demand, season, and availability to maximise revenue", "The process of training new hotel staff", "Managing the hotel's food cost percentage"],
+    ans: 1,
+    exp: "Yield management (also called revenue management) is a dynamic pricing strategy where room rates increase during high demand and decrease during low demand. The goal is to maximise revenue per available room."
+  }
+];
+
+let order=[],cur=0,picks={},playerName='',score=0;
+function shuffle(arr){const a=[...arr];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');window.scrollTo(0,0);}
+function startQuiz(){const inp=document.getElementById('name-input').value.trim();playerName=inp||'Anonymous';order=shuffle(BANK.map((_,i)=>i));cur=0;picks={};score=0;document.getElementById('q-total').textContent=BANK.length;show('quiz-screen');render();}
+function render(){
+  const idx=order[cur],q=BANK[idx],total=BANK.length;
+  document.getElementById('q-num').textContent=cur+1;
+  document.getElementById('q-score').textContent=score;
+  document.getElementById('q-label').textContent=`Question ${cur+1} of ${total}`;
+  document.getElementById('q-text').textContent=q.q;
+  document.getElementById('progress-fill').style.width=((cur/total)*100)+'%';
+  document.getElementById('explanation').className='explanation';
+  document.getElementById('explanation').textContent='';
+  document.getElementById('next-btn').className='next-btn';
+  const letters=['A','B','C','D'],optEl=document.getElementById('options');
+  optEl.innerHTML='';
+  shuffle([0,1,2,3]).forEach((oi,li)=>{
+    const btn=document.createElement('button');
+    btn.className='opt-btn';btn.dataset.opt=oi;
+    btn.innerHTML=`<span class="opt-letter">${letters[li]}</span><span>${q.opts[oi]}</span>`;
+    btn.onclick=()=>selectAnswer(oi,idx);
+    optEl.appendChild(btn);
+  });
+}
+function selectAnswer(chosen,idx){
+  const q=BANK[idx],correct=chosen===q.ans;
+  picks[idx]=chosen;if(correct)score++;
+  document.getElementById('q-score').textContent=score;
+  document.querySelectorAll('.opt-btn').forEach(btn=>{
+    btn.disabled=true;const oi=parseInt(btn.dataset.opt);
+    if(oi===q.ans)btn.classList.add('correct');
+    else if(oi===chosen&&!correct)btn.classList.add('wrong');
+  });
+  if(!correct){const e=document.getElementById('explanation');e.textContent='✗ '+q.exp;e.classList.add('show');}
+  const nb=document.getElementById('next-btn');nb.classList.add('show');
+  nb.textContent=cur+1<BANK.length?'Next Question →':'See Results →';
+}
+function nextQuestion(){cur++;if(cur>=BANK.length)showResults();else{render();window.scrollTo(0,0);}}
+function showResults(){
+  show('results-screen');
+  const total=BANK.length,pct=Math.round((score/total)*100),passed=pct>=70;
+  document.getElementById('result-name').textContent=playerName;
+  document.getElementById('ring-pct').textContent=pct+'%';
+  document.getElementById('ring-pct').style.color=passed?'var(--green)':'var(--red)';
+  document.getElementById('ring-fill').style.stroke=passed?'var(--green)':'var(--red)';
+  setTimeout(()=>{document.getElementById('ring-fill').style.strokeDashoffset=439.82-(439.82*pct/100);},100);
+  document.getElementById('res-title').textContent=pct>=90?'Excellent!':pct>=70?'Passed!':'Needs Work';
+  document.getElementById('res-sub').textContent=`${score} correct out of ${total} questions`;
+  const v=document.getElementById('res-verdict');
+  if(passed){v.textContent='✓ You passed — score above 70%';v.className='result-verdict pass';}
+  else{v.textContent='✗ Below 70% — please retake the quiz';v.className='result-verdict fail';}
+  const rv=document.getElementById('review');rv.innerHTML='<h3>Review</h3>';
+  order.forEach(idx=>{
+    const q=BANK[idx],ua=picks[idx],ok=ua===q.ans;
+    const d=document.createElement('div');d.className='rv-item '+(ok?'ok':'miss');
+    d.innerHTML=`<div class="rv-q">${q.q}</div><div class="rv-a">${ok
+      ?`<span class="c">✓ Correct: ${q.opts[q.ans]}</span>`
+      :`<span class="w">✗ You chose: ${ua!==undefined?q.opts[ua]:'Skipped'}</span><br><span class="c">✓ Correct: ${q.opts[q.ans]}</span><br><span style="color:var(--muted)">${q.exp}</span>`
+    }</div>`;
+    rv.appendChild(d);
+  });
+}
+function retryQuiz(){order=shuffle(order);cur=0;picks={};score=0;document.getElementById('q-score').textContent=0;show('quiz-screen');render();}
+document.getElementById('name-input').addEventListener('keydown',e=>{if(e.key==='Enter')startQuiz();});
+</script>
+</body>
+</html>
