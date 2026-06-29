@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>July 2026 Exams</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="page-wrap">
+
+  <div class="site-header">
+    <div class="eyebrow">Practice Hub</div>
+    <h1>July 2026 Exams</h1>
+    <p>Four subjects. Pick a topic, test yourself, review your answers.</p>
+  </div>
+
+  <!-- TIER 1: Subject tabs -->
+  <div class="tier1-tabs" role="tablist" id="tier1">
+    <button class="tier1-tab active" data-subject="culinary" onclick="switchSubject('culinary')">Culinary Arts</button>
+    <button class="tier1-tab" data-subject="computer" onclick="switchSubject('computer')">Computer</button>
+    <button class="tier1-tab" data-subject="english" onclick="switchSubject('english')">English</button>
+    <button class="tier1-tab" data-subject="gpdp" onclick="switchSubject('gpdp')">GPDP</button>
+  </div>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- CULINARY ARTS                               -->
+  <!-- ═══════════════════════════════════════════ -->
+  <div class="subject-panel active" id="panel-culinary">
+
+    <!-- Tier 2: Culinary subsections -->
+    <div class="tier2-tabs" id="tier2-culinary">
+      <button class="tier2-tab active" data-sec="kitchen" onclick="switchSection('culinary','kitchen')">Kitchen Safety</button>
+      <button class="tier2-tab" data-sec="methods" onclick="switchSection('culinary','methods')">Cooking Methods</button>
+      <button class="tier2-tab" data-sec="sauces" onclick="switchSection('culinary','sauces')">Stocks & Sauces</button>
+      <button class="tier2-tab" data-sec="mise" onclick="switchSection('culinary','mise')">Mise en Place</button>
+      <button class="tier2-tab" data-sec="nutrition" onclick="switchSection('culinary','nutrition')">Nutrition</button>
+    </div>
+
+    <!-- Kitchen Safety & Equipment -->
+    <div class="subsection-panel active" id="sec-culinary-kitchen">
+      <div class="section-heading">
+        <h2>Kitchen Safety & Hygiene</h2>
+        <p>Food safety, personal hygiene, HACCP basics, PPE, and equipment knowledge.</p>
+      </div>
+      <div class="quiz-list">
+        <a class="quiz-card" href="quiz.html?topic=kitchen_safety&label=Kitchen+Safety+%26+Hygiene&subject=Culinary+Arts">
+          <div class="card-info">
+            <div class="card-title">Kitchen Safety & Hygiene</div>
+            <div class="card-sub">HACCP, food safety, cross-contamination, temperature control</div>
+          </div>
+          <div class="card-meta"><span class="q-badge">30 Qs</span></div>
+        </a>
+        <a class="quiz-card" href="quiz.html?topic=kitchen_equipment&label=Equipment+%26+Tools&subject=Culinary+Arts">
+          <div class="card-info">
+            <div class="card-title">Equipment & Tools</div>
+            <div class="card-sub">Knives, cookware, smallwares, equipment names and uses</div>
+          </div>
+          <div class="card-meta"><span class="q-badge">30 Qs</span></div>
+        </a>
+        <a class="quiz-card" href="quiz.html?topic=knife_skills&label=Knife+Skills+%26+Cuts&subject=Culinary+Arts">
+          <div class="card-info">
+            <div class="card-title">Knife Skills & Cuts</div>
+            <div class="card-sub">Brunoise, julienne, chiffonade, tourner, paysanne, lozenge</div>
+          </div>
+          <div class="card-meta"><span class="q-badge">30 Qs</span></div>
+        </a>
+      </div>
+      <a class="btn-primary" href="quiz.html?topic=kitchen_all&label=Kitchen+Safety+%26+Equipment+(All)&subject=Culinary+Arts">Practice All — Kitchen</a>
+    </div>
+
+    <!-- Cooking Methods -->
+    <div class="subsection-panel" id="sec-culinary-methods">
+      <div class="section-heading">
+        <h2>Cooking Methods & Techniques</h2>
+        <p>Dry heat, wet heat, frying, and combination methods used in professional kitchens.</p>
+      </div>
+      <div class="quiz-list">
+        <a class="quiz-card" href="quiz.html?topic=dry_heat&label=Dry+Heat+Methods&subject=Culinary+Arts">
+          <div class="card-info">
+            <div class="card-title">Dry Heat Methods</div>
+            <div class="card-sub">Roasting, baking, grilling, broiling, sautéing</div>
+          </div>
+          <div class="card-meta"><span class="q-badge">30 Qs</span></div>
+        </a>
+        <a class="quiz-card" href="quiz.html?topic=wet_heat&label=Wet+Heat+Methods&subject=Culinary+Arts">
+          <div class="card-info">
+            <div class="card-title">Wet Heat Methods</div>
+            <div class="card-sub">Boiling, simmering, poaching, steaming, braising</div>
+          </div>
+          <div class="card-meta"><span class="q-badge">30 Qs</span></div>
+        </a>
+        <a class="quiz-card" href="quiz.html?topic=frying&label=Frying+Methods&subject=Culinary+Arts">
+          <div class="card-info">
+            <div class="card-title">Frying Methods</div>
+            <div class="card-sub">Deep fry, shallow fry, stir fry, pan fry — differences and uses</div>
+          </div>
+          <div class="card-meta"><span class="q-badge">30 Qs</span></div>
+        </a>
+      </div>
+      <a class="btn-primary" href="quiz.html?topic=methods_all&label=All+Cooking+Methods&subject=Culinary+Arts">Practice All — Methods</a>
+    </div>
+
+    <!-- Stocks & Sauces -->
+    <div class="subsection-panel" id="sec-culinary-sauces">
+      <div class="section-heading">
+        <h2>Stocks, Sauces & Soups</h2>
+        <p>Mother sauces, derivative sauces, stocks, and soup classifications.</p>
+      </div>
+      <div class="quiz-list">
+        <a class="quiz-card" href="quiz.html?topic=mother_sauces&label=Mother+Sauces+%26+Derivatives&subject=Culinary+Arts">
+          <div class="card-info">
+            <div class="card-title">Mother Sauces & Derivatives</div>
+            <div class="card-sub">Béchamel, Velouté, Espagnole, Hollandaise, Tomato</div>
+          </div>
+          <div class="card-meta"><span class="q-badge">30 Qs</span></div>
+        </a>
+        <a class="quiz-card" href="quiz.html?topic=stocks_soups&label=Stocks+%26+Soups&subject=Culinary+Arts">
+          <div class="card-info">
+            <div class="card-title">Stocks & Soups</div>
+            <div class="card-sub">White/brown stocks, consommé, cream soups, bisques</div>
+          </div>
+          <div class="card-meta"><span class="q-badge">30 Qs</span></div>
+        </a>
+        <a class="quiz-card" href="quiz.html?topic=culinary_terms&label=Culinary+French+Terms&subject=Culinary+Arts">
+          <div class="card-info">
+            <div class="card-title">Culinary French Terms</div>
+            <div class="card-sub">Professional kitchen terminology, mise en place vocabulary</div>
+          </div>
+          <div class="card-meta"><span class="q-badge">30 Qs</span></div>
+        </a>
+      </div>
+      <a class="btn-primary" href="quiz.html?topic=sauces_all&label=Stocks%2C+Sauces+%26+Soups+(All)&subject=Culinary+Arts">Practice All — Sauces</a>
+    </div>
+
+    <!-- Mise en Place -->
+    <div class="subsection-panel" id="sec-culinary-mise">
+      <div class="section-heading">
+        <h2>Mise en Place & Kitchen Vocab</h2>
+        <p>Preparation, station setup, kitchen hierarchy, and professional terminology.</p>
+      </div>
+      <div class="quiz-list">
+        <a class="quiz-card" href="quiz.html?topic=mise_en_place&label=Mise+en+Place&subject=Culinary+Arts">
+          <div class="card-info">
+            <div class="card-title">Mise en Place</div>
+            <div class="card-sub">Preparation, organization, station setup, brigade system</div>
+          </div>
+          <div class="card-meta"><span class="q-badge">30 Qs</span></div>
+        </a>
+        <a class="quiz-card" href="quiz.html?topic=kitchen_brigade&label=Kitchen+Brigade+%26+Hierarchy&subject=Culinary+Arts">
+          <div class="card-info">
+            <div class="card-title">Kitchen Brigade & Hierarchy</div>
+            <div class="card-sub">Commis, Chef de Partie, Sous Chef, Executive Chef roles</div>
+          </div>
+          <div class="card-meta"><span class="q-badge">30 Qs</span></div>
+        </a>
+        <a class="quiz-card" href="quiz.html?topic=menu_planning&label=Menu+Planning+%26+Costing&subject=Culinary+Arts">
+          <div class="card-info">
+            <div class="card-title">Menu Planning & Costing</div>
+            <div class="card-sub">Menu types, course structure, food cost percentage basics</div>
+          </div>
+          <div class="card-meta"><span class="q-badge">30 Qs</span></div>
+        </a>
+      </div>
+      <a class="btn-primary" href="quiz.html?topic=mise_all&label=Mise+en+Place+%26+Kitchen+Vocab+(All)&subject=Culinary+Arts">Practice All — Kitchen Vocab</a>
+    </div>
+
+    <!-- Nutrition -->
+    <div class="subsection-panel" id="sec-culinary-nutrition">
+      <div class="section-heading">
+        <h2>Nutrition & Food Science</h2>
+        <p>Macronutrients, vitamins, dietary requirements, and basic food science.</p>
+      </div>
+      <div class="quiz-list">
+        <a class="quiz-card" href="quiz.html?topic=nutrition_basics&label=Nutrition+Basics&subject=Culinary+Arts">
+          <div class="card-info">
+            <div class="card-title">Nutrition Basics</div>
+            <div class="card-sub">Proteins, carbs, fats, vitamins, minerals, dietary fibre</div>
+          </div>
+          <div class="card-meta"><span class="q-badge">30 Qs</span></div>
+        </a>
+        <a class="quiz-card" href="quiz.html?topic=food_science&label=Food+Science+%26+Preservation&subject=Culinary+Arts">
+          <div class="card-info">
+            <div class="card-title">Food Science & Preservation</div>
+            <div class="card-sub">Preservation methods, pH, emulsification, Maillard reaction</div>
+          </div>
+          <div class="card-meta"><span class="q-badge">30 Qs</span></div>
+        </a>
+        <a class="quiz-card" href="quiz.html?topic=commodities&label=Commodities+%26+Ingredients&subject=Culinary+Arts">
+          <div class="card-info">
+            <div class="card-title">Commodities & Ingredients</div>
+            <div class="card-sub">Meat, poultry, seafood, dairy, vegetables — classification and handling</div>
+          </div>
+          <div class="card-meta"><span class="q-badge">30 Qs</span></div>
+        </a>
+      </div>
+      <a class="btn-primary" href="quiz.html?topic=nutrition_all&label=Nutrition+%26+Food+Science+(All)&subject=Culinary+Arts">Practice All — Nutrition</a>
+    </div>
+
+  </div><!-- end culinary panel -->
+
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- COMPUTER                                    -->
+  <!-- ═══════════════════════════════════════════ -->
+  <div class="subject-panel" id="panel-computer">
+    <div class="tier2-tabs" id="tier2-computer">
+      <button class="tier2-tab active" data-sec="basics" onclick="switchSection('computer','basics')">Basics</button>
+      <button class="tier2-tab" data-sec="word" onclick="switchSection('computer','word')">MS Word</button>
+      <button class="tier2-tab" data-sec="shortcuts" onclick="switchSection('computer','shortcuts')">Shortcuts</button>
+      <button class="tier2-tab" data-sec="misc" onclick="switchSection('computer','misc')">Misc</button>
+    </div>
+    <div class="subsection-panel active" id="sec-computer-basics">
+      <div class="section-heading"><h2>Introduction to Computers</h2><p>Hardware, software, memory units, operating systems, and history.</p></div>
+      <div class="quiz-list">
+        <a class="quiz-card" href="quiz.html?topic=intro_computer&label=Introduction+to+Computers&subject=Computer+Applications">
+          <div class="card-info"><div class="card-title">Introduction to Computers</div><div class="card-sub">Generations, types, hardware vs software, binary, memory units</div></div>
+          <div class="card-meta"><span class="q-badge">35 Qs</span></div>
+        </a>
+      </div>
+    </div>
+    <div class="subsection-panel" id="sec-computer-word">
+      <div class="section-heading"><h2>MS Word 2007</h2><p>Ribbons, formatting, tables, mail merge, and Word-specific features.</p></div>
+      <div class="quiz-list">
+        <a class="quiz-card" href="quiz.html?topic=ms_word&label=MS+Word+2007&subject=Computer+Applications">
+          <div class="card-info"><div class="card-title">MS Word 2007</div><div class="card-sub">Ribbon, tabs, formatting tools, tables, mail merge, page layout</div></div>
+          <div class="card-meta"><span class="q-badge">30 Qs</span></div>
+        </a>
+      </div>
+    </div>
+    <div class="subsection-panel" id="sec-computer-shortcuts">
+      <div class="section-heading"><h2>Keyboard Shortcuts</h2><p>Windows and MS Office shortcuts — forward and reverse recall.</p></div>
+      <div class="quiz-list">
+        <a class="quiz-card" href="quiz.html?topic=shortcuts&label=Keyboard+Shortcuts&subject=Computer+Applications">
+          <div class="card-info"><div class="card-title">Keyboard Shortcuts</div><div class="card-sub">Ctrl, Alt, Shift combinations for Windows and MS Office</div></div>
+          <div class="card-meta"><span class="q-badge">30 Qs</span></div>
+        </a>
+      </div>
+    </div>
+    <div class="subsection-panel" id="sec-computer-misc">
+      <div class="section-heading"><h2>Computer Miscellaneous</h2><p>Windows settings, user accounts, file management, printers, desktop.</p></div>
+      <div class="quiz-list">
+        <a class="quiz-card" href="quiz.html?topic=computer_misc&label=Computer+Miscellaneous&subject=Computer+Applications">
+          <div class="card-info"><div class="card-title">Windows & File Management</div><div class="card-sub">Windows versions, file types, desktop, control panel, printers</div></div>
+          <div class="card-meta"><span class="q-badge">30 Qs</span></div>
+        </a>
+      </div>
+    </div>
+  </div><!-- end computer panel -->
+
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- ENGLISH                                     -->
+  <!-- ═══════════════════════════════════════════ -->
+  <div class="subject-panel" id="panel-english">
+    <div class="tier2-tabs" id="tier2-english">
+      <button class="tier2-tab active" data-sec="spoken" onclick="switchSection('english','spoken')">Spoken English</button>
+      <button class="tier2-tab" data-sec="oxford" onclick="switchSection('english','oxford')">Oxford Word Skills</button>
+      <button class="tier2-tab" data-sec="pd" onclick="switchSection('english','pd')">Personality Dev.</button>
+    </div>
+    <div class="subsection-panel active" id="sec-english-spoken">
+      <div class="section-heading"><h2>Spoken English</h2><p>Conversational fluency, pronunciation, and everyday communication.</p></div>
+      <div class="quiz-list">
+        <a class="quiz-card" href="quiz.html?topic=spoken_english&label=Spoken+English&subject=English">
+          <div class="card-info"><div class="card-title">Spoken English MCQs</div><div class="card-sub">Tenses, articles, prepositions, common phrases</div></div>
+          <div class="card-meta"><span class="q-badge">30 Qs</span></div>
+        </a>
+      </div>
+    </div>
+    <div class="subsection-panel" id="sec-english-oxford">
+      <div class="section-heading"><h2>Oxford Word Skills</h2><p>Vocabulary, idioms, collocations, and word-building from Oxford Word Skills.</p></div>
+      <div class="quiz-list">
+        <a class="quiz-card" href="quiz.html?topic=oxford_vocab&label=Oxford+Word+Skills+—+Vocabulary&subject=English">
+          <div class="card-info"><div class="card-title">Vocabulary & Word Building</div><div class="card-sub">Prefixes, suffixes, collocations, synonyms, antonyms</div></div>
+          <div class="card-meta"><span class="q-badge">30 Qs</span></div>
+        </a>
+      </div>
+    </div>
+    <div class="subsection-panel" id="sec-english-pd">
+      <div class="section-heading"><h2>Personality Development</h2><p>Communication skills, body language, professional etiquette.</p></div>
+      <div class="quiz-list">
+        <a class="quiz-card" href="quiz.html?topic=personality_dev&label=Personality+Development&subject=English">
+          <div class="card-info"><div class="card-title">Personality Development</div><div class="card-sub">Body language, communication styles, soft skills</div></div>
+          <div class="card-meta"><span class="q-badge">30 Qs</span></div>
+        </a>
+      </div>
+    </div>
+  </div><!-- end english panel -->
+
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- GPDP                                        -->
+  <!-- ═══════════════════════════════════════════ -->
+  <div class="subject-panel" id="panel-gpdp">
+    <div class="tier2-tabs" id="tier2-gpdp">
+      <button class="tier2-tab active" data-sec="grooming" onclick="switchSection('gpdp','grooming')">Grooming</button>
+      <button class="tier2-tab" data-sec="haccp" onclick="switchSection('gpdp','haccp')">HACCP</button>
+      <button class="tier2-tab" data-sec="communication" onclick="switchSection('gpdp','communication')">Communication</button>
+      <button class="tier2-tab" data-sec="mbti" onclick="switchSection('gpdp','mbti')">MBTI</button>
+    </div>
+    <div class="subsection-panel active" id="sec-gpdp-grooming">
+      <div class="section-heading"><h2>Grooming & Professional Presentation</h2><p>Uniform standards, personal hygiene, professional appearance.</p></div>
+      <div class="quiz-list">
+        <a class="quiz-card" href="quiz.html?topic=grooming&label=Grooming+%26+Professional+Presentation&subject=GPDP">
+          <div class="card-info"><div class="card-title">Grooming Standards</div><div class="card-sub">Personal hygiene, uniform, appearance in hospitality settings</div></div>
+          <div class="card-meta"><span class="q-badge">30 Qs</span></div>
+        </a>
+      </div>
+    </div>
+    <div class="subsection-panel" id="sec-gpdp-haccp">
+      <div class="section-heading"><h2>HACCP & Food Safety</h2><p>Seven principles, critical control points, food safety management.</p></div>
+      <div class="quiz-list">
+        <a class="quiz-card" href="quiz.html?topic=haccp_gpdp&label=HACCP+%26+Food+Safety&subject=GPDP">
+          <div class="card-info"><div class="card-title">HACCP Principles</div><div class="card-sub">Seven principles, CCP, hazard analysis, monitoring procedures</div></div>
+          <div class="card-meta"><span class="q-badge">30 Qs</span></div>
+        </a>
+      </div>
+    </div>
+    <div class="subsection-panel" id="sec-gpdp-communication">
+      <div class="section-heading"><h2>Communication Skills</h2><p>Verbal, non-verbal, written communication and professional etiquette.</p></div>
+      <div class="quiz-list">
+        <a class="quiz-card" href="quiz.html?topic=communication&label=Communication+Skills&subject=GPDP">
+          <div class="card-info"><div class="card-title">Professional Communication</div><div class="card-sub">Active listening, assertiveness, verbal and written skills</div></div>
+          <div class="card-meta"><span class="q-badge">30 Qs</span></div>
+        </a>
+      </div>
+    </div>
+    <div class="subsection-panel" id="sec-gpdp-mbti">
+      <div class="section-heading"><h2>MBTI & Personality Types</h2><p>Myers-Briggs Type Indicators, personality frameworks, self-awareness.</p></div>
+      <div class="quiz-list">
+        <a class="quiz-card" href="quiz.html?topic=mbti&label=MBTI+%26+Personality+Types&subject=GPDP">
+          <div class="card-info"><div class="card-title">MBTI & Personality Types</div><div class="card-sub">16 types, dichotomies, SCARF model, personality at work</div></div>
+          <div class="card-meta"><span class="q-badge">30 Qs</span></div>
+        </a>
+      </div>
+    </div>
+  </div><!-- end gpdp panel -->
+
+</div><!-- end page-wrap -->
+
+<script>
+function switchSubject(sub) {
+  document.querySelectorAll('.tier1-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.subject-panel').forEach(p => p.classList.remove('active'));
+  document.querySelector(`.tier1-tab[data-subject="${sub}"]`).classList.add('active');
+  document.getElementById(`panel-${sub}`).classList.add('active');
+}
+
+function switchSection(subject, sec) {
+  const tier2 = document.getElementById(`tier2-${subject}`);
+  tier2.querySelectorAll('.tier2-tab').forEach(t => t.classList.remove('active'));
+  tier2.querySelector(`[data-sec="${sec}"]`).classList.add('active');
+  document.querySelectorAll(`#panel-${subject} .subsection-panel`).forEach(p => p.classList.remove('active'));
+  document.getElementById(`sec-${subject}-${sec}`).classList.add('active');
+}
+</script>
+</body>
+</html>

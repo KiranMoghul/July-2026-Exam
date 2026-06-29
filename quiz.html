@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quiz — July 2026 Exams</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="page-wrap">
+
+  <!-- HEADER -->
+  <div class="quiz-header">
+    <button class="back-btn" onclick="goBack()">&#8592; Back</button>
+    <div class="progress-wrap">
+      <div class="progress-bar"><div class="progress-fill" id="prog" style="width:0%"></div></div>
+      <div class="progress-label" id="prog-label">Loading...</div>
+    </div>
+  </div>
+
+  <!-- LOADING -->
+  <div class="loading-state" id="loading">
+    <div class="spinner"></div>
+    <p id="load-msg">Generating questions…</p>
+  </div>
+
+  <!-- QUESTION -->
+  <div id="q-area" style="display:none">
+    <div class="question-body">
+      <div class="q-eyebrow" id="q-eyebrow"></div>
+      <div class="q-text" id="q-text"></div>
+      <div class="options" id="options"></div>
+      <div class="q-nav">
+        <button class="btn-ghost" id="btn-prev" onclick="move(-1)" disabled>&#8592; Prev</button>
+        <button class="btn-next" id="btn-next" onclick="move(1)">Next &#8594;</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- RESULTS -->
+  <div id="results" style="display:none">
+    <div class="results-body">
+      <div class="score-ring">
+        <svg width="110" height="110" viewBox="0 0 110 110">
+          <circle cx="55" cy="55" r="46" fill="none" stroke="#2C2C35" stroke-width="9"/>
+          <circle cx="55" cy="55" r="46" fill="none" id="arc"
+            stroke="#7C3AED" stroke-width="9" stroke-linecap="round"
+            stroke-dasharray="289" stroke-dashoffset="289"/>
+        </svg>
+        <div class="ring-num" id="score-pct">0%</div>
+      </div>
+      <div class="results-title" id="res-title">Done!</div>
+      <div class="results-sub" id="res-sub"></div>
+      <button class="btn-primary" onclick="retry()">Try Again</button>
+      <button class="btn-secondary" onclick="goBack()">Back to Topics</button>
+      <div class="review-list" id="review-list"></div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const params = new URLSearchParams(location.search);
+const TOPIC = params.get('topic') || 'kitchen_safety';
+const LABEL = decodeURIComponent(params.get('label') || 'Quiz');
+const SUBJECT = decodeURIComponent(params.get('subject') || 'Culinary Arts');
+
+document.title = LABEL + ' — July 2026 Exams';
+
+const PROMPTS = {
+  kitchen_safety: `Generate 30 MCQs on Kitchen Safety & Hygiene for Commis 1 and 2 level chefs (6-12 months experience) in Pakistan. Cover: HACCP basics, personal hygiene, hand washing, PPE, cross-contamination prevention, food temperature danger zone, food storage, pest control, fire safety, first aid basics in kitchen. Include Pakistan-relevant context (e.g. local standards, common kitchen environments).`,
+  kitchen_equipment: `Generate 30 MCQs on Kitchen Equipment & Tools for Commis 1 and 2 level chefs in Pakistan. Cover: types of knives (chef's knife, paring knife, bread knife, boning knife), cookware (sauté pan, rondeau, stockpot, wok), smallwares, large equipment (oven types, combi oven, griddle, salamander), refrigeration, cleaning equipment, and their proper uses.`,
+  knife_skills: `Generate 30 MCQs on Knife Skills & Cuts for Commis 1 and 2 level chefs in Pakistan. Cover: knife parts, holding technique, honing vs sharpening, julienne, brunoise, fine brunoise, large dice, medium dice, small dice, chiffonade, tourner, paysanne, lozenge, gaufrette, batonnet, rough chop. Include dimensions of standard cuts.`,
+  kitchen_all: `Generate 30 MCQs mixing Kitchen Safety, Equipment, and Knife Skills for Commis 1 and 2 level chefs in Pakistan. Cover a variety of subtopics from all three areas equally.`,
+  dry_heat: `Generate 30 MCQs on Dry Heat Cooking Methods for Commis 1 and 2 level chefs in Pakistan. Cover: roasting, baking, grilling, broiling/salamander, sautéing, pan-frying, differences between methods, suitable ingredients, equipment used, temperature ranges, and results produced.`,
+  wet_heat: `Generate 30 MCQs on Wet Heat Cooking Methods for Commis 1 and 2 level chefs in Pakistan. Cover: boiling, simmering, poaching (shallow and deep), steaming, braising, stewing, en papillote, pressure cooking, differences between methods, suitable ingredients, and results.`,
+  frying: `Generate 30 MCQs on Frying Methods for Commis 1 and 2 level chefs in Pakistan. Cover: deep frying (temperatures, oils, batter types), shallow frying, stir-frying, pan-frying, differences between all frying methods, safety, oil smoke points, draining techniques, and common dishes.`,
+  methods_all: `Generate 30 MCQs mixing all cooking methods (dry heat, wet heat, frying, combination) for Commis 1 and 2 level chefs in Pakistan. Include definitions, suitable foods, temperatures, and differences between methods.`,
+  mother_sauces: `Generate 30 MCQs on Mother Sauces and their derivatives for Commis 1 and 2 level chefs. Cover: Béchamel (and Mornay, Soubise), Velouté (and Allemande, Supreme), Espagnole/Brown (and Demi-glace, Bordelaise), Hollandaise (and Béarnaise, Maltaise), Tomato sauce, thickening agents (roux types, cornstarch, liaison), correct proportions.`,
+  stocks_soups: `Generate 30 MCQs on Stocks and Soups for Commis 1 and 2 level chefs in Pakistan. Cover: white stock, brown stock, fish stock, vegetable stock, fond de veau, consommé clarification, cream soups, bisques, broths, purée soups, chowders, gazpacho, mirepoix, bouquet garni, sachet d'épices.`,
+  culinary_terms: `Generate 30 MCQs on Culinary French Terms and professional kitchen vocabulary for Commis 1 and 2 level chefs. Cover: au gratin, en papillote, en croûte, flambé, liaison, monter au beurre, nappe, reduce, deglaze, blanch, refresh, sweat, fold, fold vs stir, temper, emulsify, and other standard professional kitchen terms.`,
+  sauces_all: `Generate 30 MCQs mixing Stocks, Sauces, Soups, and Culinary French Terms for Commis 1 and 2 level chefs in Pakistan.`,
+  mise_en_place: `Generate 30 MCQs on Mise en Place for Commis 1 and 2 level chefs in Pakistan. Cover: meaning and importance of mise en place, station setup, prep lists, time management, labeling and dating, FIFO, organizing a workstation, tools needed before service, importance in professional kitchens.`,
+  kitchen_brigade: `Generate 30 MCQs on Kitchen Brigade and Hierarchy for Commis 1 and 2 level chefs in Pakistan. Cover: Escoffier's brigade system, roles (Commis, Chef de Partie, Sous Chef, Head Chef, Executive Chef, Pastry Chef, Garde Manger), responsibilities at each level, communication in the kitchen, brigade in Pakistani hotel kitchens.`,
+  menu_planning: `Generate 30 MCQs on Menu Planning and Food Costing for Commis 1 and 2 level chefs in Pakistan. Cover: menu types (à la carte, table d'hôte, buffet, cyclic), course structure, food cost percentage, recipe costing, portion control, yield percentage, standard recipe, menu balance and variety.`,
+  mise_all: `Generate 30 MCQs mixing Mise en Place, Kitchen Brigade, and Menu Planning topics for Commis 1 and 2 level chefs in Pakistan.`,
+  nutrition_basics: `Generate 30 MCQs on Nutrition Basics for Commis 1 and 2 level chefs in Pakistan. Cover: macronutrients (proteins, carbohydrates, fats), micronutrients (vitamins A B C D E K, minerals), dietary fibre, water, caloric values, RDA, balanced diet, effect of cooking on nutrients, special dietary needs.`,
+  food_science: `Generate 30 MCQs on Food Science and Preservation for Commis 1 and 2 level chefs in Pakistan. Cover: Maillard reaction, caramelization, emulsification, gelatinization, coagulation, pH in cooking, preservation methods (canning, smoking, drying, fermentation, pickling, freezing), food spoilage, shelf life.`,
+  commodities: `Generate 30 MCQs on Commodities and Ingredients for Commis 1 and 2 level chefs in Pakistan. Cover: meat classification and cuts, poultry types and handling, seafood varieties, dairy products, eggs, vegetables (classification, storage), fruits, dry goods, herbs and spices commonly used in Pakistan.`,
+  nutrition_all: `Generate 30 MCQs mixing Nutrition, Food Science, and Commodities for Commis 1 and 2 level chefs in Pakistan.`,
+  intro_computer: `Generate 35 MCQs on Introduction to Computers. Cover: generations of computers, types (analog/digital/hybrid), hardware components (CPU, RAM, ROM, HDD, SSD, motherboard, GPU), software types (system/application), input/output devices, storage devices, number systems (binary/decimal/hexadecimal), memory units (Bit, Byte, KB, MB, GB, TB, PB), operating systems, computer history.`,
+  ms_word: `Generate 30 MCQs on Microsoft Word 2007. Cover: the Ribbon interface, tabs (Home, Insert, Page Layout, References, Mailings, Review, View), formatting tools, styles, tables, mail merge, page layout options, headers and footers, track changes, spelling and grammar, word count, saving formats (.doc vs .docx), printing options.`,
+  shortcuts: `Generate 30 MCQs on keyboard shortcuts for Windows and Microsoft Office. Cover Ctrl+C/V/X/Z/Y, Ctrl+A/S/P/F, Ctrl+B/I/U, Alt+Tab, Alt+F4, Win key combinations, function keys (F1-F12), Ctrl+Home/End, navigation shortcuts, and both forward (shortcut to function) and reverse (function to shortcut) formats.`,
+  computer_misc: `Generate 30 MCQs on Windows and Computer Miscellaneous topics. Cover: Windows versions (XP, Vista, 7, 8, 10, 11), Control Panel settings, user accounts, file and folder management, desktop elements, taskbar, Start menu, file extensions, printers setup, network basics, Windows updates, Recycle Bin, and basic troubleshooting.`,
+  spoken_english: `Generate 30 MCQs on Spoken English for students at intermediate level in Pakistan. Cover: present/past/future tenses, articles (a/an/the), prepositions, common mistakes, formal vs informal language, question formation, subject-verb agreement, conjunctions, everyday conversational phrases.`,
+  oxford_vocab: `Generate 30 MCQs on Vocabulary and Word Building based on Oxford Word Skills style. Cover: word families, prefixes (un-, dis-, mis-, re-, over-), suffixes (-tion, -ment, -ful, -less, -ly), collocations, synonyms, antonyms, phrasal verbs, word forms (noun/verb/adjective/adverb), and context-based vocabulary.`,
+  personality_dev: `Generate 30 MCQs on Personality Development. Cover: body language, eye contact, posture, handshake, communication styles (assertive, aggressive, passive), active listening, first impressions, professional etiquette, confidence building, emotional intelligence basics, public speaking tips.`,
+  grooming: `Generate 30 MCQs on Grooming and Professional Presentation for hospitality students in Pakistan. Cover: personal hygiene standards, uniform policy, hair and nail standards in food service, footwear, jewellery restrictions, fragrance in the kitchen, grooming for front-of-house vs back-of-house, daily grooming checklist.`,
+  haccp_gpdp: `Generate 30 MCQs on HACCP and Food Safety for GPDP level students in Pakistan. Cover: the 7 principles of HACCP (Hazard Analysis, CCP identification, critical limits, monitoring, corrective action, verification, record keeping), types of hazards (biological, chemical, physical), food safety legislation, temperature danger zone, personal hygiene rules.`,
+  communication: `Generate 30 MCQs on Professional Communication Skills. Cover: verbal vs non-verbal communication, active listening, barriers to communication, formal vs informal, written communication (emails, memos), feedback, assertive communication, telephone etiquette, presentation skills, teamwork communication.`,
+  mbti: `Generate 30 MCQs on MBTI and Personality Frameworks. Cover: Myers-Briggs Type Indicator (E/I, S/N, T/F, J/P dimensions), the 16 personality types, how types affect work style, SCARF model (Status, Certainty, Autonomy, Relatedness, Fairness), Maslow's hierarchy of needs, self-awareness, motivation theories.`
+};
+
+const BASE_PROMPT = `You are an expert culinary and hospitality trainer. Generate exactly 30 multiple-choice questions for an exam practice quiz. Return ONLY a valid JSON array with no explanation, no markdown formatting, no code fences. Format strictly:
+[{"q":"Question text?","opts":["Option A text","Option B text","Option C text","Option D text"],"ans":0}]
+Where "ans" is the zero-based index of the correct answer. Make all four options similar in length so the answer cannot be guessed by length. Cover a broad variety of subtopics. Questions should be exam-worthy, not trivial.`;
+
+let qs = [], cur = 0, picks = {};
+
+async function load() {
+  const loadMsgs = ['Generating questions…', 'Building your quiz…', 'Checking answers…', 'Almost ready…'];
+  let mi = 0;
+  const t = setInterval(() => { document.getElementById('load-msg').textContent = loadMsgs[mi++ % loadMsgs.length]; }, 2000);
+
+  try {
+    const topicPrompt = PROMPTS[TOPIC] || `Generate 30 MCQs on ${LABEL} for exam practice.`;
+    const fullPrompt = BASE_PROMPT + '\n\nTopic instructions: ' + topicPrompt;
+
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-6',
+        max_tokens: 1000,
+        messages: [{ role: 'user', content: fullPrompt }]
+      })
+    });
+    const data = await res.json();
+    const raw = data.content.filter(b => b.type === 'text').map(b => b.text).join('');
+    const clean = raw.replace(/```json|```/g, '').trim();
+    qs = shuffle(JSON.parse(clean));
+    clearInterval(t);
+    show();
+  } catch(e) {
+    clearInterval(t);
+    document.getElementById('load-msg').textContent = 'Failed to load questions. Check your internet connection and try again.';
+  }
+}
+
+function shuffle(arr) { return [...arr].sort(() => Math.random() - 0.5); }
+
+function show() {
+  document.getElementById('loading').style.display = 'none';
+  document.getElementById('q-area').style.display = 'block';
+  render();
+}
+
+function render() {
+  const q = qs[cur];
+  const pct = Math.round((cur / qs.length) * 100);
+  document.getElementById('prog').style.width = pct + '%';
+  document.getElementById('prog-label').textContent = `${cur + 1} / ${qs.length}`;
+  document.getElementById('q-eyebrow').textContent = LABEL;
+  document.getElementById('q-text').textContent = q.q;
+
+  const ol = document.getElementById('options');
+  ol.innerHTML = '';
+  const letters = ['A','B','C','D'];
+  const answered = picks[cur] !== undefined;
+
+  q.opts.forEach((opt, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'option';
+    if (answered) {
+      if (i === q.ans) btn.classList.add('correct');
+      else if (i === picks[cur]) btn.classList.add('wrong');
+      else btn.classList.add('dimmed');
+    }
+    btn.innerHTML = `<span class="opt-circle">${letters[i]}</span><span>${opt}</span>`;
+    if (!answered) btn.onclick = () => pick(i);
+    ol.appendChild(btn);
+  });
+
+  const prev = document.getElementById('btn-prev');
+  const next = document.getElementById('btn-next');
+  prev.disabled = cur === 0;
+  next.textContent = cur === qs.length - 1 ? 'Finish ✓' : 'Next →';
+}
+
+function pick(i) {
+  picks[cur] = i;
+  render();
+}
+
+function move(dir) {
+  if (dir === 1 && cur === qs.length - 1) { finish(); return; }
+  cur = Math.max(0, Math.min(qs.length - 1, cur + dir));
+  render();
+}
+
+function finish() {
+  document.getElementById('q-area').style.display = 'none';
+  document.getElementById('results').style.display = 'block';
+
+  const total = qs.length;
+  const correct = Object.entries(picks).filter(([i, a]) => qs[i]?.ans === a).length;
+  const pct = total > 0 ? Math.round((correct / total) * 100) : 0;
+  const circ = 289;
+  const offset = circ - (circ * pct / 100);
+
+  document.getElementById('arc').setAttribute('stroke-dashoffset', offset);
+  document.getElementById('arc').setAttribute('stroke',
+    pct >= 80 ? '#22C55E' : pct >= 60 ? '#7C3AED' : '#EF4444');
+  document.getElementById('score-pct').textContent = pct + '%';
+  document.getElementById('res-title').textContent =
+    pct >= 80 ? 'Excellent work!' : pct >= 60 ? 'Good effort!' : 'Keep practicing';
+  document.getElementById('res-sub').textContent =
+    `${correct} correct out of ${total} questions`;
+
+  const rl = document.getElementById('review-list');
+  rl.innerHTML = '<h3>Review</h3>';
+  qs.forEach((q, i) => {
+    const userAns = picks[i];
+    const ok = userAns === q.ans;
+    const div = document.createElement('div');
+    div.className = 'review-item ' + (ok ? 'ok' : 'miss');
+    const letters = ['A','B','C','D'];
+    div.innerHTML = `<div class="review-q">${q.q}</div>
+      <div class="review-ans">
+        ${ok
+          ? `<span class="correct-ans">&#10003; ${letters[q.ans]}. ${q.opts[q.ans]}</span>`
+          : `<span class="your-ans">&#10007; You: ${userAns !== undefined ? letters[userAns] + '. ' + q.opts[userAns] : 'Skipped'}</span><br>
+             <span class="correct-ans">&#10003; Correct: ${letters[q.ans]}. ${q.opts[q.ans]}</span>`
+        }
+      </div>`;
+    rl.appendChild(div);
+  });
+}
+
+function retry() {
+  picks = {}; cur = 0;
+  qs = shuffle(qs);
+  document.getElementById('results').style.display = 'none';
+  document.getElementById('q-area').style.display = 'block';
+  render();
+}
+
+function goBack() { history.back(); }
+
+load();
+</script>
+</body>
+</html>
