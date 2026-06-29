@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Culinary 500 — July 2026 Exams</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* ── 500 PAGE LAYOUT ── */
+    .c500-wrap {
+      display: flex;
+      min-height: 100vh;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    /* ── SIDEBAR ── */
+    .c500-sidebar {
+      width: 220px;
+      flex-shrink: 0;
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+      scrollbar-width: thin;
+      scrollbar-color: var(--border) transparent;
+    }
+    .sidebar-header {
+      padding: 20px 16px 12px;
+      border-bottom: 1px solid var(--border);
+    }
+    .sidebar-header .back-link {
+      font-family: var(--sans);
+      font-size: 12px;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      margin-bottom: 10px;
+      cursor: pointer;
+      background: none;
+      border: none;
+      padding: 0;
+    }
+    .sidebar-header .back-link:hover { color: var(--text); }
+    .sidebar-header h2 {
+      font-family: var(--serif);
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.3;
+    }
+    .sidebar-header p {
+      font-family: var(--sans);
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 3px;
+    }
+
+    .section-list {
+      padding: 8px 0;
+      flex: 1;
+    }
+    .section-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 10px 16px;
+      cursor: pointer;
+      background: none;
+      border: none;
+      text-align: left;
+      width: 100%;
+      transition: background 0.15s;
+      border-left: 3px solid transparent;
+    }
+    .section-item:hover { background: var(--surface); }
+    .section-item.active {
+      background: var(--surface);
+      border-left-color: var(--purple);
+    }
+    .section-item.done { opacity: 0.6; }
+    .sec-num {
+      font-family: var(--sans);
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--purple-light);
+      background: var(--purple-dim);
+      border-radius: 4px;
+      padding: 2px 6px;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .section-item.done .sec-num {
+      background: rgba(34,197,94,0.12);
+      color: #22C55E;
+    }
+    .sec-info {}
+    .sec-name {
+      font-family: var(--sans);
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.3;
+      display: block;
+    }
+    .sec-sub {
+      font-family: var(--sans);
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 2px;
+      display: block;
+      line-height: 1.4;
+    }
+    .sec-score {
+      font-family: var(--sans);
+      font-size: 10px;
+      color: #22C55E;
+      margin-top: 3px;
+      display: none;
+    }
+    .section-item.done .sec-score { display: block; }
+
+    .sidebar-footer {
+      padding: 12px 16px;
+      border-top: 1px solid var(--border);
+    }
+    .overall-bar-label {
+      font-family: var(--sans);
+      font-size: 11px;
+      color: var(--muted);
+      margin-bottom: 6px;
+      display: flex;
+      justify-content: space-between;
+    }
+    .overall-bar {
+      height: 4px;
+      background: var(--surface2);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    .overall-fill {
+      height: 100%;
+      background: var(--purple);
+      border-radius: 4px;
+      transition: width 0.4s;
+    }
+
+    /* ── MAIN AREA ── */
+    .c500-main {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Welcome state */
+    .welcome-state {
+      padding: 48px 32px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      flex: 1;
+    }
+    .welcome-state .eyebrow {
+      font-family: var(--sans);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--purple-light);
+      margin-bottom: 10px;
+    }
+    .welcome-state h1 {
+      font-family: var(--serif);
+      font-size: 28px;
+      font-weight: 700;
+      line-height: 1.2;
+      margin-bottom: 10px;
+    }
+    .welcome-state p {
+      font-family: var(--sans);
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.6;
+      max-width: 380px;
+      margin-bottom: 28px;
+    }
+    .topic-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      max-width: 480px;
+    }
+    .topic-chip {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 10px 12px;
+      cursor: pointer;
+      transition: border-color 0.15s, background 0.15s;
+    }
+    .topic-chip:hover { border-color: var(--purple); background: var(--surface2); }
+    .topic-chip .chip-num {
+      font-family: var(--sans);
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--purple-light);
+      margin-bottom: 4px;
+    }
+    .topic-chip .chip-name {
+      font-family: var(--sans);
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.3;
+    }
+
+    /* Quiz in main */
+    .main-quiz { display: none; flex-direction: column; flex: 1; }
+    .main-quiz.active { display: flex; }
+
+    .main-quiz-header {
+      padding: 16px 24px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      position: sticky;
+      top: 0;
+      background: var(--bg);
+      z-index: 5;
+    }
+    .main-quiz-header .topic-label {
+      font-family: var(--serif);
+      font-size: 15px;
+      font-weight: 700;
+      flex: 1;
+    }
+    .main-quiz-header .q-counter {
+      font-family: var(--sans);
+      font-size: 12px;
+      color: var(--muted);
+      flex-shrink: 0;
+    }
+
+    .main-progress-bar { height: 3px; background: var(--surface2); }
+    .main-progress-fill { height: 100%; background: var(--purple); transition: width 0.35s; }
+
+    .main-loading {
+      padding: 60px 32px;
+      text-align: center;
+    }
+    .main-loading .spinner { margin: 0 auto 14px; }
+    .main-loading p {
+      font-family: var(--sans);
+      font-size: 13px;
+      color: var(--muted);
+    }
+    .batch-progress {
+      font-family: var(--sans);
+      font-size: 11px;
+      color: var(--purple-light);
+      margin-top: 8px;
+    }
+
+    .main-question-body { padding: 28px 32px; flex: 1; }
+    .main-q-eyebrow {
+      font-family: var(--sans);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--purple-light);
+      margin-bottom: 10px;
+    }
+    .main-q-text {
+      font-family: var(--serif);
+      font-size: 20px;
+      font-weight: 700;
+      line-height: 1.45;
+      margin-bottom: 24px;
+      color: var(--text);
+    }
+
+    /* Results panel in main */
+    .main-results { display: none; padding: 40px 32px; text-align: center; }
+    .main-results.active { display: block; }
+    .main-results .score-ring { width: 120px; height: 120px; margin: 0 auto 20px; position: relative; }
+    .main-results .score-ring svg { transform: rotate(-90deg); display: block; }
+    .main-results .ring-num {
+      position: absolute; inset: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--serif); font-size: 26px; font-weight: 700;
+    }
+    .main-results .res-title { font-family: var(--serif); font-size: 22px; font-weight: 700; margin-bottom: 6px; }
+    .main-results .res-sub { font-family: var(--sans); font-size: 14px; color: var(--muted); margin-bottom: 24px; }
+    .main-results .btn-row { display: flex; gap: 10px; max-width: 360px; margin: 0 auto 32px; }
+    .main-results .btn-row button { flex: 1; }
+
+    .main-review { text-align: left; border-top: 1px solid var(--border); padding-top: 24px; max-width: 560px; margin: 0 auto; }
+    .main-review h3 { font-family: var(--serif); font-size: 16px; font-weight: 700; margin-bottom: 14px; }
+
+    /* Mobile: sidebar collapses to top drawer */
+    @media (max-width: 600px) {
+      .c500-wrap { flex-direction: column; }
+      .c500-sidebar {
+        width: 100%;
+        height: auto;
+        position: static;
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+        max-height: 220px;
+        overflow-y: auto;
+      }
+      .section-list { display: flex; flex-direction: row; overflow-x: auto; padding: 8px; gap: 6px; flex-wrap: nowrap; }
+      .section-item { flex-direction: column; min-width: 120px; border-left: none; border-bottom: 3px solid transparent; border-radius: var(--radius); padding: 10px; }
+      .section-item.active { border-bottom-color: var(--purple); border-left-color: transparent; }
+      .sidebar-footer { display: none; }
+      .welcome-state { padding: 24px 20px; }
+      .topic-grid { grid-template-columns: 1fr; }
+      .main-question-body { padding: 20px; }
+      .main-results { padding: 24px 20px; }
+      .main-results .btn-row { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="c500-wrap">
+
+  <!-- ═══════════════════════════════ -->
+  <!-- SIDEBAR                         -->
+  <!-- ═══════════════════════════════ -->
+  <aside class="c500-sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <button class="back-link" onclick="window.location.href='index.html'">&#8592; Back to Hub</button>
+      <h2>Culinary Arts 500</h2>
+      <p>10 topics · 50 questions each</p>
+    </div>
+
+    <div class="section-list" id="section-list">
+      <!-- Rendered by JS -->
+    </div>
+
+    <div class="sidebar-footer">
+      <div class="overall-bar-label">
+        <span>Overall progress</span>
+        <span id="overall-pct">0 / 10 done</span>
+      </div>
+      <div class="overall-bar">
+        <div class="overall-fill" id="overall-fill" style="width:0%"></div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ═══════════════════════════════ -->
+  <!-- MAIN AREA                       -->
+  <!-- ═══════════════════════════════ -->
+  <main class="c500-main" id="main-area">
+
+    <!-- Welcome -->
+    <div class="welcome-state" id="welcome">
+      <div class="eyebrow">Culinary Arts · 500 Questions</div>
+      <h1>Pick a topic<br>to begin</h1>
+      <p>Each section has 50 focused questions. Practice one section at a time to build solid recall — then come back and repeat your weak areas.</p>
+      <div class="topic-grid" id="topic-grid">
+        <!-- Rendered by JS -->
+      </div>
+    </div>
+
+    <!-- Loading -->
+    <div class="main-loading" id="main-loading" style="display:none">
+      <div class="spinner"></div>
+      <p id="main-load-msg">Generating questions…</p>
+      <div class="batch-progress" id="batch-progress"></div>
+    </div>
+
+    <!-- Quiz -->
+    <div class="main-quiz" id="main-quiz">
+      <div class="main-quiz-header">
+        <span class="topic-label" id="main-topic-label"></span>
+        <span class="q-counter" id="main-q-counter">1 / 50</span>
+      </div>
+      <div class="main-progress-bar">
+        <div class="main-progress-fill" id="main-prog-fill" style="width:0%"></div>
+      </div>
+      <div class="main-question-body" id="main-question-body" style="display:none">
+        <div class="main-q-eyebrow" id="main-q-eyebrow"></div>
+        <div class="main-q-text" id="main-q-text"></div>
+        <div class="options" id="main-options"></div>
+        <div class="q-nav" style="margin-top:28px">
+          <button class="btn-ghost" id="main-btn-prev" onclick="mainMove(-1)" disabled>&#8592; Prev</button>
+          <button class="btn-next" id="main-btn-next" onclick="mainMove(1)">Next &#8594;</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Results -->
+    <div class="main-results" id="main-results">
+      <div class="score-ring">
+        <svg width="120" height="120" viewBox="0 0 120 120">
+          <circle cx="60" cy="60" r="50" fill="none" stroke="#2C2C35" stroke-width="10"/>
+          <circle cx="60" cy="60" r="50" fill="none" id="main-arc"
+            stroke="#7C3AED" stroke-width="10" stroke-linecap="round"
+            stroke-dasharray="314" stroke-dashoffset="314"/>
+        </svg>
+        <div class="ring-num" id="main-score-pct">0%</div>
+      </div>
+      <div class="res-title" id="main-res-title">Section complete</div>
+      <div class="res-sub" id="main-res-sub"></div>
+      <div class="btn-row">
+        <button class="btn-primary" onclick="retrySection()">Retry Section</button>
+        <button class="btn-secondary" onclick="showWelcome()">All Topics</button>
+      </div>
+      <div class="main-review" id="main-review"></div>
+    </div>
+
+  </main>
+</div>
+
+<script>
+const SECTIONS = [
+  {
+    id: 'kitchen_safety',
+    num: '01',
+    name: 'Kitchen Safety & HACCP',
+    sub: 'Hygiene, hazards, temperature control',
+    prompts: [
+      `Generate exactly 25 multiple-choice questions on Kitchen Safety and HACCP for Commis 1 and Commis 2 level chefs (6–12 months kitchen experience in Pakistan). Cover: personal hygiene (hand washing steps, when to wash hands), PPE (gloves, apron, hair nets), HACCP seven principles overview, types of food hazards (biological, chemical, physical), cross-contamination prevention, colour-coded cutting boards, food temperature danger zone (5°C–63°C), safe internal cooking temperatures, proper thawing methods, fire safety and extinguisher types in kitchen, first aid basics, pest control, cleaning vs sanitizing. Make all four options similar in length. No trivial questions.`,
+      `Generate exactly 25 multiple-choice questions on Kitchen Safety (advanced) and Food Storage for Commis 1 and Commis 2 level chefs in Pakistan. Cover: FIFO (First In First Out) method, proper food labelling and dating, refrigerator and freezer temperature ranges, raw vs cooked food storage, allergen awareness and labelling, safe use of knives and equipment, kitchen accident prevention, slips/trips/falls in kitchen, chemical storage, waste disposal procedures, CCP (Critical Control Points) examples, corrective actions in HACCP, personal hygiene when ill. Make all options similar in length.`
+    ]
+  },
+  {
+    id: 'equipment_tools',
+    num: '02',
+    name: 'Equipment & Tools',
+    sub: 'Knives, cookware, large equipment',
+    prompts: [
+      `Generate exactly 25 multiple-choice questions on Kitchen Equipment and Tools for Commis 1 and Commis 2 level chefs in Pakistan. Cover: types of knives (chef's knife, paring knife, bread knife, boning knife, filleting knife, cleaver, palette knife), parts of a knife (blade, spine, heel, bolster, tang, handle), honing vs sharpening, knife storage (magnetic strip, knife block, roll), types of cookware (sauté pan, frying pan, rondeau/braiser, stockpot, saucepan, wok, cast iron, non-stick), identifying uses of each. Make all four options similar in length.`,
+      `Generate exactly 25 multiple-choice questions on Large Equipment and Smallwares for Commis 1 and Commis 2 level chefs in Pakistan. Cover: conventional oven vs convection oven vs combi-oven, salamander/broiler, griddle, deep fat fryer, tilting skillet, steam jacketed kettle, bain-marie, microwave in professional kitchen, blast chiller, walk-in refrigerator, mandoline slicer, food processor, immersion blender, peeler types, ladles and spoon sizes, cutting board materials and colour codes, thermometer types (probe, infrared, candy). Make all options similar in length.`
+    ]
+  },
+  {
+    id: 'knife_skills',
+    num: '03',
+    name: 'Knife Skills & Cuts',
+    sub: 'Cuts, dimensions, techniques',
+    prompts: [
+      `Generate exactly 25 multiple-choice questions on Knife Cuts and Dimensions for Commis 1 and Commis 2 level chefs in Pakistan. Cover with exact dimensions: julienne (3mm×3mm×5cm), fine julienne (1.5mm×1.5mm), brunoise (3mm cube), fine brunoise (1.5mm cube), small dice (6mm cube), medium dice (12mm cube), large dice (20mm cube), batonnet (6mm×6mm×5–6cm), chiffonade (thin leafy strips), paysanne (flat irregular shapes ~12mm), lozenge/diamond cut, tourner (7-sided football), mirepoix (rough 2cm chunks), rough chop. Questions on both name-to-dimension and dimension-to-name formats.`,
+      `Generate exactly 25 multiple-choice questions on Knife Technique and Handling for Commis 1 and Commis 2 level chefs in Pakistan. Cover: correct grip (pinch grip vs handle grip), guiding hand (claw technique), rocking motion, push cut, pull cut, which cut to use for which dish, efficiency in knife work, which knife is used for which task, gaufrette (waffle cut) using mandoline, oblique/roll cut for vegetables, en chiffonade for herbs, blanching before cutting for some vegetables, safety when carrying and washing knives. Make all options similar in length.`
+    ]
+  },
+  {
+    id: 'dry_heat',
+    num: '04',
+    name: 'Dry Heat Methods',
+    sub: 'Roasting, grilling, sautéing, baking',
+    prompts: [
+      `Generate exactly 25 multiple-choice questions on Dry Heat Cooking Methods for Commis 1 and Commis 2 level chefs in Pakistan. Cover: roasting (definition, suitable foods, temperatures 160°C–220°C, resting meat, basting), baking (breads, pastries, difference from roasting), grilling (direct heat, grill marks, suitable foods, grill temperatures), broiling/salamander (overhead heat, uses in Pakistani hotel kitchens), pan-frying (fat amount, suitable foods), sautéing (small amount of fat, tossing technique, suitable foods), differences between all dry heat methods, Maillard reaction in dry heat cooking.`,
+      `Generate exactly 25 multiple-choice questions on Advanced Dry Heat Techniques for Commis 1 and Commis 2 level chefs in Pakistan. Cover: tandoor cooking (relevant to Pakistan), stir-frying (high heat, wok technique), smoking (cold vs hot smoking), en papillote (cooking in paper/foil), difference between roasting and baking, difference between grilling and broiling, how fat affects dry heat cooking, choosing the correct dry heat method for different proteins and vegetables, colour development in dry heat, glazing and caramelizing in the oven. Make all options similar in length.`
+    ]
+  },
+  {
+    id: 'wet_frying',
+    num: '05',
+    name: 'Wet Heat & Frying',
+    sub: 'Boiling, steaming, braising, deep frying',
+    prompts: [
+      `Generate exactly 25 multiple-choice questions on Wet Heat Cooking Methods for Commis 1 and Commis 2 level chefs in Pakistan. Cover: boiling (rolling boil, suitable foods), simmering (small bubbles, stocks and stews), poaching (shallow poaching, deep poaching, suitable foods — eggs, fish, fruit, temperatures 70°C–85°C), steaming (atmospheric and pressure steaming, nutrient retention), blanching (purpose, ice bath, percentage colour retention), braising (long slow moist heat, collagen breakdown, suitable cuts), stewing (differences from braising, portion size), en papillote (moist steam packet method).`,
+      `Generate exactly 25 multiple-choice questions on Frying Methods for Commis 1 and Commis 2 level chefs in Pakistan. Cover: deep frying (oil temperatures 160°C–190°C, batter types — tempura, beer batter, breadcrumbs, suitable foods, oil quality checks, draining on paper), shallow frying (oil depth, fat side down first), pan-frying (differences from shallow frying), stir-frying (wok, high heat, Pakistan-relevant dishes), sautéing vs pan-frying, smoke points of oils (olive, sunflower, corn, ghee), signs of oil degradation, safety when frying (never water in hot oil). Make options similar in length.`
+    ]
+  },
+  {
+    id: 'stocks_soups',
+    num: '06',
+    name: 'Stocks, Soups & Consommé',
+    sub: 'Stock types, soups, clarification',
+    prompts: [
+      `Generate exactly 25 multiple-choice questions on Stocks for Commis 1 and Commis 2 level chefs in Pakistan. Cover: white stock (fond blanc — veal, chicken, fish, vegetable), brown stock (fond brun — roasted bones, caramelized mirepoix), fish stock (fumet de poisson — 20–30 minute cooking time), vegetable stock, court bouillon (acidulated liquid for fish), estouffade, glace de viande (meat glaze, reduction), mirepoix ratio (2:1:1 onion/carrot/celery), bouquet garni vs sachet d'épices, skimming stocks, simmering not boiling stocks, cooling stocks safely, gelatine content in stocks.`,
+      `Generate exactly 25 multiple-choice questions on Soups and Consommé for Commis 1 and Commis 2 level chefs in Pakistan. Cover: clear soups (broth, bouillon, consommé), consommé clarification process (clearmeat — ground meat, egg whites, acid, mirepoix), thick soups (cream soups, purée soups, bisques, chowders, velouté soups), cold soups (gazpacho, vichyssoise), liaison for finishing soups (cream and egg yolk ratio), seasoning soups, garnishes for soups, national soups (minestrone, French onion, tom yum, mulligatawny), thickening agents in soups. Make options similar in length.`
+    ]
+  },
+  {
+    id: 'sauces',
+    num: '07',
+    name: 'Mother Sauces & Derivatives',
+    sub: 'Five mothers, small sauces, roux',
+    prompts: [
+      `Generate exactly 25 multiple-choice questions on Mother Sauces for Commis 1 and 2 level chefs. Cover: Béchamel (milk + white roux, derivatives: Mornay, Cream, Soubise, Nantua), Velouté (white stock + blond roux, derivatives: Allemande, Suprême, Vin Blanc), Espagnole/Brown sauce (brown stock + brown roux, derivatives: Demi-glace, Bordelaise, Chasseur, Robert, Madeira), Hollandaise (butter + egg yolks + lemon, derivatives: Béarnaise, Maltaise, Mousseline), Tomato sauce (derivatives: Creole, Portugaise, Milanaise). Include identifying mother sauce from description and name.`,
+      `Generate exactly 25 multiple-choice questions on Roux, Thickening Agents and Sauce Techniques for Commis 1 and 2 level chefs. Cover: types of roux (white/blond/brown — cooking time and colour), roux ratio (equal parts butter and flour by weight), starch-based thickeners (cornstarch, arrowroot, potato starch — how to use), liaison (cream + egg yolk — never boil after adding), beurre manié, reduction as a thickening method, monter au beurre (mounting with butter), nappe consistency, straining sauces, seasoning sauces, common sauce faults and corrections. Make options similar in length.`
+    ]
+  },
+  {
+    id: 'mise_brigade',
+    num: '08',
+    name: 'Mise en Place & Brigade',
+    sub: 'Station setup, hierarchy, menu types',
+    prompts: [
+      `Generate exactly 25 multiple-choice questions on Mise en Place and Kitchen Organisation for Commis 1 and 2 level chefs in Pakistan. Cover: meaning of mise en place (everything in its place), importance in professional kitchens, prep lists, station setup checklist, FIFO in daily prep, labelling and dating prepared items, briefing before service, organizing a workstation, reducing waste in prep, timing of prep tasks, cleaning as you go, using prep lists to avoid missing items, communication between stations, mise en place for breakfast vs lunch vs dinner service.`,
+      `Generate exactly 25 multiple-choice questions on Kitchen Brigade System and Menu Planning for Commis 1 and 2 level chefs in Pakistan. Cover: Escoffier's brigade system, roles (Commis I/II/III, Chef de Partie, Sous Chef, Head Chef/Executive Chef, Pastry Chef, Garde Manger, Tournant/Relief Cook), responsibilities at Commis level specifically, chain of command, calling out orders, menu types (à la carte, table d'hôte, buffet, cyclic, prix fixe), course structure (from appetizer to dessert), menu balance, using seasonal ingredients, portion sizes in menu planning. Make options similar in length.`
+    ]
+  },
+  {
+    id: 'nutrition_science',
+    num: '09',
+    name: 'Nutrition & Food Science',
+    sub: 'Macros, vitamins, Maillard, preservation',
+    prompts: [
+      `Generate exactly 25 multiple-choice questions on Nutrition Basics for Commis 1 and 2 level chefs in Pakistan. Cover: macronutrients (proteins — 4kcal/g, carbohydrates — 4kcal/g, fats — 9kcal/g), complete vs incomplete proteins, saturated vs unsaturated fats, simple vs complex carbohydrates, dietary fibre (soluble vs insoluble), vitamins (fat-soluble A/D/E/K vs water-soluble B-group/C), minerals (calcium, iron, sodium, potassium), role of water in nutrition, caloric content of foods, RDA concept, effect of cooking on nutrients (heat-sensitive vitamins, protein denaturation), balanced diet for kitchen workers.`,
+      `Generate exactly 25 multiple-choice questions on Food Science and Preservation for Commis 1 and 2 level chefs in Pakistan. Cover: Maillard reaction (proteins + sugars, 140°C–165°C, produces browning), caramelization (sugar browning, ~170°C), gelatinization of starch, coagulation of proteins (eggs), emulsification (oil + water + emulsifier, examples: mayonnaise, hollandaise), food preservation methods (freezing, canning, drying/dehydration, smoking, pickling/vinegar, salting, fermentation, pasteurisation, vacuum packing/MAP), food spoilage causes (bacteria, mould, yeast, enzymes, oxidation), shelf life and storage. Make options similar in length.`
+    ]
+  },
+  {
+    id: 'commodities_menu',
+    num: '10',
+    name: 'Commodities & Menu Planning',
+    sub: 'Meat, dairy, produce, costing',
+    prompts: [
+      `Generate exactly 25 multiple-choice questions on Commodities (Meat, Poultry, Seafood) for Commis 1 and 2 level chefs in Pakistan. Cover: meat classifications (beef, lamb, pork, veal), primary and secondary cuts of beef and lamb (relevant to Pakistan — raan, boti, shoulder, rib), poultry types (chicken, turkey, duck, quail), buying and storing poultry, seafood classification (fin fish, shellfish, crustaceans, cephalopods), fresh vs frozen fish indicators (eyes, gills, smell, texture), internal cooking temperatures for different proteins, offal/variety meats, game meats, halal requirements in Pakistan.`,
+      `Generate exactly 25 multiple-choice questions on Commodities (Dairy, Vegetables, Dry Goods) and Food Costing for Commis 1 and 2 level chefs in Pakistan. Cover: dairy products (milk types, cream types, butter, cheese classification, yoghurt), egg structure and grading, vegetable classification (root, leafy, stem, flower, seed, fruit vegetables), seasonal vegetables in Pakistan, legumes and pulses common in Pakistan, dry goods (pasta types, rice types, flour types — plain, strong, self-raising), herbs and spices used in Pakistani professional kitchens, yield percentage calculation, food cost percentage = (food cost / selling price) × 100, standard recipe costing. Make options similar in length.`
+    ]
+  }
+];
+
+const BASE_PROMPT_PREFIX = `You are a culinary arts trainer generating exam practice questions. Return ONLY a valid JSON array. No explanation, no markdown, no code fences. Format: [{"q":"Question?","opts":["Option A","Option B","Option C","Option D"],"ans":0}] where "ans" is the zero-based index of the correct answer. Make all four options similar in length and plausibility so the answer cannot be guessed by length alone.\n\n`;
+
+let currentSectionIdx = null;
+let sectionQuestions = [];
+let sectionPicks = {};
+let sectionCur = 0;
+let sectionScores = {};
+let loadingInterval = null;
+
+function init() {
+  renderSidebar();
+  renderTopicGrid();
+}
+
+function renderSidebar() {
+  const list = document.getElementById('section-list');
+  list.innerHTML = SECTIONS.map((s, i) => `
+    <button class="section-item${sectionScores[s.id] !== undefined ? ' done' : ''}" id="si-${s.id}" onclick="selectSection(${i})">
+      <span class="sec-num">${s.num}</span>
+      <span class="sec-info">
+        <span class="sec-name">${s.name}</span>
+        <span class="sec-sub">${s.sub}</span>
+        <span class="sec-score" id="score-${s.id}">${sectionScores[s.id] !== undefined ? sectionScores[s.id] + '% last attempt' : ''}</span>
+      </span>
+    </button>
+  `).join('');
+  updateOverall();
+}
+
+function renderTopicGrid() {
+  const grid = document.getElementById('topic-grid');
+  grid.innerHTML = SECTIONS.map((s, i) => `
+    <div class="topic-chip" onclick="selectSection(${i})">
+      <div class="chip-num">${s.num}</div>
+      <div class="chip-name">${s.name}</div>
+    </div>
+  `).join('');
+}
+
+function updateOverall() {
+  const done = Object.keys(sectionScores).length;
+  document.getElementById('overall-pct').textContent = `${done} / 10 done`;
+  document.getElementById('overall-fill').style.width = (done / 10 * 100) + '%';
+}
+
+function setActiveSection(idx) {
+  document.querySelectorAll('.section-item').forEach(el => el.classList.remove('active'));
+  if (idx !== null) {
+    const el = document.getElementById(`si-${SECTIONS[idx].id}`);
+    if (el) el.classList.add('active');
+  }
+}
+
+function showWelcome() {
+  setActiveSection(null);
+  document.getElementById('welcome').style.display = 'flex';
+  document.getElementById('welcome').style.flexDirection = 'column';
+  document.getElementById('main-loading').style.display = 'none';
+  document.getElementById('main-quiz').style.display = 'none';
+  document.getElementById('main-results').style.display = 'none';
+  currentSectionIdx = null;
+}
+
+async function selectSection(idx) {
+  currentSectionIdx = idx;
+  sectionQuestions = [];
+  sectionPicks = {};
+  sectionCur = 0;
+
+  setActiveSection(idx);
+  document.getElementById('welcome').style.display = 'none';
+  document.getElementById('main-results').style.display = 'none';
+  document.getElementById('main-quiz').style.display = 'none';
+  document.getElementById('main-loading').style.display = 'block';
+  document.getElementById('main-question-body').style.display = 'none';
+
+  const sec = SECTIONS[idx];
+  const loadMsgs = ['Generating questions…', 'Building your quiz…', 'Loading batch…', 'Almost ready…'];
+  let mi = 0;
+  loadingInterval = setInterval(() => {
+    document.getElementById('main-load-msg').textContent = loadMsgs[mi++ % loadMsgs.length];
+  }, 2000);
+
+  try {
+    // Batch 1
+    document.getElementById('batch-progress').textContent = 'Batch 1 of 2 — questions 1–25…';
+    const batch1 = await fetchBatch(sec.prompts[0]);
+
+    // Batch 2
+    document.getElementById('batch-progress').textContent = 'Batch 2 of 2 — questions 26–50…';
+    const batch2 = await fetchBatch(sec.prompts[1]);
+
+    clearInterval(loadingInterval);
+    sectionQuestions = [...batch1, ...batch2];
+    startQuiz(sec);
+  } catch(e) {
+    clearInterval(loadingInterval);
+    document.getElementById('main-load-msg').textContent = 'Failed to load. Check your internet and try again.';
+    document.getElementById('batch-progress').textContent = '';
+  }
+}
+
+async function fetchBatch(prompt) {
+  const res = await fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      model: 'claude-sonnet-4-6',
+      max_tokens: 1000,
+      messages: [{ role: 'user', content: BASE_PROMPT_PREFIX + prompt }]
+    })
+  });
+  const data = await res.json();
+  const raw = data.content.filter(b => b.type === 'text').map(b => b.text).join('');
+  const clean = raw.replace(/```json|```/g, '').trim();
+  return JSON.parse(clean);
+}
+
+function startQuiz(sec) {
+  document.getElementById('main-loading').style.display = 'none';
+  document.getElementById('main-quiz').style.display = 'flex';
+  document.getElementById('main-question-body').style.display = 'block';
+  document.getElementById('main-topic-label').textContent = sec.name;
+  renderQuestion();
+}
+
+function renderQuestion() {
+  const q = sectionQuestions[sectionCur];
+  if (!q) return;
+
+  const total = sectionQuestions.length;
+  const pct = Math.round((sectionCur / total) * 100);
+  document.getElementById('main-prog-fill').style.width = pct + '%';
+  document.getElementById('main-q-counter').textContent = `${sectionCur + 1} / ${total}`;
+  document.getElementById('main-q-eyebrow').textContent = SECTIONS[currentSectionIdx].name;
+  document.getElementById('main-q-text').textContent = q.q;
+
+  const ol = document.getElementById('main-options');
+  ol.innerHTML = '';
+  const letters = ['A','B','C','D'];
+  const answered = sectionPicks[sectionCur] !== undefined;
+
+  q.opts.forEach((opt, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'option';
+    if (answered) {
+      if (i === q.ans) btn.classList.add('correct');
+      else if (i === sectionPicks[sectionCur]) btn.classList.add('wrong');
+      else btn.classList.add('dimmed');
+    }
+    btn.innerHTML = `<span class="opt-circle">${letters[i]}</span><span>${opt}</span>`;
+    if (!answered) btn.onclick = () => { sectionPicks[sectionCur] = i; renderQuestion(); };
+    ol.appendChild(btn);
+  });
+
+  const prev = document.getElementById('main-btn-prev');
+  const next = document.getElementById('main-btn-next');
+  prev.disabled = sectionCur === 0;
+  next.textContent = sectionCur === sectionQuestions.length - 1 ? 'Finish ✓' : 'Next →';
+}
+
+function mainMove(dir) {
+  if (dir === 1 && sectionCur === sectionQuestions.length - 1) {
+    finishSection();
+    return;
+  }
+  sectionCur = Math.max(0, Math.min(sectionQuestions.length - 1, sectionCur + dir));
+  renderQuestion();
+}
+
+function finishSection() {
+  document.getElementById('main-quiz').style.display = 'none';
+  document.getElementById('main-results').style.display = 'block';
+
+  const total = sectionQuestions.length;
+  const correct = Object.entries(sectionPicks).filter(([i, a]) => sectionQuestions[i]?.ans === a).length;
+  const pct = total > 0 ? Math.round((correct / total) * 100) : 0;
+
+  // Save score
+  const sec = SECTIONS[currentSectionIdx];
+  sectionScores[sec.id] = pct;
+  localStorage.setItem('c500_scores', JSON.stringify(sectionScores));
+
+  // Update sidebar
+  const siEl = document.getElementById(`si-${sec.id}`);
+  if (siEl) {
+    siEl.classList.add('done');
+    const scoreEl = document.getElementById(`score-${sec.id}`);
+    if (scoreEl) scoreEl.textContent = pct + '% last attempt';
+  }
+  updateOverall();
+
+  // Score ring
+  const circ = 314;
+  document.getElementById('main-arc').setAttribute('stroke-dashoffset', circ - (circ * pct / 100));
+  document.getElementById('main-arc').setAttribute('stroke',
+    pct >= 80 ? '#22C55E' : pct >= 60 ? '#7C3AED' : '#EF4444');
+  document.getElementById('main-score-pct').textContent = pct + '%';
+  document.getElementById('main-res-title').textContent =
+    pct >= 80 ? 'Excellent!' : pct >= 60 ? 'Good effort!' : 'Keep practicing';
+  document.getElementById('main-res-sub').textContent =
+    `${correct} correct out of ${total} — ${sec.name}`;
+
+  // Review
+  const rv = document.getElementById('main-review');
+  rv.innerHTML = '<h3>Review</h3>';
+  sectionQuestions.forEach((q, i) => {
+    const ua = sectionPicks[i];
+    const ok = ua === q.ans;
+    const letters = ['A','B','C','D'];
+    const div = document.createElement('div');
+    div.className = 'review-item ' + (ok ? 'ok' : 'miss');
+    div.innerHTML = `<div class="review-q">${q.q}</div>
+      <div class="review-ans">${ok
+        ? `<span class="correct-ans">&#10003; ${letters[q.ans]}. ${q.opts[q.ans]}</span>`
+        : `<span class="your-ans">&#10007; You: ${ua !== undefined ? letters[ua] + '. ' + q.opts[ua] : 'Skipped'}</span><br>
+           <span class="correct-ans">&#10003; Correct: ${letters[q.ans]}. ${q.opts[q.ans]}</span>`
+      }</div>`;
+    rv.appendChild(div);
+  });
+}
+
+function retrySection() {
+  sectionPicks = {};
+  sectionCur = 0;
+  document.getElementById('main-results').style.display = 'none';
+  document.getElementById('main-quiz').style.display = 'flex';
+  document.getElementById('main-question-body').style.display = 'block';
+  renderQuestion();
+}
+
+// Load saved scores
+(function loadSaved() {
+  try {
+    const saved = localStorage.getItem('c500_scores');
+    if (saved) sectionScores = JSON.parse(saved);
+  } catch(e) {}
+})();
+
+init();
+</script>
+</body>
+</html>
