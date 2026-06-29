@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Foodborne Illnesses — July 2026 Exam</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍳</text></svg>">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@400;500&display=swap');
+  :root{--bg:#080810;--surface:#11111f;--border:#1e1e35;--purple:#7c3aed;--purple-l:#9d5bf0;--green:#22c55e;--red:#ef4444;--text:#e8e8f0;--muted:#7070a0;}
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Syne',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;align-items:center;justify-content:center;}
+  body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px);background-size:40px 40px;opacity:.4;pointer-events:none;z-index:0;}
+  .screen{position:relative;z-index:1;width:100%;max-width:660px;margin:0 auto;padding:24px 20px 48px;display:none;}
+  .screen.active{display:block;}
+  #name-screen{text-align:center;padding-top:80px;}
+  .back-link{display:inline-flex;align-items:center;gap:6px;font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);text-decoration:none;letter-spacing:1px;margin-bottom:48px;transition:color .2s;}
+  .back-link:hover{color:var(--purple-l);}
+  .subject-tag{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--purple-l);margin-bottom:12px;}
+  #name-screen h1{font-size:clamp(22px,5vw,36px);font-weight:800;line-height:1.15;margin-bottom:8px;background:linear-gradient(135deg,#fff 30%,var(--purple-l));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+  #name-screen p{color:var(--muted);font-family:'DM Mono',monospace;font-size:12px;margin-bottom:40px;}
+  .name-box{display:flex;flex-direction:column;align-items:center;gap:12px;}
+  .name-box input{width:100%;max-width:320px;padding:12px 16px;background:var(--surface);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:'Syne',sans-serif;font-size:15px;outline:none;text-align:center;transition:border-color .2s;}
+  .name-box input:focus{border-color:var(--purple);}
+  .name-box input::placeholder{color:var(--muted);}
+  .btn-primary{padding:12px 32px;background:var(--purple);color:#fff;border:none;border-radius:8px;font-family:'Syne',sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:background .2s,transform .1s;letter-spacing:.5px;}
+  .btn-primary:hover{background:var(--purple-l);transform:translateY(-1px);}
+  .quiz-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;}
+  .quiz-meta{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);}
+  .quiz-meta span{color:var(--purple-l);font-weight:500;}
+  .progress-bar{width:100%;height:3px;background:var(--border);border-radius:2px;margin-bottom:32px;overflow:hidden;}
+  .progress-fill{height:100%;background:linear-gradient(90deg,var(--purple),var(--purple-l));border-radius:2px;transition:width .3s ease;}
+  .question-num{font-family:'DM Mono',monospace;font-size:10px;color:var(--purple-l);letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;}
+  .question-text{font-size:clamp(15px,3vw,18px);font-weight:600;line-height:1.5;margin-bottom:28px;color:var(--text);}
+  .options{display:flex;flex-direction:column;gap:10px;}
+  .opt-btn{display:flex;align-items:center;gap:12px;padding:13px 16px;background:var(--surface);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:'Syne',sans-serif;font-size:14px;font-weight:400;cursor:pointer;text-align:left;transition:border-color .15s,background .15s;width:100%;}
+  .opt-btn:hover:not(:disabled){border-color:var(--purple);background:#16162a;}
+  .opt-btn .opt-letter{flex-shrink:0;width:26px;height:26px;border-radius:6px;background:var(--border);display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);transition:background .15s,color .15s;}
+  .opt-btn:hover:not(:disabled) .opt-letter{background:var(--purple);color:#fff;}
+  .opt-btn.correct{border-color:var(--green);background:rgba(34,197,94,.1);}
+  .opt-btn.correct .opt-letter{background:var(--green);color:#fff;}
+  .opt-btn.wrong{border-color:var(--red);background:rgba(239,68,68,.1);}
+  .opt-btn.wrong .opt-letter{background:var(--red);color:#fff;}
+  .opt-btn:disabled{cursor:default;}
+  .explanation{display:none;margin-top:16px;padding:14px 16px;background:rgba(124,58,237,.1);border:1px solid rgba(124,58,237,.25);border-left:3px solid var(--purple);border-radius:8px;font-size:13px;line-height:1.6;color:#c4b5fd;font-family:'DM Mono',monospace;}
+  .explanation.show{display:block;}
+  .next-btn{margin-top:24px;width:100%;padding:13px;background:var(--purple);color:#fff;border:none;border-radius:8px;font-family:'Syne',sans-serif;font-size:14px;font-weight:700;cursor:pointer;display:none;transition:background .2s;letter-spacing:.5px;}
+  .next-btn:hover{background:var(--purple-l);}
+  .next-btn.show{display:block;}
+  #results-screen{text-align:center;padding-top:40px;}
+  .result-name{font-family:'DM Mono',monospace;font-size:12px;color:var(--muted);margin-bottom:32px;}
+  .score-ring{position:relative;width:160px;height:160px;margin:0 auto 28px;}
+  .score-ring svg{transform:rotate(-90deg);}
+  .score-ring .ring-bg{fill:none;stroke:var(--border);stroke-width:10;}
+  .score-ring .ring-fill{fill:none;stroke-width:10;stroke-linecap:round;transition:stroke-dashoffset 1s ease,stroke .5s;}
+  .score-ring .ring-text{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+  .ring-pct{font-size:34px;font-weight:800;line-height:1;}
+  .ring-label{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);margin-top:4px;letter-spacing:1px;}
+  .result-title{font-size:24px;font-weight:800;margin-bottom:8px;}
+  .result-sub{font-family:'DM Mono',monospace;font-size:12px;color:var(--muted);margin-bottom:8px;}
+  .result-verdict{font-family:'DM Mono',monospace;font-size:12px;padding:8px 20px;border-radius:20px;display:inline-block;margin-bottom:32px;}
+  .result-verdict.pass{background:rgba(34,197,94,.12);color:var(--green);border:1px solid rgba(34,197,94,.3);}
+  .result-verdict.fail{background:rgba(239,68,68,.12);color:var(--red);border:1px solid rgba(239,68,68,.3);}
+  .result-actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:40px;}
+  .btn-outline{padding:11px 24px;background:none;border:1px solid var(--border);border-radius:8px;color:var(--muted);font-family:'Syne',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:border-color .2s,color .2s;}
+  .btn-outline:hover{border-color:var(--purple);color:var(--text);}
+  .review{text-align:left;}
+  .review h3{font-size:13px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:2px;margin-bottom:16px;font-family:'DM Mono',monospace;}
+  .rv-item{padding:14px 16px;border-radius:8px;margin-bottom:10px;border:1px solid var(--border);}
+  .rv-item.ok{border-color:rgba(34,197,94,.25);background:rgba(34,197,94,.05);}
+  .rv-item.miss{border-color:rgba(239,68,68,.25);background:rgba(239,68,68,.05);}
+  .rv-q{font-size:13px;font-weight:600;margin-bottom:8px;line-height:1.4;}
+  .rv-a{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);line-height:1.6;}
+  .rv-a .c{color:var(--green);}
+  .rv-a .w{color:var(--red);}
+</style>
+</head>
+<body>
+
+<div class="screen active" id="name-screen">
+  <a class="back-link" href="index.html">← Back to subjects</a>
+  <div class="subject-tag">Culinary Arts · Topic 04</div>
+  <h1>Foodborne Illnesses</h1>
+  <p>30 questions · Bacteria, viruses, symptoms, causes & prevention</p>
+  <div class="name-box">
+    <input type="text" id="name-input" placeholder="Enter your name" maxlength="30" autocomplete="off">
+    <button class="btn-primary" onclick="startQuiz()">Start Quiz</button>
+  </div>
+</div>
+
+<div class="screen" id="quiz-screen">
+  <div class="quiz-header">
+    <div class="quiz-meta">Question <span id="q-num">1</span> of <span id="q-total">30</span></div>
+    <div class="quiz-meta">Score <span id="q-score">0</span></div>
+  </div>
+  <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+  <div class="question-num" id="q-label"></div>
+  <div class="question-text" id="q-text"></div>
+  <div class="options" id="options"></div>
+  <div class="explanation" id="explanation"></div>
+  <button class="next-btn" id="next-btn" onclick="nextQuestion()">Next Question →</button>
+</div>
+
+<div class="screen" id="results-screen">
+  <div class="result-name" id="result-name"></div>
+  <div class="score-ring">
+    <svg viewBox="0 0 160 160" width="160" height="160">
+      <circle class="ring-bg" cx="80" cy="80" r="70"/>
+      <circle class="ring-fill" id="ring-fill" cx="80" cy="80" r="70" stroke-dasharray="439.82" stroke-dashoffset="439.82" stroke="var(--green)"/>
+    </svg>
+    <div class="ring-text">
+      <div class="ring-pct" id="ring-pct">0%</div>
+      <div class="ring-label">SCORE</div>
+    </div>
+  </div>
+  <div class="result-title" id="res-title"></div>
+  <div class="result-sub" id="res-sub"></div>
+  <div class="result-verdict" id="res-verdict"></div>
+  <div class="result-actions">
+    <button class="btn-primary" onclick="retryQuiz()">Retry →</button>
+    <button class="btn-outline" onclick="window.location.href='index.html'">All Subjects</button>
+  </div>
+  <div class="review" id="review"></div>
+</div>
+
+<script>
+const BANK = [
+  {
+    q: "What is a foodborne illness?",
+    opts: [
+      "An illness caused exclusively by eating food that has been deliberately contaminated with chemical cleaning agents",
+      "Any illness that results from consuming food or drink contaminated with harmful bacteria, viruses, parasites, or toxins",
+      "A medical condition caused only by an allergic reaction to a specific ingredient present in processed or packaged food",
+      "An illness that develops when a person consumes an excessive quantity of food in a single sitting over a short period"
+    ],
+    ans: 1,
+    exp: "A foodborne illness (food poisoning) is caused by consuming food or drink contaminated with pathogens — bacteria, viruses, parasites — or their toxins. It affects millions of people globally each year and is largely preventable."
+  },
+  {
+    q: "Which of the following is the most common cause of foodborne illness worldwide?",
+    opts: [
+      "Chemical contamination from pesticide residues present on improperly washed fruits and raw vegetables",
+      "Physical contamination from foreign objects such as glass, bone fragments, or metal shards in prepared food",
+      "Biological contamination from harmful microorganisms such as bacteria, viruses, and parasites in food",
+      "Allergenic contamination from undeclared allergens introduced during food production or preparation"
+    ],
+    ans: 2,
+    exp: "Biological contamination — from bacteria, viruses, and parasites — is the leading cause of foodborne illness globally. Bacteria such as Salmonella, Campylobacter, and E. coli are responsible for the vast majority of cases."
+  },
+  {
+    q: "What is Salmonella, and which foods are most commonly associated with it?",
+    opts: [
+      "A heat-resistant spore-forming bacterium most commonly linked to canned goods, honey, and improperly sterilised preserved foods",
+      "A bacterium found in soil and water that primarily contaminates root vegetables and leafy greens during harvest and washing",
+      "A bacterium commonly found in the intestines of animals, most often linked to raw or undercooked poultry, eggs, and unpasteurised dairy",
+      "A virus transmitted through contaminated water supplies that primarily affects shellfish grown in coastal harvesting areas"
+    ],
+    ans: 2,
+    exp: "Salmonella is a bacterium found in the gut of animals. It is most commonly associated with raw or undercooked poultry, eggs, and unpasteurised milk. Proper cooking to 74°C internal temperature destroys it."
+  },
+  {
+    q: "What are the typical symptoms of Salmonella food poisoning?",
+    opts: [
+      "Immediate severe skin rash, difficulty breathing, and swelling of the throat and tongue within minutes of consuming contaminated food",
+      "Nausea, vomiting, diarrhoea, abdominal cramps, and fever typically appearing 6 to 72 hours after consuming contaminated food",
+      "Chronic fatigue, joint pain, and muscle weakness developing gradually over several weeks following a contaminated meal",
+      "Blurred vision, difficulty swallowing, and progressive muscle paralysis developing within hours of eating contaminated food"
+    ],
+    ans: 1,
+    exp: "Salmonella symptoms include nausea, vomiting, diarrhoea, stomach cramps, and fever. They typically appear 6–72 hours after exposure and last 4–7 days. Severe cases can require hospitalisation, especially in vulnerable individuals."
+  },
+  {
+    q: "Which bacterium is most commonly associated with undercooked or poorly handled chicken and is a leading cause of food poisoning globally?",
+    opts: [
+      "Listeria monocytogenes, a cold-tolerant bacterium that thrives in refrigerated environments and is associated with deli meats and soft cheeses",
+      "Clostridium botulinum, a spore-forming bacterium that produces a dangerous toxin in low-oxygen preserved food environments",
+      "Campylobacter jejuni, a bacterium found in the gut of poultry that is the leading bacterial cause of food poisoning in many countries",
+      "Staphylococcus aureus, a bacterium carried on human skin and in the nose that produces heat-stable toxins in warm food"
+    ],
+    ans: 2,
+    exp: "Campylobacter jejuni is one of the most common causes of bacterial food poisoning globally. It is found in the gut of poultry and can contaminate meat during processing. Even a small number of organisms can cause illness."
+  },
+  {
+    q: "What makes Listeria monocytogenes particularly dangerous compared to most other foodborne bacteria?",
+    opts: [
+      "It produces a heat-stable toxin that survives normal cooking temperatures and cannot be destroyed by conventional food preparation methods",
+      "It grows and multiplies at refrigeration temperatures between 0°C and 4°C, meaning cold storage does not reliably prevent its growth",
+      "It forms extremely resistant spores that survive boiling and can remain dormant in dry storage conditions for several years",
+      "It spreads exclusively through person-to-person contact rather than through food, making kitchen hygiene largely ineffective"
+    ],
+    ans: 1,
+    exp: "Listeria is uniquely dangerous because it can grow at refrigeration temperatures (0–4°C). Most pathogens are slowed by cold storage, but Listeria continues to multiply, making it a serious risk in chilled ready-to-eat foods."
+  },
+  {
+    q: "Which foods are most commonly associated with Listeria monocytogenes contamination?",
+    opts: [
+      "Raw red meats, undercooked eggs, and unpasteurised fruit juices stored at ambient room temperature for extended periods",
+      "Ready-to-eat foods such as soft cheeses, deli meats, smoked fish, and pre-packaged salads stored under refrigeration",
+      "Canned and vacuum-sealed preserved goods where anaerobic conditions promote bacterial growth over extended storage periods",
+      "Fresh tropical fruits, raw shellfish, and undercooked rice dishes held in the temperature danger zone during service"
+    ],
+    ans: 1,
+    exp: "Listeria is most associated with ready-to-eat chilled foods — soft cheeses (Brie, Camembert), deli meats, smoked salmon, and pre-packed salads. These foods are not cooked before eating, so any contamination reaches the consumer directly."
+  },
+  {
+    q: "What is E. coli (Escherichia coli) O157:H7 and why is it considered dangerous?",
+    opts: [
+      "A naturally occurring gut bacterium that only becomes dangerous when food is left in the temperature danger zone for more than four hours",
+      "A strain of E. coli that produces a powerful toxin capable of causing severe bloody diarrhoea and potentially life-threatening kidney failure",
+      "A bacterial strain found only in processed meat products that causes mild stomach upset but rarely requires medical treatment",
+      "A heat-resistant bacterium commonly found on leafy greens that produces spores surviving normal cooking temperatures"
+    ],
+    ans: 1,
+    exp: "E. coli O157:H7 produces Shiga toxin, causing severe bloody diarrhoea and haemolytic uraemic syndrome (HUS) — a form of kidney failure that can be fatal, especially in children and the elderly. Associated with undercooked beef and unwashed produce."
+  },
+  {
+    q: "What is Staphylococcus aureus and how does it cause foodborne illness?",
+    opts: [
+      "A soil-dwelling bacterium that contaminates root vegetables at harvest and produces spores that survive cooking at standard temperatures",
+      "A bacterium carried by humans on skin, in the nose, and throat, which produces heat-stable toxins in food left at warm temperatures",
+      "A waterborne pathogen that enters food through contaminated irrigation water and causes illness only when food is consumed raw",
+      "A cold-tolerant bacterium that multiplies in refrigerated food and produces toxins that survive reheating to safe temperatures"
+    ],
+    ans: 1,
+    exp: "Staph aureus is carried by up to 50% of people on their skin and in their nasal passages. When transferred to food, it multiplies in the danger zone and produces heat-stable toxins — meaning even reheating the food will not destroy the toxin already produced."
+  },
+  {
+    q: "What is Clostridium perfringens, and in what food situation does it most commonly cause illness?",
+    opts: [
+      "A waterborne virus that contaminates shellfish in polluted coastal waters and causes vomiting within one to two hours of consumption",
+      "A spore-forming bacterium found in soil and animal gut that causes illness when cooked food — especially meat stews — is cooled too slowly",
+      "A heat-resistant bacterium carried on raw poultry that produces a dangerous neurotoxin in improperly sealed preserved food items",
+      "A mould-like organism that grows on improperly stored grains and pulses, producing mycotoxins when food is kept in humid conditions"
+    ],
+    ans: 1,
+    exp: "Clostridium perfringens forms heat-resistant spores that survive cooking. When large batches of meat or stew are cooled slowly, surviving spores germinate and multiply rapidly. It is sometimes called 'the cafeteria germ' because of its association with bulk-cooked food."
+  },
+  {
+    q: "What is Clostridium botulinum and why is it particularly associated with preserved or canned foods?",
+    opts: [
+      "A fast-growing surface bacterium that thrives on raw meat and produces illness only when food is not washed before preparation",
+      "A spore-forming bacterium that produces a deadly neurotoxin in low-oxygen (anaerobic) environments such as improperly canned or vacuum-packed food",
+      "A virus that survives in acidic preserved foods such as pickles and fermented products and causes severe gastrointestinal illness",
+      "A bacterium that multiplies rapidly at room temperature in protein-rich foods and is destroyed by standard commercial canning processes"
+    ],
+    ans: 1,
+    exp: "C. botulinum produces botulinum toxin — one of the most potent toxins known — in anaerobic conditions inside sealed containers. Improperly home-canned foods are the classic risk. Symptoms include muscle paralysis and can be fatal."
+  },
+  {
+    q: "What is the 'temperature danger zone' and why is it critical in preventing foodborne illness?",
+    opts: [
+      "The temperature range of 0°C to 5°C in which all refrigerated food must be stored to prevent any microbial growth during storage",
+      "The temperature range of 5°C to 63°C in which most harmful bacteria multiply rapidly, potentially reaching dangerous levels within hours",
+      "The temperature range of 63°C to 74°C in which food must be held during service to ensure bacteria are destroyed during cooking",
+      "The temperature range of 100°C to 121°C used in commercial sterilisation processes to eliminate all bacterial spores from preserved food"
+    ],
+    ans: 1,
+    exp: "The danger zone is 5°C to 63°C. In this range, bacteria can double in number every 20 minutes. Food should spend as little time as possible in this zone — the 2-hour rule applies for food left at room temperature."
+  },
+  {
+    q: "What is the '2-hour rule' in food safety?",
+    opts: [
+      "Food must be cooked for a minimum of 2 hours at above 63°C to ensure all harmful bacteria and their spores are fully destroyed",
+      "Perishable food left in the temperature danger zone for more than 2 hours should be discarded as it may be unsafe to consume",
+      "Food delivered to a kitchen must be stored within 2 hours of arrival to prevent temperature abuse during the receiving process",
+      "Food reheated for service must reach 75°C within 2 hours of being removed from refrigeration to be considered safe for consumption"
+    ],
+    ans: 1,
+    exp: "The 2-hour rule states that perishable food left in the danger zone (5°C–63°C) for more than 2 hours total must be discarded. In hot environments above 32°C, this window reduces to just 1 hour."
+  },
+  {
+    q: "What is Norovirus and how is it most commonly spread in a food environment?",
+    opts: [
+      "A bacterium found in raw poultry and red meat that spreads through undercooked protein and is destroyed by cooking to 74°C",
+      "A highly contagious virus spread through contaminated food, surfaces, or infected food handlers — particularly via the faecal-oral route",
+      "A parasite found in contaminated water sources that infects food handlers through direct skin contact during food preparation",
+      "A toxin-producing mould that grows on stored grains and spreads to prepared food through contaminated flour and starchy ingredients"
+    ],
+    ans: 1,
+    exp: "Norovirus is one of the most common causes of foodborne illness. It spreads easily via infected food handlers (faecal-oral route), contaminated surfaces, and ready-to-eat foods such as shellfish. It is highly contagious — just 18 virus particles can cause infection."
+  },
+  {
+    q: "Which group of people is classified as 'high risk' or 'vulnerable' when it comes to foodborne illness?",
+    opts: [
+      "Adults aged 18–40 who engage in regular physical activity and have a healthy diet but occasionally eat undercooked proteins",
+      "The elderly, pregnant women, infants, young children, and immunocompromised individuals whose immune systems cannot fight infection effectively",
+      "Kitchen staff who work long shifts in high-temperature environments and are exposed to a wide range of raw food products daily",
+      "Individuals who eat a diet high in processed foods, refined sugars, and sodium but are otherwise in good general health"
+    ],
+    ans: 1,
+    exp: "Vulnerable groups — often remembered as YOPI (Young children, Old people, Pregnant women, Immunocompromised) — are at higher risk of severe illness or death from foodborne pathogens that might only cause mild symptoms in healthy adults."
+  },
+  {
+    q: "What is cross-contamination in the context of food safety?",
+    opts: [
+      "The process of intentionally combining ingredients from different food groups to create a balanced dish during preparation",
+      "The transfer of harmful microorganisms from a contaminated food, surface, or person to a previously safe food or surface",
+      "The method of checking food temperatures across multiple storage units to ensure consistent refrigeration throughout the kitchen",
+      "The practice of using the same recipe across multiple kitchen stations to ensure consistent output during high-volume service"
+    ],
+    ans: 1,
+    exp: "Cross-contamination occurs when bacteria transfer from raw to ready-to-eat food — through direct contact, hands, equipment, or surfaces. It is one of the primary causes of foodborne illness and is prevented through colour-coded boards, handwashing, and proper storage."
+  },
+  {
+    q: "What colour chopping board should be used for raw poultry in a professional kitchen?",
+    opts: [
+      "Red, which is designated for raw red meats including beef, lamb, and pork across all professional kitchen colour-coding systems",
+      "Yellow, which is the internationally recognised colour for raw poultry and all raw bird products in professional kitchens",
+      "White, which is typically reserved for dairy products, bread, and bakery items that do not require colour-coded separation",
+      "Green, which is used for fruits, vegetables, and salad items that will be served raw without any cooking process"
+    ],
+    ans: 1,
+    exp: "Yellow is the standard colour for raw poultry in professional kitchen colour-coding systems. Red = raw meat, Blue = raw fish, Green = fruit and vegetables, White = dairy/bakery, Brown = cooked meats. This system physically prevents cross-contamination."
+  },
+  {
+    q: "What is the key difference between food poisoning caused by bacteria and food poisoning caused by bacterial toxins?",
+    opts: [
+      "Bacterial infections always have a longer incubation period and more severe symptoms than toxin-based illnesses in all cases",
+      "Toxin-based illnesses can occur even if the food is reheated, because the toxin produced by bacteria remains active after the bacteria are killed by heat",
+      "Bacterial infections only occur in raw food while toxin-based illness only occurs in fully cooked food that has been handled poorly",
+      "Toxin-based illnesses are always milder and shorter in duration than bacterial infections regardless of the amount of toxin consumed"
+    ],
+    ans: 1,
+    exp: "Heat kills bacteria but does not always destroy their toxins. Staphylococcus aureus and Bacillus cereus produce heat-stable toxins. Cooking food that already contains these toxins will kill the bacteria but the toxin remains — still capable of causing illness."
+  },
+  {
+    q: "What is Bacillus cereus and which foods are most associated with it?",
+    opts: [
+      "A cold-tolerant bacterium found in raw fish and shellfish that produces a toxin causing paralysis within hours of consumption",
+      "A spore-forming bacterium found in soil, often associated with rice, pasta, and cereals — particularly when cooked and held at warm temperatures",
+      "A surface bacterium carried on human hands that contaminates ready-to-eat foods through improper handwashing practices",
+      "A waterborne pathogen found in contaminated rivers and lakes that enters food through irrigation of leafy vegetables and herbs"
+    ],
+    ans: 1,
+    exp: "Bacillus cereus is a spore-forming bacterium commonly found in rice and cereals. Cooked rice left at room temperature allows spores to germinate and produce toxins. It causes two syndromes: a vomiting type (fast onset) and a diarrhoeal type (slower onset)."
+  },
+  {
+    q: "What is Hepatitis A, and how does it typically enter the food chain?",
+    opts: [
+      "A bacterium that multiplies in undercooked meat and produces liver-damaging enzymes during the digestion process after consumption",
+      "A viral infection spread through contaminated water and food — particularly shellfish from polluted waters and food handled by infected persons",
+      "A parasitic infection caused by consuming undercooked pork or wild game that migrates to the liver after initial gastrointestinal infection",
+      "A fungal toxin produced in improperly stored grains and legumes that causes chronic liver damage when consumed over a long period"
+    ],
+    ans: 1,
+    exp: "Hepatitis A is a virus spread via the faecal-oral route — through food handled by infected persons with poor hygiene, or through shellfish harvested from sewage-contaminated waters. It causes liver inflammation with a long incubation period of 15–50 days."
+  },
+  {
+    q: "What is the safe minimum internal temperature for cooking whole cuts of beef and lamb?",
+    opts: [
+      "63°C (145°F), which destroys surface bacteria while allowing some degree of pink colour to remain in the centre of the cut",
+      "70°C (158°F), required for all red meat cuts to ensure complete destruction of all harmful bacteria throughout the product",
+      "74°C (165°F), the universal safe temperature applied to all meat products regardless of species, cut, or cooking method",
+      "85°C (185°F), the temperature required only for braised and slow-cooked red meats that have been handled before service"
+    ],
+    ans: 0,
+    exp: "Whole cuts of beef and lamb can be cooked to 63°C (145°F) with a 3-minute rest time. Because surface bacteria are destroyed by searing, the interior of an intact cut is generally sterile. Ground/minced meat requires 71°C as bacteria are mixed throughout."
+  },
+  {
+    q: "What is the correct procedure for cooling large batches of hot food to prevent bacterial growth?",
+    opts: [
+      "Place the hot food directly into the walk-in refrigerator in its full cooking vessel and allow it to cool naturally over several hours",
+      "Divide food into smaller shallow containers, cool rapidly to below 21°C within 2 hours and to below 5°C within a further 4 hours",
+      "Allow the food to cool at room temperature until it reaches ambient temperature before transferring it to the refrigerator overnight",
+      "Seal the food in airtight containers immediately after cooking and place it in the freezer for a minimum of 30 minutes before refrigerating"
+    ],
+    ans: 1,
+    exp: "Large batches must be cooled rapidly. Best practice: divide into shallow containers, use an ice bath, and cool from 60°C to 21°C within 2 hours, then to 5°C within 4 more hours. Placing large hot pots directly in the fridge raises the ambient temperature and creates a danger zone for all surrounding food."
+  },
+  {
+    q: "What does 'incubation period' mean in relation to foodborne illness?",
+    opts: [
+      "The total duration of symptoms from first onset until full recovery, used to determine how long a food handler must stay off work",
+      "The time between consuming contaminated food and the appearance of the first symptoms of illness in the affected person",
+      "The period during which food must be kept at the correct temperature before it is safe to serve to avoid any risk of contamination",
+      "The storage time a pathogen can survive on a dry surface before it is no longer capable of causing illness in a person"
+    ],
+    ans: 1,
+    exp: "The incubation period is the time between eating contaminated food and the first appearance of symptoms. It varies by pathogen — Staph aureus: 1–6 hours; Salmonella: 6–72 hours; Listeria: 3–70 days. Knowing this helps trace the source of an outbreak."
+  },
+  {
+    q: "Why must a food handler who has symptoms of vomiting or diarrhoea not work in the kitchen?",
+    opts: [
+      "Because physical exertion while symptomatic can worsen the illness and lead to dehydration requiring hospitalisation",
+      "Because they are likely shedding pathogens — particularly Norovirus or Salmonella — through faecal particles that can contaminate food and surfaces",
+      "Because kitchen environments are too hot and physically demanding for a person already weakened by gastrointestinal illness",
+      "Because health and safety regulations require any unwell staff member to be absent regardless of whether their illness is food-related"
+    ],
+    ans: 1,
+    exp: "A symptomatic food handler is actively shedding pathogens. Norovirus in particular is shed in extremely large quantities during and after illness. Even thorough handwashing cannot guarantee zero transmission risk — exclusion from the kitchen is mandatory."
+  },
+  {
+    q: "What is a food allergy and how is it different from a foodborne illness?",
+    opts: [
+      "A food allergy is a digestive sensitivity to certain ingredients that causes similar symptoms to food poisoning but takes longer to appear",
+      "A food allergy is an immune system reaction to a specific food protein that can be life-threatening, while foodborne illness is caused by contamination with pathogens or toxins",
+      "A food allergy is a mild intolerance to certain food groups that causes temporary discomfort but is never life-threatening in any form",
+      "A food allergy is a learned sensitivity developed after repeated exposure to a food, unlike foodborne illness which occurs on first exposure"
+    ],
+    ans: 1,
+    exp: "A food allergy is an immune response to a specific protein — it can cause anaphylaxis and death even from trace amounts. Foodborne illness is caused by pathogens or toxins and is not immune-mediated. The prevention and treatment for each are entirely different."
+  },
+  {
+    q: "What is a 'high-risk food' in the context of food safety?",
+    opts: [
+      "Any food imported from countries with lower food safety standards than the country of sale or consumption",
+      "Foods that are ready to eat, high in protein or moisture, and support rapid bacterial growth — such as cooked meat, dairy, eggs, and seafood",
+      "Foods that have a high sugar or fat content and are associated with lifestyle diseases when consumed in excessive quantities",
+      "Any food that requires more than one preparation step before it is safe to eat, including raw grains and dried pulses"
+    ],
+    ans: 1,
+    exp: "High-risk foods are ready-to-eat, protein-rich, and moist — ideal conditions for bacterial growth. Examples include cooked meats, cooked rice, dairy products, eggs, shellfish, and gravies. They require strict temperature control throughout storage and service."
+  },
+  {
+    q: "What is personal hygiene's role in preventing foodborne illness in a professional kitchen?",
+    opts: [
+      "It primarily serves to maintain a professional appearance for the kitchen team and has minimal direct impact on food safety outcomes",
+      "It is one of the most critical controls — contaminated hands, open wounds, and respiratory droplets are direct routes for pathogens to enter food",
+      "It is important only for front-of-house staff who interact with guests, as kitchen staff rarely touch food directly with bare hands",
+      "It is relevant only during raw food preparation, since cooked food is safe from contamination by the time it reaches the food handler"
+    ],
+    ans: 1,
+    exp: "Personal hygiene is a primary food safety control. Pathogens are transferred from hands, skin, hair, sneezing, and infected wounds directly into food. Handwashing, covering cuts, wearing clean uniforms, and staying home when sick are all critical preventive measures."
+  },
+  {
+    q: "What are the correct steps for handwashing in a food environment?",
+    opts: [
+      "Rinse hands under cold water for 10 seconds, apply soap, scrub palms only, rinse under warm water, and dry with a paper towel",
+      "Wet hands with warm water, apply soap, scrub all surfaces including backs, between fingers, and under nails for at least 20 seconds, rinse thoroughly, and dry with a single-use towel",
+      "Apply hand sanitiser gel to dry hands, rub together for 5 seconds until dry, and return to food preparation without rinsing",
+      "Wet hands under any temperature water, apply soap briefly, rinse for 5 seconds, and dry on a clean cloth hanging near the sink"
+    ],
+    ans: 1,
+    exp: "Correct handwashing: wet with warm water, apply soap, scrub all surfaces (palms, backs, between fingers, under nails) for minimum 20 seconds, rinse thoroughly, dry with a disposable single-use towel. This process removes over 99% of transient microorganisms."
+  },
+  {
+    q: "What is the difference between cleaning and sanitising in a food safety context?",
+    opts: [
+      "Cleaning removes pathogens from surfaces using chemical disinfectants, while sanitising removes visible dirt using water and detergent",
+      "Cleaning removes visible dirt and grease using detergent, while sanitising reduces microorganisms to a safe level using heat or chemical sanitiser",
+      "Cleaning and sanitising are interchangeable terms for the same process of making surfaces safe for food contact using approved chemicals",
+      "Cleaning is done daily at the end of service, while sanitising is only required weekly as part of a scheduled deep-cleaning programme"
+    ],
+    ans: 1,
+    exp: "Cleaning removes visible soil and grease. Sanitising reduces microorganisms to a safe level. Both steps are required — sanitising is ineffective on dirty surfaces because organic matter neutralises the sanitiser. The correct order is always: clean first, then sanitise."
+  },
+  {
+    q: "What does the acronym YOPI stand for in food safety risk assessment?",
+    opts: [
+      "Yearly Operations for Pathogen Inspection — a system for scheduling annual food safety audits in commercial kitchens",
+      "Young children, Old people, Pregnant women, and Immunocompromised individuals — groups most vulnerable to severe foodborne illness",
+      "Years Of Practice Indicated — a scale used to determine which food handlers require additional food safety training",
+      "Yield Output for Pathogen Inactivation — a measure of how effectively a cooking process destroys bacteria in high-risk foods"
+    ],
+    ans: 1,
+    exp: "YOPI identifies the most vulnerable groups: Young children, Old people, Pregnant women, and Immunocompromised individuals. These groups are at far greater risk of severe illness or death from pathogens that may only cause mild symptoms in healthy adults."
+  }
+];
+
+let order=[],cur=0,picks={},playerName='',score=0;
+function shuffle(arr){const a=[...arr];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');window.scrollTo(0,0);}
+function startQuiz(){const inp=document.getElementById('name-input').value.trim();playerName=inp||'Anonymous';order=shuffle(BANK.map((_,i)=>i));cur=0;picks={};score=0;document.getElementById('q-total').textContent=BANK.length;show('quiz-screen');render();}
+function render(){
+  const idx=order[cur],q=BANK[idx],total=BANK.length;
+  document.getElementById('q-num').textContent=cur+1;
+  document.getElementById('q-score').textContent=score;
+  document.getElementById('q-label').textContent=`Question ${cur+1} of ${total}`;
+  document.getElementById('q-text').textContent=q.q;
+  document.getElementById('progress-fill').style.width=((cur/total)*100)+'%';
+  document.getElementById('explanation').className='explanation';
+  document.getElementById('explanation').textContent='';
+  document.getElementById('next-btn').className='next-btn';
+  const letters=['A','B','C','D'],optEl=document.getElementById('options');
+  optEl.innerHTML='';
+  shuffle([0,1,2,3]).forEach((oi,li)=>{
+    const btn=document.createElement('button');
+    btn.className='opt-btn';btn.dataset.opt=oi;
+    btn.innerHTML=`<span class="opt-letter">${letters[li]}</span><span>${q.opts[oi]}</span>`;
+    btn.onclick=()=>selectAnswer(oi,idx);
+    optEl.appendChild(btn);
+  });
+}
+function selectAnswer(chosen,idx){
+  const q=BANK[idx],correct=chosen===q.ans;
+  picks[idx]=chosen;if(correct)score++;
+  document.getElementById('q-score').textContent=score;
+  document.querySelectorAll('.opt-btn').forEach(btn=>{
+    btn.disabled=true;const oi=parseInt(btn.dataset.opt);
+    if(oi===q.ans)btn.classList.add('correct');
+    else if(oi===chosen&&!correct)btn.classList.add('wrong');
+  });
+  if(!correct){const e=document.getElementById('explanation');e.textContent='✗ '+q.exp;e.classList.add('show');}
+  const nb=document.getElementById('next-btn');nb.classList.add('show');
+  nb.textContent=cur+1<BANK.length?'Next Question →':'See Results →';
+}
+function nextQuestion(){cur++;if(cur>=BANK.length)showResults();else{render();window.scrollTo(0,0);}}
+function showResults(){
+  show('results-screen');
+  const total=BANK.length,pct=Math.round((score/total)*100),passed=pct>=70;
+  document.getElementById('result-name').textContent=playerName;
+  document.getElementById('ring-pct').textContent=pct+'%';
+  document.getElementById('ring-pct').style.color=passed?'var(--green)':'var(--red)';
+  document.getElementById('ring-fill').style.stroke=passed?'var(--green)':'var(--red)';
+  setTimeout(()=>{document.getElementById('ring-fill').style.strokeDashoffset=439.82-(439.82*pct/100);},100);
+  document.getElementById('res-title').textContent=pct>=90?'Excellent!':pct>=70?'Passed!':'Needs Work';
+  document.getElementById('res-sub').textContent=`${score} correct out of ${total} questions`;
+  const v=document.getElementById('res-verdict');
+  if(passed){v.textContent='✓ You passed — score above 70%';v.className='result-verdict pass';}
+  else{v.textContent='✗ Below 70% — please retake the quiz';v.className='result-verdict fail';}
+  const rv=document.getElementById('review');rv.innerHTML='<h3>Review</h3>';
+  order.forEach(idx=>{
+    const q=BANK[idx],ua=picks[idx],ok=ua===q.ans;
+    const d=document.createElement('div');d.className='rv-item '+(ok?'ok':'miss');
+    d.innerHTML=`<div class="rv-q">${q.q}</div><div class="rv-a">${ok
+      ?`<span class="c">✓ Correct: ${q.opts[q.ans]}</span>`
+      :`<span class="w">✗ You chose: ${ua!==undefined?q.opts[ua]:'Skipped'}</span><br><span class="c">✓ Correct: ${q.opts[q.ans]}</span><br><span style="color:var(--muted)">${q.exp}</span>`
+    }</div>`;
+    rv.appendChild(d);
+  });
+}
+function retryQuiz(){order=shuffle(order);cur=0;picks={};score=0;document.getElementById('q-score').textContent=0;show('quiz-screen');render();}
+document.getElementById('name-input').addEventListener('keydown',e=>{if(e.key==='Enter')startQuiz();});
+</script>
+</body>
+</html>

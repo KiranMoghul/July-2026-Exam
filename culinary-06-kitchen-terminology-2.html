@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kitchen Terminology II — July 2026 Exam</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍳</text></svg>">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@400;500&display=swap');
+  :root{--bg:#080810;--surface:#11111f;--border:#1e1e35;--purple:#7c3aed;--purple-l:#9d5bf0;--green:#22c55e;--red:#ef4444;--text:#e8e8f0;--muted:#7070a0;}
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Syne',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;align-items:center;justify-content:center;}
+  body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px);background-size:40px 40px;opacity:.4;pointer-events:none;z-index:0;}
+  .screen{position:relative;z-index:1;width:100%;max-width:660px;margin:0 auto;padding:24px 20px 48px;display:none;}
+  .screen.active{display:block;}
+  #name-screen{text-align:center;padding-top:80px;}
+  .back-link{display:inline-flex;align-items:center;gap:6px;font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);text-decoration:none;letter-spacing:1px;margin-bottom:48px;transition:color .2s;}
+  .back-link:hover{color:var(--purple-l);}
+  .subject-tag{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--purple-l);margin-bottom:12px;}
+  #name-screen h1{font-size:clamp(22px,5vw,36px);font-weight:800;line-height:1.15;margin-bottom:8px;background:linear-gradient(135deg,#fff 30%,var(--purple-l));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+  #name-screen p{color:var(--muted);font-family:'DM Mono',monospace;font-size:12px;margin-bottom:40px;}
+  .name-box{display:flex;flex-direction:column;align-items:center;gap:12px;}
+  .name-box input{width:100%;max-width:320px;padding:12px 16px;background:var(--surface);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:'Syne',sans-serif;font-size:15px;outline:none;text-align:center;transition:border-color .2s;}
+  .name-box input:focus{border-color:var(--purple);}
+  .name-box input::placeholder{color:var(--muted);}
+  .btn-primary{padding:12px 32px;background:var(--purple);color:#fff;border:none;border-radius:8px;font-family:'Syne',sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:background .2s,transform .1s;letter-spacing:.5px;}
+  .btn-primary:hover{background:var(--purple-l);transform:translateY(-1px);}
+  .quiz-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;}
+  .quiz-meta{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);}
+  .quiz-meta span{color:var(--purple-l);font-weight:500;}
+  .progress-bar{width:100%;height:3px;background:var(--border);border-radius:2px;margin-bottom:32px;overflow:hidden;}
+  .progress-fill{height:100%;background:linear-gradient(90deg,var(--purple),var(--purple-l));border-radius:2px;transition:width .3s ease;}
+  .question-num{font-family:'DM Mono',monospace;font-size:10px;color:var(--purple-l);letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;}
+  .question-text{font-size:clamp(15px,3vw,18px);font-weight:600;line-height:1.5;margin-bottom:28px;color:var(--text);}
+  .options{display:flex;flex-direction:column;gap:10px;}
+  .opt-btn{display:flex;align-items:center;gap:12px;padding:13px 16px;background:var(--surface);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:'Syne',sans-serif;font-size:14px;font-weight:400;cursor:pointer;text-align:left;transition:border-color .15s,background .15s;width:100%;}
+  .opt-btn:hover:not(:disabled){border-color:var(--purple);background:#16162a;}
+  .opt-btn .opt-letter{flex-shrink:0;width:26px;height:26px;border-radius:6px;background:var(--border);display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);transition:background .15s,color .15s;}
+  .opt-btn:hover:not(:disabled) .opt-letter{background:var(--purple);color:#fff;}
+  .opt-btn.correct{border-color:var(--green);background:rgba(34,197,94,.1);}
+  .opt-btn.correct .opt-letter{background:var(--green);color:#fff;}
+  .opt-btn.wrong{border-color:var(--red);background:rgba(239,68,68,.1);}
+  .opt-btn.wrong .opt-letter{background:var(--red);color:#fff;}
+  .opt-btn:disabled{cursor:default;}
+  .explanation{display:none;margin-top:16px;padding:14px 16px;background:rgba(124,58,237,.1);border:1px solid rgba(124,58,237,.25);border-left:3px solid var(--purple);border-radius:8px;font-size:13px;line-height:1.6;color:#c4b5fd;font-family:'DM Mono',monospace;}
+  .explanation.show{display:block;}
+  .next-btn{margin-top:24px;width:100%;padding:13px;background:var(--purple);color:#fff;border:none;border-radius:8px;font-family:'Syne',sans-serif;font-size:14px;font-weight:700;cursor:pointer;display:none;transition:background .2s;letter-spacing:.5px;}
+  .next-btn:hover{background:var(--purple-l);}
+  .next-btn.show{display:block;}
+  #results-screen{text-align:center;padding-top:40px;}
+  .result-name{font-family:'DM Mono',monospace;font-size:12px;color:var(--muted);margin-bottom:32px;}
+  .score-ring{position:relative;width:160px;height:160px;margin:0 auto 28px;}
+  .score-ring svg{transform:rotate(-90deg);}
+  .score-ring .ring-bg{fill:none;stroke:var(--border);stroke-width:10;}
+  .score-ring .ring-fill{fill:none;stroke-width:10;stroke-linecap:round;transition:stroke-dashoffset 1s ease,stroke .5s;}
+  .score-ring .ring-text{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+  .ring-pct{font-size:34px;font-weight:800;line-height:1;}
+  .ring-label{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);margin-top:4px;letter-spacing:1px;}
+  .result-title{font-size:24px;font-weight:800;margin-bottom:8px;}
+  .result-sub{font-family:'DM Mono',monospace;font-size:12px;color:var(--muted);margin-bottom:8px;}
+  .result-verdict{font-family:'DM Mono',monospace;font-size:12px;padding:8px 20px;border-radius:20px;display:inline-block;margin-bottom:32px;}
+  .result-verdict.pass{background:rgba(34,197,94,.12);color:var(--green);border:1px solid rgba(34,197,94,.3);}
+  .result-verdict.fail{background:rgba(239,68,68,.12);color:var(--red);border:1px solid rgba(239,68,68,.3);}
+  .result-actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:40px;}
+  .btn-outline{padding:11px 24px;background:none;border:1px solid var(--border);border-radius:8px;color:var(--muted);font-family:'Syne',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:border-color .2s,color .2s;}
+  .btn-outline:hover{border-color:var(--purple);color:var(--text);}
+  .review{text-align:left;}
+  .review h3{font-size:13px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:2px;margin-bottom:16px;font-family:'DM Mono',monospace;}
+  .rv-item{padding:14px 16px;border-radius:8px;margin-bottom:10px;border:1px solid var(--border);}
+  .rv-item.ok{border-color:rgba(34,197,94,.25);background:rgba(34,197,94,.05);}
+  .rv-item.miss{border-color:rgba(239,68,68,.25);background:rgba(239,68,68,.05);}
+  .rv-q{font-size:13px;font-weight:600;margin-bottom:8px;line-height:1.4;}
+  .rv-a{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);line-height:1.6;}
+  .rv-a .c{color:var(--green);}
+  .rv-a .w{color:var(--red);}
+</style>
+</head>
+<body>
+
+<div class="screen active" id="name-screen">
+  <a class="back-link" href="index.html">← Back to subjects</a>
+  <div class="subject-tag">Culinary Arts · Topic 06</div>
+  <h1>Kitchen Terminology II</h1>
+  <p>30 questions · Ingredients, FOH/BOH, F&B, kitchen organization & leadership</p>
+  <div class="name-box">
+    <input type="text" id="name-input" placeholder="Enter your name" maxlength="30" autocomplete="off">
+    <button class="btn-primary" onclick="startQuiz()">Start Quiz</button>
+  </div>
+</div>
+
+<div class="screen" id="quiz-screen">
+  <div class="quiz-header">
+    <div class="quiz-meta">Question <span id="q-num">1</span> of <span id="q-total">30</span></div>
+    <div class="quiz-meta">Score <span id="q-score">0</span></div>
+  </div>
+  <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+  <div class="question-num" id="q-label"></div>
+  <div class="question-text" id="q-text"></div>
+  <div class="options" id="options"></div>
+  <div class="explanation" id="explanation"></div>
+  <button class="next-btn" id="next-btn" onclick="nextQuestion()">Next Question →</button>
+</div>
+
+<div class="screen" id="results-screen">
+  <div class="result-name" id="result-name"></div>
+  <div class="score-ring">
+    <svg viewBox="0 0 160 160" width="160" height="160">
+      <circle class="ring-bg" cx="80" cy="80" r="70"/>
+      <circle class="ring-fill" id="ring-fill" cx="80" cy="80" r="70" stroke-dasharray="439.82" stroke-dashoffset="439.82" stroke="var(--green)"/>
+    </svg>
+    <div class="ring-text">
+      <div class="ring-pct" id="ring-pct">0%</div>
+      <div class="ring-label">SCORE</div>
+    </div>
+  </div>
+  <div class="result-title" id="res-title"></div>
+  <div class="result-sub" id="res-sub"></div>
+  <div class="result-verdict" id="res-verdict"></div>
+  <div class="result-actions">
+    <button class="btn-primary" onclick="retryQuiz()">Retry →</button>
+    <button class="btn-outline" onclick="window.location.href='index.html'">All Subjects</button>
+  </div>
+  <div class="review" id="review"></div>
+</div>
+
+<script>
+const BANK = [
+  {
+    q: "In professional kitchen language, what does 'al dente' mean and to which food does it most commonly apply?",
+    opts: [
+      "A Spanish term meaning fully cooked through, used to describe meat that has reached the correct internal temperature for safe service",
+      "An Italian term meaning 'to the tooth,' describing pasta or vegetables cooked until just tender but still with a slight firmness when bitten",
+      "A French term meaning softened, used to describe vegetables that have been sweated in butter until completely tender with no resistance",
+      "An Italian term meaning well done, used to describe proteins cooked beyond medium to ensure all traces of pink have been eliminated"
+    ],
+    ans: 1,
+    exp: "'Al dente' is Italian for 'to the tooth.' It describes the ideal texture of pasta and some vegetables — cooked through but retaining a slight resistance when bitten. Overcooked pasta that is soft and mushy is the opposite of al dente."
+  },
+  {
+    q: "What is a 'liaison' in classical French cooking terminology?",
+    opts: [
+      "A technique of rapidly whisking cold butter into a hot sauce at the end of cooking to add richness, gloss, and body to the final sauce",
+      "A thickening and enriching agent — typically a mixture of egg yolks and cream — added to soups and sauces at the end of cooking",
+      "A reduction of wine and aromatics used as the flavour base before adding stock to build a classical French braising sauce",
+      "A mixture of flour and fat cooked together at the beginning of a sauce preparation to provide the structural base for the finished dish"
+    ],
+    ans: 1,
+    exp: "A liaison is a mixture of egg yolks and heavy cream used to thicken and enrich sauces and soups. It is added off the heat or at very low temperatures — above 85°C it will curdle. It is the finishing enrichment for soups like velouté and bisque."
+  },
+  {
+    q: "What does 'nappe' mean in the context of sauce consistency?",
+    opts: [
+      "A sauce that is so thin it runs immediately off a spoon, indicating it needs further reduction before being passed for service",
+      "A sauce consistency thick enough to coat the back of a spoon and hold a clean line when a finger is drawn through it",
+      "A sauce that has been over-reduced and become too thick and gelatinous, requiring the addition of stock to correct the texture",
+      "A sauce that has been mounted with butter until it is thick, glossy, and emulsified enough to hold its shape on a warm plate"
+    ],
+    ans: 1,
+    exp: "'Nappe' describes a sauce that coats the back of a spoon and holds a clean line when a finger is drawn through it. It is the classic consistency test for sauces — the French verb 'napper' means to coat or cover."
+  },
+  {
+    q: "What is 'fond' in professional cooking and why is it important?",
+    opts: [
+      "The clarified fat skimmed from the top of a long-simmered stock, used as a cooking medium for sautéing vegetables and proteins",
+      "The caramelised, browned bits stuck to the bottom of a pan after searing meat, dissolved by deglazing to form the base of a pan sauce",
+      "A classical French term for the finished stock itself — used as the liquid foundation for soups, braises, and sauce reductions",
+      "The gelatinous residue left in the bottom of a roasting tray after slow-roasting a large cut of meat for several hours"
+    ],
+    ans: 1,
+    exp: "Fond (from French 'fond de cuisine' — kitchen bottom/foundation) refers to the browned bits stuck to the pan after searing. They are flavour-packed and dissolved by deglazing with wine or stock to form the base of a pan sauce. Not to be confused with fond de veau (veal stock)."
+  },
+  {
+    q: "What is the culinary term for the French word 'légumes' and what category does it refer to?",
+    opts: [
+      "Légumes refers specifically to dried pulses and legumes including lentils, chickpeas, and dried beans used in slow-cooked preparations",
+      "Légumes is the French term for vegetables in general, covering all plant-based ingredients used in cooking regardless of botanical classification",
+      "Légumes refers specifically to root vegetables such as carrots, parsnips, turnips, and celeriac used in stocks and braises",
+      "Légumes refers to fresh herbs and aromatic plants used to flavour stocks, sauces, and braises throughout French classical cooking"
+    ],
+    ans: 1,
+    exp: "'Légumes' is simply the French word for vegetables. In professional kitchen contexts you will encounter it in terms like 'légumier' (the vegetable chef), 'jardinière de légumes' (garden vegetables), and on classical menus."
+  },
+  {
+    q: "In kitchen terminology, what is a 'bouquet garni'?",
+    opts: [
+      "A blend of dried ground spices tied into a muslin bag and added to braises and stews to provide deep background flavour",
+      "A bundle of fresh herbs — classically parsley stalks, thyme, and bay leaf — tied together or wrapped in leek and used to flavour stocks and braises",
+      "A garnish of fresh herbs placed on top of a finished dish just before service to add colour, aroma, and visual appeal",
+      "A mixture of aromatic vegetables including onion, carrot, and celery that is tied into a bundle before being added to a stock"
+    ],
+    ans: 1,
+    exp: "A bouquet garni is a tied bundle of fresh herbs — classically parsley stalks, thyme, and bay leaf, often wrapped in a piece of leek or celery. It flavours stocks, soups, braises, and sauces and is removed before serving."
+  },
+  {
+    q: "What is 'sachet d'épices' and how does it differ from a bouquet garni?",
+    opts: [
+      "A sachet d'épices is a bundle of fresh herbs tied with string, while a bouquet garni uses dried spices wrapped in muslin cloth",
+      "A sachet d'épices contains whole dried spices — peppercorns, cloves, bay leaf, thyme — in a muslin bag, while a bouquet garni is made of fresh herbs",
+      "A sachet d'épices is used only in pastry and dessert preparations, while a bouquet garni is exclusively used in savoury stocks and sauces",
+      "A sachet d'épices is a modern replacement for the bouquet garni, producing identical flavour results with less preparation time required"
+    ],
+    ans: 1,
+    exp: "A sachet d'épices (spice bag) contains whole dried spices — typically peppercorns, bay leaf, thyme, cloves, and parsley stalks — in a muslin bag. A bouquet garni uses tied fresh herbs. Both are removed before serving but deliver different flavour profiles."
+  },
+  {
+    q: "What is 'dal' (dhal) in culinary terminology and which cuisine is it most associated with?",
+    opts: [
+      "A slow-braised meat preparation from North Africa where tougher cuts are cooked in spiced broth until completely tender and falling apart",
+      "A dish made from cooked and seasoned lentils, peas, or beans — foundational to South Asian cuisine and a primary source of protein",
+      "A fermented grain paste used as a condiment and flavouring agent in Korean and Japanese cooking across a wide range of dishes",
+      "A type of flatbread made from lentil flour that is cooked on a griddle and served alongside curries in South Indian cuisine"
+    ],
+    ans: 1,
+    exp: "Dal refers to split pulses (lentils, peas, chickpeas) and also to the prepared dish made from them. It is a cornerstone of South Asian cooking — particularly Indian, Pakistani, and Sri Lankan cuisine — and a critical source of vegetarian protein."
+  },
+  {
+    q: "What is the difference between 'masoor dal' and 'chana dal' in ingredient terminology?",
+    opts: [
+      "Masoor dal is a yellow split lentil used in thick soupy preparations, while chana dal is a red lentil used primarily in dry stir-fried dishes",
+      "Masoor dal refers to red split lentils that cook quickly and break down into a smooth texture, while chana dal refers to split chickpeas with a nuttier flavour and firmer texture",
+      "Masoor dal is a large whole brown lentil used in slow-cooked stews, while chana dal is a fine lentil flour used for batters and breading",
+      "Masoor dal is used exclusively in Pakistani cooking while chana dal is specific to Indian regional cuisines and cannot be substituted"
+    ],
+    ans: 1,
+    exp: "Masoor dal = red split lentils — they cook quickly (15–20 min) and break down into a smooth, creamy consistency. Chana dal = split chickpeas — they take longer to cook, hold their shape better, and have a nuttier, earthier flavour."
+  },
+  {
+    q: "In meat terminology, what does 'marbling' refer to and why does it matter?",
+    opts: [
+      "The pattern of natural colour variation on the surface of a cut of meat, used to identify the breed and origin of the animal",
+      "The intramuscular fat distributed throughout a cut of meat in white streaks — more marbling generally means more flavour, tenderness, and juiciness",
+      "The technique of inserting strips of fat into lean cuts of meat using a larding needle before roasting to baste from within during cooking",
+      "The visible grain pattern of muscle fibres running through a cut of meat, indicating how the meat should be sliced for maximum tenderness"
+    ],
+    ans: 1,
+    exp: "Marbling is intramuscular fat — the white fat streaks running through the muscle. During cooking, this fat melts and bastes the meat from within, contributing to tenderness, juiciness, and flavour. Heavily marbled beef (e.g. Wagyu) commands premium prices."
+  },
+  {
+    q: "What is 'offal' in professional kitchen and butchery terminology?",
+    opts: [
+      "The trimmed fat and sinew removed during butchery and portioning, used to enrich stocks and rendered as cooking fat for station use",
+      "The internal organs and secondary cuts of an animal — including liver, kidney, heart, tongue, and tripe — used in classical and regional cooking",
+      "The bones and carcass remains after butchery, simmered to produce brown or white stocks used as the base for sauces and soups",
+      "The outer layer of fat and skin removed from a carcass during initial breakdown before the primary and secondary cuts are portioned"
+    ],
+    ans: 1,
+    exp: "Offal refers to the edible internal organs of an animal — liver, kidney, heart, sweetbreads (thymus/pancreas), tongue, tripe (stomach), and brain. It features heavily in classical French, British, and many Asian and Middle Eastern cuisines."
+  },
+  {
+    q: "What does the term 'brunoise of shallots' mean in a professional recipe context?",
+    opts: [
+      "Shallots that have been peeled and left whole before being slowly caramelised in butter until completely soft and golden brown",
+      "Shallots that have been finely diced into 2–3 mm cubes, used as a refined aromatic base for sauces, vinaigrettes, and classical preparations",
+      "Shallots that have been sliced into thin rings and lightly pickled in vinegar before being used as a garnish for raw preparations",
+      "Shallots that have been roughly chopped and sweated in oil until translucent, used as the foundation for braising liquids and stews"
+    ],
+    ans: 1,
+    exp: "A brunoise of shallots means shallots cut into 2–3 mm fine dice. Shallots are the preferred aromatic in classical French sauce-making — their milder, more refined flavour compared to onions makes them ideal for delicate preparations like beurre blanc."
+  },
+  {
+    q: "What is 'concassé' in professional cooking terminology?",
+    opts: [
+      "A technique of slowly cooking tomatoes in olive oil until they completely break down into a thick, smooth, concentrated sauce",
+      "Tomatoes that have been blanched, peeled, deseeded, and chopped into rough or fine dice — used as a garnish or sauce component",
+      "A method of pressing tomatoes through a fine sieve to produce a smooth, seed-free purée for use in refined sauces and soups",
+      "Tomatoes that have been oven-dried until concentrated and semi-dehydrated, intensifying their flavour for use in modern preparations"
+    ],
+    ans: 1,
+    exp: "Tomato concassé: tomatoes are blanched (scored, dropped in boiling water for 10–15 seconds, then ice water), peeled, cut in half, deseeded, and diced. The result is clean, fresh tomato flesh with no skin or seeds — used as a garnish or sauce base."
+  },
+  {
+    q: "What does 'F&B' stand for in hospitality and what does the department cover?",
+    opts: [
+      "Facilities and Buildings — the department responsible for physical maintenance of all hotel properties and guest-facing infrastructure",
+      "Food and Beverage — the department overseeing all food production and drink service operations across all outlets in a hotel or venue",
+      "Finance and Budgeting — the department that controls all financial planning, cost management, and revenue reporting for the property",
+      "Front and Back — a shorthand term for the combined operations of front of house service and back of house production teams"
+    ],
+    ans: 1,
+    exp: "F&B stands for Food and Beverage. The F&B Department oversees all food production and beverage service across every outlet — restaurants, bars, banqueting, room service, and staff dining. It is one of the most complex and revenue-generating hotel departments."
+  },
+  {
+    q: "In kitchen organisation, what is a 'station setup' and why is it critical before service?",
+    opts: [
+      "The arrangement of guest tables and covers in the dining room, set by FOH staff according to the reservation plan for each service",
+      "The preparation and organisation of all tools, equipment, ingredients, and mise en place on a cook's assigned station before service begins",
+      "The rota system determining which chef is assigned to which section of the kitchen for each day's lunch and dinner service",
+      "The layout design of kitchen equipment specified by the Executive Chef during a kitchen refit or new restaurant opening process"
+    ],
+    ans: 1,
+    exp: "Station setup is a cook's responsibility before every service — organising their workstation with all needed tools, equipment, and mise en place so that cooking can begin immediately when the first order arrives. A poor setup leads to disorganised, slow service."
+  },
+  {
+    q: "What is a 'runner' in a restaurant service context?",
+    opts: [
+      "A junior kitchen staff member who assists the Chef de Partie by collecting ingredients from dry stores and cold rooms during service",
+      "A FOH staff member whose primary role is delivering food from the pass to the correct table quickly and accurately during service",
+      "A senior server responsible for training junior waiting staff in table service etiquette and the correct order of service sequence",
+      "A kitchen supervisor who runs between stations during service ensuring each section maintains the correct pace and quality output"
+    ],
+    ans: 1,
+    exp: "A runner is a FOH team member who collects plated dishes from the pass and delivers them to the correct table. In busy restaurants, runners allow servers to remain on the floor with guests rather than making trips to the kitchen."
+  },
+  {
+    q: "What does 'mise en place' mean specifically for a FOH (front of house) team member?",
+    opts: [
+      "Memorising the full menu including all specials, allergen information, and preparation methods before the start of each service period",
+      "Setting up the dining area with clean linen, polished cutlery, filled condiments, folded napkins, and all service tools ready before guests arrive",
+      "Briefing the kitchen team on the reservation count, VIP guests, and any special dietary requirements before service begins each day",
+      "Completing all administrative tasks including booking confirmations, billing reconciliation, and tip distribution before the close of service"
+    ],
+    ans: 1,
+    exp: "FOH mise en place includes setting tables with linen and cutlery, polishing glassware, filling salt and pepper, restocking service stations, preparing menus, and ensuring the dining room is completely ready before the first guest arrives."
+  },
+  {
+    q: "What is an 'Executive Chef' responsible for that goes beyond hands-on cooking?",
+    opts: [
+      "An Executive Chef is responsible only for designing menus and tasting dishes, with all operational kitchen management delegated entirely to the Sous Chef",
+      "An Executive Chef oversees all culinary operations including menu development, food costing, staff management, supplier relationships, quality control, and representing the kitchen at management level",
+      "An Executive Chef is responsible for the kitchen's physical maintenance, equipment purchasing, and facility management alongside producing all signature dishes personally",
+      "An Executive Chef manages only the fine dining restaurant within a hotel, with separate chefs overseeing all other food outlets independently"
+    ],
+    ans: 1,
+    exp: "The Executive Chef's role is primarily managerial at senior level. Responsibilities include: menu development, food cost control, hiring and training staff, managing supplier relationships, setting quality standards, attending management meetings, and representing the culinary team at executive level."
+  },
+  {
+    q: "What is 'food cost percentage' and why does an Executive Chef need to manage it?",
+    opts: [
+      "The percentage of dishes on a menu that use food ingredients, used to calculate how many non-food items such as drinks are needed for a service",
+      "The ratio of the cost of food ingredients to the selling price of a dish, expressed as a percentage and used to control profitability",
+      "The percentage of a hotel's total revenue that comes from food sales compared to accommodation, beverages, and ancillary services",
+      "The proportion of raw ingredients that become unusable waste during preparation, used to calculate ordering quantities for each service"
+    ],
+    ans: 1,
+    exp: "Food cost % = (Cost of ingredients ÷ Selling price) × 100. A typical target is 28–35% depending on the operation. If food cost is too high, profit margins are lost. The Executive Chef manages this through portion control, yield analysis, menu pricing, and waste reduction."
+  },
+  {
+    q: "What is 'kitchen organisation' in the context of a well-run professional kitchen?",
+    opts: [
+      "The physical layout design of kitchen equipment including the placement of cooking appliances, cold rooms, and preparation areas",
+      "The systematic structure of stations, workflow, hierarchy, communication, and mise en place that allows the kitchen to operate efficiently under pressure",
+      "The scheduling system used by HR to allocate shifts, rest days, and overtime hours to kitchen staff across all sections of the operation",
+      "The process of filing all recipes, allergen information, and food safety documentation in a format that satisfies health inspection requirements"
+    ],
+    ans: 1,
+    exp: "Kitchen organisation encompasses the entire operational structure: the brigade hierarchy, station layout, workflow design, communication systems, mise en place standards, cleaning schedules, and stock management — all working together to allow efficient, consistent production."
+  },
+  {
+    q: "In professional kitchens, what is a 'prep list' and who is typically responsible for it?",
+    opts: [
+      "A daily document issued by the Executive Chef listing all dishes that are 86'd and unavailable for service that day across all outlets",
+      "A written list of all mise en place tasks that need to be completed before service, assigned to specific team members by the Sous Chef or CDP",
+      "A purchasing document listing all food items that need to be ordered from suppliers, completed by the kitchen manager each morning",
+      "A cleaning schedule detailing which areas of the kitchen require deep cleaning, assigned to the stewarding team at the start of each week"
+    ],
+    ans: 1,
+    exp: "A prep list is a task list of all mise en place that needs to be completed before service — quantities, cuts, and sauces required. It is created by the Sous Chef or Chef de Partie and distributed to commis chefs and station cooks each morning."
+  },
+  {
+    q: "What is 'yield management' specifically in a kitchen context (separate from the hotel revenue meaning)?",
+    opts: [
+      "The practice of adjusting menu prices dynamically based on ingredient availability, market demand, and seasonal cost fluctuations",
+      "The process of calculating the usable quantity of an ingredient after trimming, peeling, or cooking, to accurately determine how much to order",
+      "The system of rotating kitchen staff between stations to ensure all chefs maintain skills across every section of the brigade",
+      "The method of scheduling kitchen production so that all components of a dish are ready simultaneously when an order is called during service"
+    ],
+    ans: 1,
+    exp: "Kitchen yield management means calculating what percentage of a raw ingredient is actually usable after preparation losses (trim, peeling, bones, cooking shrinkage). A chicken leg may have a 65% yield — so to serve 10 portions you need to order more than 10 legs. This directly affects ordering quantities and food cost."
+  },
+  {
+    q: "What does the term 'requisition' mean in a professional kitchen operation?",
+    opts: [
+      "A formal complaint submitted by the kitchen team to management regarding equipment failures or unsafe working conditions",
+      "A formal written request from the kitchen to the stores for the release of ingredients and supplies needed for production",
+      "An instruction from the Executive Chef to a station chef to requisition more staff from the agency during an unexpectedly busy service",
+      "A supplier invoice submitted to the accounts department after a food delivery has been received, checked, and signed off"
+    ],
+    ans: 1,
+    exp: "A requisition is a formal written or digital request from the kitchen to the stores department to release specific quantities of ingredients or supplies. It creates a paper trail for stock control and cost management, preventing unauthorised use of inventory."
+  },
+  {
+    q: "What does 'covers per hour' mean as a kitchen performance metric?",
+    opts: [
+      "The number of menu items covered (available) per hour of service, used to ensure the kitchen can produce every dish at any point during service",
+      "The number of individual guest meals produced and served per hour of service, used to measure kitchen output and service efficiency",
+      "The number of linen covers (tablecloths) set and cleared per hour, used to measure the efficiency of the FOH team during turnover",
+      "The total number of bookings taken per hour by the reservations team, used to forecast expected kitchen output for a given service"
+    ],
+    ans: 1,
+    exp: "Covers per hour measures how many individual meals the kitchen produces and sends to the dining room per hour of service. It is a key efficiency metric — a kitchen handling 80 covers per hour is performing at a different level than one handling 200."
+  },
+  {
+    q: "In restaurant terminology, what is a 'POS system' and how does it connect FOH to BOH?",
+    opts: [
+      "A Point of Sale system used by FOH staff to input guest orders, which are transmitted electronically to kitchen printers or screens — connecting service directly to production",
+      "A Proof of Service system used by the kitchen to confirm that each dish has been dispatched from the pass and received by the correct table",
+      "A Purchase Order System used by the stores department to track all incoming food deliveries and reconcile them against supplier invoices",
+      "A Payroll Operations System used by HR to calculate wages, overtime, and tips for all FOH and BOH staff across all service periods"
+    ],
+    ans: 0,
+    exp: "A POS (Point of Sale) system is the ordering software used by servers to input guest orders. Orders appear instantly on kitchen display screens (KDS) or ticket printers at each station — eliminating handwritten dockets and reducing communication errors between FOH and BOH."
+  },
+  {
+    q: "What is 'kitchen leadership' and how does it differ from kitchen management?",
+    opts: [
+      "Kitchen leadership and kitchen management are the same function — both refer to the Executive Chef's role in overseeing all culinary operations",
+      "Kitchen leadership focuses on inspiring, developing, and motivating the team through example and vision, while kitchen management focuses on operational systems, scheduling, and cost control",
+      "Kitchen leadership refers to the role of the head FOH manager who coordinates with the kitchen, while kitchen management refers to back-of-house supervision",
+      "Kitchen leadership is a formal qualification required before a chef can be promoted to Executive Chef, while kitchen management is an informal skill developed through experience"
+    ],
+    ans: 1,
+    exp: "Leadership is about people — inspiring the team, developing their skills, setting the culture, and leading by example. Management is about systems — schedules, costs, compliance, and processes. The best Executive Chefs do both, but the distinction matters for career development."
+  },
+  {
+    q: "What is a 'standardised recipe' and why is it important in kitchen organisation?",
+    opts: [
+      "A recipe approved by a national culinary body that must be followed exactly in all restaurants that claim to serve classical cuisine",
+      "A written recipe with fixed ingredients, quantities, methods, portion sizes, and plating standards — ensuring consistency regardless of which chef prepares the dish",
+      "A simplified recipe version used for training new commis chefs that reduces the number of steps and ingredients for easier execution",
+      "A recipe shared between multiple outlets of the same hotel chain to ensure all properties serve identical dishes across different locations"
+    ],
+    ans: 1,
+    exp: "A standardised recipe specifies exact ingredients, quantities, preparation method, cooking times, portion size, and plating instructions. It ensures every guest receives the same dish regardless of which chef prepares it — critical for quality control and food cost accuracy."
+  },
+  {
+    q: "What does 'day dot' labelling mean in a professional kitchen?",
+    opts: [
+      "A labelling system using colour-coded dots to indicate the allergen content of each prepared item stored in the kitchen refrigerators",
+      "A labelling system using colour-coded dots assigned to each day of the week to quickly identify when a prepared item was made and when it expires",
+      "A labelling system using numbered dots to track which chef prepared each item, creating accountability for food quality and portion accuracy",
+      "A labelling system used on supplier packaging to indicate the country of origin and production date of all incoming food deliveries"
+    ],
+    ans: 1,
+    exp: "Day dot labelling uses colour-coded stickers — one colour per day of the week — applied to all prepared and stored food items. The colour tells any staff member immediately when something was made and how many days it has left. It is a critical HACCP and food rotation control."
+  },
+  {
+    q: "What is 'batch cooking' and when is it used in a professional kitchen?",
+    opts: [
+      "Cooking each dish completely from scratch to order during service, ensuring maximum freshness and the highest possible quality for every guest",
+      "Preparing large quantities of a base component — stocks, sauces, grains, braised meats — in advance to be portioned and finished during service",
+      "Dividing a large kitchen team into separate groups that each cook a complete meal independently, used for training and competition purposes",
+      "The practice of cooking multiple different dishes simultaneously in the same oven or on the same burner to maximise energy efficiency"
+    ],
+    ans: 1,
+    exp: "Batch cooking means preparing large quantities of a base item in advance — a 20-litre batch of stock, 5 kg of braised lamb shoulder — that is then portioned and finished to order. It balances efficiency during service with freshness and quality for the guest."
+  },
+  {
+    q: "What is the role of a 'kitchen steward' (or kitchen porter) in the operational structure of a kitchen?",
+    opts: [
+      "A senior member of the kitchen brigade who oversees all junior commis chefs, coordinates station assignments, and reports directly to the Sous Chef",
+      "A staff member responsible for warewashing, maintaining cleanliness of all kitchen equipment and surfaces, receiving deliveries, and supporting the kitchen team",
+      "A specialist chef who manages all purchasing decisions, conducts daily stock counts, and submits food orders to suppliers on behalf of the kitchen",
+      "A front of house staff member who acts as the liaison between servers and the kitchen, relaying guest feedback and special requests during service"
+    ],
+    ans: 1,
+    exp: "The kitchen steward (porter) handles warewashing, keeps the kitchen clean, assists with deliveries, maintains equipment cleanliness, and supports the brigade. Without an efficient stewarding team, a kitchen cannot function — clean pots, pans, and surfaces are essential for uninterrupted production."
+  }
+];
+
+let order=[],cur=0,picks={},playerName='',score=0;
+function shuffle(arr){const a=[...arr];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');window.scrollTo(0,0);}
+function startQuiz(){const inp=document.getElementById('name-input').value.trim();playerName=inp||'Anonymous';order=shuffle(BANK.map((_,i)=>i));cur=0;picks={};score=0;document.getElementById('q-total').textContent=BANK.length;show('quiz-screen');render();}
+function render(){
+  const idx=order[cur],q=BANK[idx],total=BANK.length;
+  document.getElementById('q-num').textContent=cur+1;
+  document.getElementById('q-score').textContent=score;
+  document.getElementById('q-label').textContent=`Question ${cur+1} of ${total}`;
+  document.getElementById('q-text').textContent=q.q;
+  document.getElementById('progress-fill').style.width=((cur/total)*100)+'%';
+  document.getElementById('explanation').className='explanation';
+  document.getElementById('explanation').textContent='';
+  document.getElementById('next-btn').className='next-btn';
+  const letters=['A','B','C','D'],optEl=document.getElementById('options');
+  optEl.innerHTML='';
+  shuffle([0,1,2,3]).forEach((oi,li)=>{
+    const btn=document.createElement('button');
+    btn.className='opt-btn';btn.dataset.opt=oi;
+    btn.innerHTML=`<span class="opt-letter">${letters[li]}</span><span>${q.opts[oi]}</span>`;
+    btn.onclick=()=>selectAnswer(oi,idx);
+    optEl.appendChild(btn);
+  });
+}
+function selectAnswer(chosen,idx){
+  const q=BANK[idx],correct=chosen===q.ans;
+  picks[idx]=chosen;if(correct)score++;
+  document.getElementById('q-score').textContent=score;
+  document.querySelectorAll('.opt-btn').forEach(btn=>{
+    btn.disabled=true;const oi=parseInt(btn.dataset.opt);
+    if(oi===q.ans)btn.classList.add('correct');
+    else if(oi===chosen&&!correct)btn.classList.add('wrong');
+  });
+  if(!correct){const e=document.getElementById('explanation');e.textContent='✗ '+q.exp;e.classList.add('show');}
+  const nb=document.getElementById('next-btn');nb.classList.add('show');
+  nb.textContent=cur+1<BANK.length?'Next Question →':'See Results →';
+}
+function nextQuestion(){cur++;if(cur>=BANK.length)showResults();else{render();window.scrollTo(0,0);}}
+function showResults(){
+  show('results-screen');
+  const total=BANK.length,pct=Math.round((score/total)*100),passed=pct>=70;
+  document.getElementById('result-name').textContent=playerName;
+  document.getElementById('ring-pct').textContent=pct+'%';
+  document.getElementById('ring-pct').style.color=passed?'var(--green)':'var(--red)';
+  document.getElementById('ring-fill').style.stroke=passed?'var(--green)':'var(--red)';
+  setTimeout(()=>{document.getElementById('ring-fill').style.strokeDashoffset=439.82-(439.82*pct/100);},100);
+  document.getElementById('res-title').textContent=pct>=90?'Excellent!':pct>=70?'Passed!':'Needs Work';
+  document.getElementById('res-sub').textContent=`${score} correct out of ${total} questions`;
+  const v=document.getElementById('res-verdict');
+  if(passed){v.textContent='✓ You passed — score above 70%';v.className='result-verdict pass';}
+  else{v.textContent='✗ Below 70% — please retake the quiz';v.className='result-verdict fail';}
+  const rv=document.getElementById('review');rv.innerHTML='<h3>Review</h3>';
+  order.forEach(idx=>{
+    const q=BANK[idx],ua=picks[idx],ok=ua===q.ans;
+    const d=document.createElement('div');d.className='rv-item '+(ok?'ok':'miss');
+    d.innerHTML=`<div class="rv-q">${q.q}</div><div class="rv-a">${ok
+      ?`<span class="c">✓ Correct: ${q.opts[q.ans]}</span>`
+      :`<span class="w">✗ You chose: ${ua!==undefined?q.opts[ua]:'Skipped'}</span><br><span class="c">✓ Correct: ${q.opts[q.ans]}</span><br><span style="color:var(--muted)">${q.exp}</span>`
+    }</div>`;
+    rv.appendChild(d);
+  });
+}
+function retryQuiz(){order=shuffle(order);cur=0;picks={};score=0;document.getElementById('q-score').textContent=0;show('quiz-screen');render();}
+document.getElementById('name-input').addEventListener('keydown',e=>{if(e.key==='Enter')startQuiz();});
+</script>
+</body>
+</html>

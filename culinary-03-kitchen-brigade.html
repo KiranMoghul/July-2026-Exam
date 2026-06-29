@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kitchen Brigade System — July 2026 Exam</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍳</text></svg>">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@400;500&display=swap');
+  :root{--bg:#080810;--surface:#11111f;--border:#1e1e35;--purple:#7c3aed;--purple-l:#9d5bf0;--green:#22c55e;--red:#ef4444;--text:#e8e8f0;--muted:#7070a0;}
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Syne',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;align-items:center;justify-content:center;}
+  body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px);background-size:40px 40px;opacity:.4;pointer-events:none;z-index:0;}
+  .screen{position:relative;z-index:1;width:100%;max-width:660px;margin:0 auto;padding:24px 20px 48px;display:none;}
+  .screen.active{display:block;}
+  #name-screen{text-align:center;padding-top:80px;}
+  .back-link{display:inline-flex;align-items:center;gap:6px;font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);text-decoration:none;letter-spacing:1px;margin-bottom:48px;transition:color .2s;}
+  .back-link:hover{color:var(--purple-l);}
+  .subject-tag{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--purple-l);margin-bottom:12px;}
+  #name-screen h1{font-size:clamp(22px,5vw,36px);font-weight:800;line-height:1.15;margin-bottom:8px;background:linear-gradient(135deg,#fff 30%,var(--purple-l));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+  #name-screen p{color:var(--muted);font-family:'DM Mono',monospace;font-size:12px;margin-bottom:40px;}
+  .name-box{display:flex;flex-direction:column;align-items:center;gap:12px;}
+  .name-box input{width:100%;max-width:320px;padding:12px 16px;background:var(--surface);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:'Syne',sans-serif;font-size:15px;outline:none;text-align:center;transition:border-color .2s;}
+  .name-box input:focus{border-color:var(--purple);}
+  .name-box input::placeholder{color:var(--muted);}
+  .btn-primary{padding:12px 32px;background:var(--purple);color:#fff;border:none;border-radius:8px;font-family:'Syne',sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:background .2s,transform .1s;letter-spacing:.5px;}
+  .btn-primary:hover{background:var(--purple-l);transform:translateY(-1px);}
+  .quiz-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;}
+  .quiz-meta{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);}
+  .quiz-meta span{color:var(--purple-l);font-weight:500;}
+  .progress-bar{width:100%;height:3px;background:var(--border);border-radius:2px;margin-bottom:32px;overflow:hidden;}
+  .progress-fill{height:100%;background:linear-gradient(90deg,var(--purple),var(--purple-l));border-radius:2px;transition:width .3s ease;}
+  .question-num{font-family:'DM Mono',monospace;font-size:10px;color:var(--purple-l);letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;}
+  .question-text{font-size:clamp(15px,3vw,18px);font-weight:600;line-height:1.5;margin-bottom:28px;color:var(--text);}
+  .options{display:flex;flex-direction:column;gap:10px;}
+  .opt-btn{display:flex;align-items:center;gap:12px;padding:13px 16px;background:var(--surface);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:'Syne',sans-serif;font-size:14px;font-weight:400;cursor:pointer;text-align:left;transition:border-color .15s,background .15s;width:100%;}
+  .opt-btn:hover:not(:disabled){border-color:var(--purple);background:#16162a;}
+  .opt-btn .opt-letter{flex-shrink:0;width:26px;height:26px;border-radius:6px;background:var(--border);display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);transition:background .15s,color .15s;}
+  .opt-btn:hover:not(:disabled) .opt-letter{background:var(--purple);color:#fff;}
+  .opt-btn.correct{border-color:var(--green);background:rgba(34,197,94,.1);}
+  .opt-btn.correct .opt-letter{background:var(--green);color:#fff;}
+  .opt-btn.wrong{border-color:var(--red);background:rgba(239,68,68,.1);}
+  .opt-btn.wrong .opt-letter{background:var(--red);color:#fff;}
+  .opt-btn:disabled{cursor:default;}
+  .explanation{display:none;margin-top:16px;padding:14px 16px;background:rgba(124,58,237,.1);border:1px solid rgba(124,58,237,.25);border-left:3px solid var(--purple);border-radius:8px;font-size:13px;line-height:1.6;color:#c4b5fd;font-family:'DM Mono',monospace;}
+  .explanation.show{display:block;}
+  .next-btn{margin-top:24px;width:100%;padding:13px;background:var(--purple);color:#fff;border:none;border-radius:8px;font-family:'Syne',sans-serif;font-size:14px;font-weight:700;cursor:pointer;display:none;transition:background .2s;letter-spacing:.5px;}
+  .next-btn:hover{background:var(--purple-l);}
+  .next-btn.show{display:block;}
+  #results-screen{text-align:center;padding-top:40px;}
+  .result-name{font-family:'DM Mono',monospace;font-size:12px;color:var(--muted);margin-bottom:32px;}
+  .score-ring{position:relative;width:160px;height:160px;margin:0 auto 28px;}
+  .score-ring svg{transform:rotate(-90deg);}
+  .score-ring .ring-bg{fill:none;stroke:var(--border);stroke-width:10;}
+  .score-ring .ring-fill{fill:none;stroke-width:10;stroke-linecap:round;transition:stroke-dashoffset 1s ease,stroke .5s;}
+  .score-ring .ring-text{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+  .ring-pct{font-size:34px;font-weight:800;line-height:1;}
+  .ring-label{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);margin-top:4px;letter-spacing:1px;}
+  .result-title{font-size:24px;font-weight:800;margin-bottom:8px;}
+  .result-sub{font-family:'DM Mono',monospace;font-size:12px;color:var(--muted);margin-bottom:8px;}
+  .result-verdict{font-family:'DM Mono',monospace;font-size:12px;padding:8px 20px;border-radius:20px;display:inline-block;margin-bottom:32px;}
+  .result-verdict.pass{background:rgba(34,197,94,.12);color:var(--green);border:1px solid rgba(34,197,94,.3);}
+  .result-verdict.fail{background:rgba(239,68,68,.12);color:var(--red);border:1px solid rgba(239,68,68,.3);}
+  .result-actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:40px;}
+  .btn-outline{padding:11px 24px;background:none;border:1px solid var(--border);border-radius:8px;color:var(--muted);font-family:'Syne',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:border-color .2s,color .2s;}
+  .btn-outline:hover{border-color:var(--purple);color:var(--text);}
+  .review{text-align:left;}
+  .review h3{font-size:13px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:2px;margin-bottom:16px;font-family:'DM Mono',monospace;}
+  .rv-item{padding:14px 16px;border-radius:8px;margin-bottom:10px;border:1px solid var(--border);}
+  .rv-item.ok{border-color:rgba(34,197,94,.25);background:rgba(34,197,94,.05);}
+  .rv-item.miss{border-color:rgba(239,68,68,.25);background:rgba(239,68,68,.05);}
+  .rv-q{font-size:13px;font-weight:600;margin-bottom:8px;line-height:1.4;}
+  .rv-a{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);line-height:1.6;}
+  .rv-a .c{color:var(--green);}
+  .rv-a .w{color:var(--red);}
+</style>
+</head>
+<body>
+
+<div class="screen active" id="name-screen">
+  <a class="back-link" href="index.html">← Back to subjects</a>
+  <div class="subject-tag">Culinary Arts · Topic 03</div>
+  <h1>Kitchen Brigade System</h1>
+  <p>30 questions · Hierarchy, roles, stations & kitchen fire protocol</p>
+  <div class="name-box">
+    <input type="text" id="name-input" placeholder="Enter your name" maxlength="30" autocomplete="off">
+    <button class="btn-primary" onclick="startQuiz()">Start Quiz</button>
+  </div>
+</div>
+
+<div class="screen" id="quiz-screen">
+  <div class="quiz-header">
+    <div class="quiz-meta">Question <span id="q-num">1</span> of <span id="q-total">30</span></div>
+    <div class="quiz-meta">Score <span id="q-score">0</span></div>
+  </div>
+  <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+  <div class="question-num" id="q-label"></div>
+  <div class="question-text" id="q-text"></div>
+  <div class="options" id="options"></div>
+  <div class="explanation" id="explanation"></div>
+  <button class="next-btn" id="next-btn" onclick="nextQuestion()">Next Question →</button>
+</div>
+
+<div class="screen" id="results-screen">
+  <div class="result-name" id="result-name"></div>
+  <div class="score-ring">
+    <svg viewBox="0 0 160 160" width="160" height="160">
+      <circle class="ring-bg" cx="80" cy="80" r="70"/>
+      <circle class="ring-fill" id="ring-fill" cx="80" cy="80" r="70" stroke-dasharray="439.82" stroke-dashoffset="439.82" stroke="var(--green)"/>
+    </svg>
+    <div class="ring-text">
+      <div class="ring-pct" id="ring-pct">0%</div>
+      <div class="ring-label">SCORE</div>
+    </div>
+  </div>
+  <div class="result-title" id="res-title"></div>
+  <div class="result-sub" id="res-sub"></div>
+  <div class="result-verdict" id="res-verdict"></div>
+  <div class="result-actions">
+    <button class="btn-primary" onclick="retryQuiz()">Retry →</button>
+    <button class="btn-outline" onclick="window.location.href='index.html'">All Subjects</button>
+  </div>
+  <div class="review" id="review"></div>
+</div>
+
+<script>
+const BANK = [
+  {
+    q: "Who is credited with creating the modern kitchen brigade system?",
+    opts: [
+      "Auguste Escoffier, who organised the kitchen into specialised stations with defined roles to improve efficiency in large hotel kitchens",
+      "Marie-Antoine Carême, who introduced the brigade while working in the French royal court and codified classical French cuisine",
+      "Paul Bocuse, who restructured kitchen roles in the 1970s to adapt classical hierarchy to modern restaurant service",
+      "Fernand Point, who developed the brigade model at his restaurant La Pyramide to train a generation of French chefs"
+    ],
+    ans: 0,
+    exp: "Auguste Escoffier developed the brigade de cuisine in the late 19th century while working at the Savoy and Ritz hotels. He reorganised kitchen labour into defined stations and ranks to improve speed, consistency, and accountability."
+  },
+  {
+    q: "What is the correct meaning of 'brigade de cuisine'?",
+    opts: [
+      "A team of kitchen staff organised into a structured hierarchy with defined roles, ranks, and responsibilities for each position",
+      "A French cooking competition held annually to determine the best commis chef across European hotel kitchens",
+      "A brigade of service staff responsible for delivering food from the kitchen pass directly to the guest's table",
+      "A cleaning rotation system where kitchen staff rotate sanitation duties across all stations at the end of service"
+    ],
+    ans: 0,
+    exp: "'Brigade de cuisine' means 'kitchen brigade' — the hierarchical team structure of a professional kitchen where every role has a defined position, responsibility, and chain of command, modelled on military organisation."
+  },
+  {
+    q: "In the classical brigade system, which position sits directly below the Executive Chef and takes operational command of the kitchen during service?",
+    opts: [
+      "The Chef de Partie, who manages a single station and directs commis chefs assigned to that area during each service",
+      "The Sous Chef, who oversees daily kitchen operations, supervises all stations, and assumes full command when the Executive Chef is absent",
+      "The Expeditor, who coordinates order flow between the front of house and all cooking stations during a busy service",
+      "The Senior Commis Chef, who leads the junior kitchen staff and manages mise en place preparation across all sections"
+    ],
+    ans: 1,
+    exp: "The Sous Chef (Under Chef) is second in command. They manage the brigade during service, ensure quality standards, supervise station chefs, and run the kitchen entirely when the Executive Chef is not present."
+  },
+  {
+    q: "What is the specific responsibility of a 'Saucier' in the classical brigade?",
+    opts: [
+      "Preparing all cold dishes, salads, pâtés, and charcuterie items served from the cold kitchen section",
+      "Managing all deep-fried and shallow-fried dishes produced on the fry station during service",
+      "Producing all sauces, stocks, hot appetisers, and sautéed dishes — considered the most prestigious station in the brigade",
+      "Overseeing all roasted, grilled, and broiled proteins served across the hot sections during service"
+    ],
+    ans: 2,
+    exp: "The Saucier is widely regarded as the most skilled and prestigious hot kitchen station. They are responsible for all sauces, stocks, braised dishes, hot appetisers, and sautéed items — requiring the deepest culinary knowledge."
+  },
+  {
+    q: "Which role in the kitchen brigade is responsible exclusively for roasted and braised meats?",
+    opts: [
+      "The Poissonnier, who manages all fish cookery including poaching, pan-frying, and preparing fish sauces and garnishes",
+      "The Rôtisseur, who oversees all roasting, braising, and grilling of meats and their accompanying jus and roasting sauces",
+      "The Entremetier, who is responsible for all vegetable dishes, egg preparations, soups, and starchy side dishes",
+      "The Grillardin, who handles all grilled and broiled proteins on the char-grill station during high-volume service"
+    ],
+    ans: 1,
+    exp: "The Rôtisseur manages the roast section — responsible for roasted, braised, and pot-roasted meats, along with their jus and sauces. In smaller kitchens, the Grillardin and Friturier may fall under the Rôtisseur."
+  },
+  {
+    q: "What is the role of the 'Poissonnier' in the kitchen brigade?",
+    opts: [
+      "Managing the pastry section including all desserts, breads, and sweet preparations served throughout the meal",
+      "Overseeing all vegetable cookery, egg dishes, soups, and pasta prepared for the hot sections during service",
+      "Responsible for all fish and seafood cookery including poaching, grilling, frying, and producing fish sauces and stocks",
+      "Managing the larder section including butchery, portioning of raw proteins, and cold food preparation"
+    ],
+    ans: 2,
+    exp: "The Poissonnier is the fish chef, responsible for all fish and seafood preparation and cooking — including fish stocks and sauces. In hotels with high seafood volume, this is a dedicated senior station."
+  },
+  {
+    q: "What does the 'Entremetier' position cover in a classical brigade?",
+    opts: [
+      "All sauce production, stock reduction, and hot appetisers served from the main hot section during service",
+      "Vegetables, soups, egg dishes, and starchy sides — acting as the supporting hot section alongside the Saucier and Rôtisseur",
+      "All cold starters, terrines, and charcuterie items prepared and plated in the garde manger section",
+      "Breakfast cookery, room service items, and staff meals prepared separately from the main service brigade"
+    ],
+    ans: 1,
+    exp: "The Entremetier handles vegetables, soups, egg dishes, pasta, and starchy accompaniments. In large brigades this splits into Potager (soups) and Légumier (vegetables) as separate sub-roles."
+  },
+  {
+    q: "What is the role of the 'Garde Manger' in the brigade system?",
+    opts: [
+      "Supervising all hot cooking stations during service and ensuring consistent timing across all sections of the kitchen",
+      "Managing the cold kitchen — producing cold appetisers, salads, charcuterie, pâtés, terrines, and cold plated presentations",
+      "Overseeing all purchasing, receiving, and storage of fresh produce delivered to the kitchen each morning",
+      "Preparing and portioning all raw proteins including butchery, fish fabrication, and poultry breakdown for other stations"
+    ],
+    ans: 1,
+    exp: "The Garde Manger (Larder Chef) runs the cold kitchen — responsible for cold starters, salads, charcuterie, pâtés, terrines, canapés, and decorative cold platters. In large hotels this is a significant department."
+  },
+  {
+    q: "What is the 'Pâtissier' responsible for in a full brigade?",
+    opts: [
+      "Producing all hot desserts, pastries, breads, confectionery, and sugar work served throughout the meal and for banqueting",
+      "Managing the cold kitchen section including ice cream, chilled desserts, and cold plated sweet courses only",
+      "Preparing breakfast pastries, bread rolls, and morning service items while the main brigade handles evening service",
+      "Overseeing all baking for the hotel including staff meals, bread for functions, and pastry for the coffee shop"
+    ],
+    ans: 0,
+    exp: "The Pâtissier leads the pastry department — producing all desserts, pastries, breads, cakes, chocolates, and sugar work. In large hotels, the pastry section operates almost as a separate kitchen with its own hierarchy."
+  },
+  {
+    q: "Where does a 'Commis Chef' sit in the brigade hierarchy, and what is their primary function?",
+    opts: [
+      "At the top of the junior tier, directly supervising kitchen porters and stewarding staff while reporting to the Chef de Partie",
+      "At the entry level of the brigade, assisting their assigned Chef de Partie with mise en place, basic preparation, and station maintenance",
+      "As a floating chef across all stations, filling gaps during service wherever staffing shortages occur on any given day",
+      "As a designated trainer for kitchen apprentices, demonstrating techniques and assessing progress under the Sous Chef"
+    ],
+    ans: 1,
+    exp: "The Commis Chef is the entry-level role. They assist the Chef de Partie on their station — carrying out prep, basic cooking tasks, and keeping the station organised. Commis I, II, and III indicate increasing seniority."
+  },
+  {
+    q: "What is the role of the 'Chef de Partie' (CDP) in the brigade?",
+    opts: [
+      "Managing the entire kitchen in the absence of both the Executive Chef and Sous Chef during critical service periods",
+      "Owning and operating a specific kitchen station, managing the commis chefs assigned there, and maintaining quality and output for that section",
+      "Acting as a liaison between front of house and back of house, coordinating order timing from the expeditor's position at the pass",
+      "Overseeing all purchasing decisions and supplier relationships under the direction of the Executive Chef"
+    ],
+    ans: 1,
+    exp: "The Chef de Partie (Station Chef) runs a specific section — grill, sauté, pastry, cold kitchen, etc. They are responsible for that section's output, quality, and the development of the commis chefs working under them."
+  },
+  {
+    q: "In kitchen communication, when a chef calls 'Oui, Chef!' it means:",
+    opts: [
+      "A request for clarification on an order, asking the chef to repeat the instruction before the cook proceeds",
+      "An acknowledgement of an instruction, confirming the cook has heard, understood, and will carry out the order",
+      "A signal that the station has run out of a key ingredient and a replacement is being sourced from the store",
+      "A formal greeting used only when the Executive Chef enters the kitchen at the start of each service period"
+    ],
+    ans: 1,
+    exp: "'Oui, Chef!' is the standard acknowledgement in a professional kitchen. It confirms you heard the instruction and will execute it. Responding any other way — or not responding at all — is considered unprofessional."
+  },
+  {
+    q: "What does the command 'Fire!' mean in kitchen brigade communication?",
+    opts: [
+      "An emergency signal indicating an actual fire in the kitchen requiring immediate evacuation of all kitchen personnel",
+      "A command from the chef or expeditor to begin cooking a specific dish immediately so it is ready in time with the rest of the table",
+      "An instruction to increase the heat on a specific burner to achieve a harder sear on the protein being cooked",
+      "A signal that a dish has been finished and is ready to be plated and sent to the pass for quality checking"
+    ],
+    ans: 1,
+    exp: "'Fire!' means start cooking that dish right now. It is called by the expeditor or chef to synchronise timing across stations so all dishes for a table arrive at the pass together."
+  },
+  {
+    q: "What does 'All day' mean when used at the pass during service?",
+    opts: [
+      "A dish that has been on the menu all day and is available throughout both lunch and dinner service periods",
+      "The total running count of a specific dish still outstanding across all open tickets at that moment in service",
+      "An instruction that a particular preparation must be completed before the end of the current service period",
+      "A signal that a station has been running continuously without a break and requires a rest period for the cook"
+    ],
+    ans: 1,
+    exp: "'All day' tells a station the total number of a particular item still needed across all open tickets. For example, 'Four salmon all day' means four salmon dishes are still outstanding across all current orders."
+  },
+  {
+    q: "What is the 'Aboyeur' (expeditor) responsible for during service?",
+    opts: [
+      "Plating all dishes at the pass according to the chef's specification and checking presentation before service to the guest",
+      "Calling out orders to the kitchen, coordinating timing between all stations, and ensuring complete tables leave the pass together",
+      "Managing the order of mise en place tasks assigned to each station chef before the start of service each day",
+      "Receiving food deliveries at the back door and checking them against the purchase order before storing correctly"
+    ],
+    ans: 1,
+    exp: "The Aboyeur calls orders to the kitchen, manages ticket flow, coordinates timing across stations, and ensures dishes for a table are completed simultaneously. In many kitchens this role is performed by the Sous Chef or Executive Chef."
+  },
+  {
+    q: "Which position is responsible for preparing breakfast items, omelettes, and egg dishes in a large hotel brigade?",
+    opts: [
+      "The Tournant, who rotates across all stations and covers whichever section is short-staffed on any given service",
+      "The Entremetier, who covers egg dishes and breakfast preparations as part of their broader vegetable and starchy sides remit",
+      "The Breakfast Chef or designated morning Commis, working under the Entremetier or a senior chef for morning service only",
+      "The Garde Manger chef, who extends their cold kitchen duties to include cold breakfast items and fruit platters each morning"
+    ],
+    ans: 2,
+    exp: "In large hotel brigades, breakfast service is handled by a Breakfast Chef or senior Commis working morning shifts, typically under the Entremetier's section. This keeps breakfast operations separate from main service prep."
+  },
+  {
+    q: "What is the 'Tournant' (relief chef) in the brigade system?",
+    opts: [
+      "A junior chef assigned permanently to the larder section to assist with cold food preparation and butchery tasks",
+      "A senior chef who rotates across all stations, covering for absent chefs and providing support wherever it is needed during service",
+      "The chef responsible for turning vegetables into barrel shapes and other classical garnish cuts for fine dining presentations",
+      "An external chef brought in from a staffing agency to fill gaps during high-volume periods such as festive service"
+    ],
+    ans: 1,
+    exp: "The Tournant (swing chef or relief chef) is a highly skilled, versatile member of the brigade who can operate effectively on any station. They cover absences and provide support wherever needed — requiring knowledge of the entire kitchen."
+  },
+  {
+    q: "In the kitchen brigade, what is meant by the term 'mise en place check'?",
+    opts: [
+      "A formal inspection conducted by the Executive Chef to assess whether all stations have their preparation complete before service begins",
+      "A daily inventory count of all dry goods and perishables conducted by the Sous Chef before ordering from suppliers",
+      "A cleaning inspection carried out by the head kitchen steward to verify all surfaces meet hygiene standards before service",
+      "A tasting session led by the Executive Chef to confirm that all sauces and preparations meet the required flavour standard"
+    ],
+    ans: 0,
+    exp: "A mise en place check is a pre-service inspection where the Sous Chef or Executive Chef verifies each station has all its preparations complete, properly stored, labelled, and ready for the demands of service."
+  },
+  {
+    q: "What is the correct chain of command in the classical brigade from most senior to most junior?",
+    opts: [
+      "Sous Chef → Executive Chef → Chef de Partie → Commis Chef → Kitchen Porter",
+      "Executive Chef → Sous Chef → Chef de Partie → Commis Chef → Kitchen Porter",
+      "Chef de Partie → Sous Chef → Executive Chef → Commis Chef → Kitchen Porter",
+      "Executive Chef → Chef de Partie → Sous Chef → Commis Chef → Kitchen Porter"
+    ],
+    ans: 1,
+    exp: "The classical hierarchy runs: Executive Chef → Sous Chef → Chef de Partie → Commis Chef → Kitchen Porter/Apprentice. Each level reports to the one above it, maintaining clear accountability and communication flow."
+  },
+  {
+    q: "What does 'working the line' mean in a professional kitchen?",
+    opts: [
+      "Following the recipe card line by line during preparation to ensure precise replication of a standardised dish",
+      "Cooking on the hot line during active service — managing orders, executing dishes, and maintaining pace on a station",
+      "Receiving a queue of deliveries along the kitchen loading dock and processing them into cold store or dry store",
+      "Cleaning along the kitchen floor drain lines at the end of service as part of the deep cleaning rotation"
+    ],
+    ans: 1,
+    exp: "'Working the line' refers to cooking on the hot section during service. The 'line' is the row of cooking equipment — stoves, grills, fryers — where chefs execute dishes to order under service pressure."
+  },
+  {
+    q: "In a modern smaller kitchen, how is the brigade system typically adapted?",
+    opts: [
+      "The system is abandoned entirely, with all chefs performing equal tasks without any hierarchy or designated stations",
+      "The Executive Chef takes on all cooking responsibilities themselves, with commis chefs only handling cleaning and prep",
+      "Roles are consolidated — one chef may cover multiple classical stations, and the hierarchy is flatter but still structured",
+      "The brigade system is replaced by a rotation schedule where all staff change stations every 30 minutes during service"
+    ],
+    ans: 2,
+    exp: "In smaller kitchens, one chef may cover the work of two or three classical stations. The hierarchy still exists but is compressed — a Chef de Partie might run both sauté and grill, for example. The structure remains, just with fewer people."
+  },
+  {
+    q: "What is a 'kitchen fire' protocol referring to in the context of kitchen operations?",
+    opts: [
+      "The procedure for handling an actual kitchen fire, including using the correct extinguisher type and evacuating the kitchen safely",
+      "A slang term for the verbal 'Fire!' command used to start cooking dishes, which is part of the standard order-calling system",
+      "A written emergency document kept at the pass that lists every dish on the menu alongside its required cooking time",
+      "A pre-service briefing where the Sous Chef outlines which dishes are selling fast and likely to run out during service"
+    ],
+    ans: 0,
+    exp: "Kitchen fire protocol refers to actual fire emergency procedures — knowing the type of extinguisher for different fires (grease, electrical), how to smother a pan fire, when to evacuate, and who to call. Every kitchen staff member must know this."
+  },
+  {
+    q: "Which type of fire extinguisher is correct for a grease or fat fire in a professional kitchen?",
+    opts: [
+      "A water-based extinguisher, which rapidly cools burning fat and smothers the fire by cutting off its oxygen supply",
+      "A CO2 extinguisher, which displaces oxygen without leaving residue and is suitable for electrical and fat fires equally",
+      "A wet chemical extinguisher, which reacts with burning fat to create a soapy foam that cools and seals the surface",
+      "A dry powder extinguisher, which coats all burning surfaces with a fine powder layer that interrupts the combustion process"
+    ],
+    ans: 2,
+    exp: "A wet chemical (Class F) extinguisher is designed specifically for cooking fat and oil fires. It reacts with hot fat through a process called saponification, creating a soapy foam that seals the surface and prevents re-ignition. Water must NEVER be used on fat fires."
+  },
+  {
+    q: "If a pan catches fire on the stove during service, what is the correct immediate response?",
+    opts: [
+      "Pour cold water over the pan immediately to cool the fat and extinguish the flame before it spreads to adjacent equipment",
+      "Cover the pan with a lid or damp cloth to cut off oxygen, turn off the heat source, and do not move the pan",
+      "Move the pan rapidly to the nearest sink and run cold water over it to prevent the fire from spreading across the stove",
+      "Spray the pan with the nearest dry powder extinguisher immediately regardless of the size of the flame"
+    ],
+    ans: 1,
+    exp: "For a pan fire: smother it by covering with a lid or fire blanket to cut off oxygen, and turn off the heat. Never add water — water causes burning fat to explode violently. Never move the pan as this can spread the fire."
+  },
+  {
+    q: "What does 'fire safety' training for kitchen staff typically include?",
+    opts: [
+      "Only instruction on how to use a fire extinguisher, with evacuation procedures left to hotel management to communicate",
+      "Identification of fire hazards, correct extinguisher selection, evacuation routes, assembly points, and how to raise the alarm",
+      "A mandatory annual fire drill where kitchen staff extinguish a controlled fire using whatever equipment is closest to them",
+      "Training on how to prevent grease buildup in extraction hoods only, as this is the leading cause of kitchen fires"
+    ],
+    ans: 1,
+    exp: "Kitchen fire safety training covers: identifying fire hazards (grease, gas, electrical), extinguisher types and usage, fire blanket use, evacuation routes, muster points, alarm activation, and not re-entering until cleared by fire services."
+  },
+  {
+    q: "What is the purpose of a 'pre-service briefing' (also called a 'line-up') in a professional kitchen?",
+    opts: [
+      "A formal meeting where the Executive Chef announces staffing changes, pay adjustments, and new kitchen policies to all brigade members",
+      "A daily session where the team reviews the menu, specials, allergens, reservation count, and any changes before service begins",
+      "A tasting where each station presents their mise en place to the Sous Chef for approval before the first order is taken",
+      "A cleaning inspection where the head steward verifies that all workstations have been sanitised to the required standard"
+    ],
+    ans: 1,
+    exp: "A pre-service briefing (or line-up) is held before every service. The chef communicates the day's specials, cover count, VIP guests, allergen alerts, 86'd items, and any service-specific instructions — ensuring the whole team is aligned before service starts."
+  },
+  {
+    q: "What is the correct response when a senior chef gives a Commis Chef an instruction during service?",
+    opts: [
+      "Ask the chef to repeat the instruction twice to confirm full understanding before attempting to carry out any task",
+      "Acknowledge immediately with 'Oui, Chef!' and carry out the instruction precisely and without delay",
+      "Complete your current task first, then acknowledge the instruction once you have a free moment between orders",
+      "Consult the recipe card before acknowledging the instruction to ensure you can execute it correctly"
+    ],
+    ans: 1,
+    exp: "The correct response is immediate acknowledgement — 'Oui, Chef!' — followed by prompt execution. In a busy kitchen, delayed responses break service flow. If you genuinely did not hear, ask once to clarify, then confirm and proceed."
+  },
+  {
+    q: "What is the function of the 'pass' in the brigade's service system?",
+    opts: [
+      "The area where kitchen staff collect their station tools, knives, and uniform at the start of each service period",
+      "The counter between the kitchen and dining room where finished dishes are checked for quality before being collected by service staff",
+      "The gap between the hot section and cold section of the kitchen where the expeditor coordinates both teams simultaneously",
+      "The route kitchen porters use to transport clean crockery and cookware from the wash-up area back to the cooking stations"
+    ],
+    ans: 1,
+    exp: "The pass is the quality control point. All finished dishes pass through here — the chef checks temperature, presentation, and completeness before calling servers to collect. Nothing should reach a guest without passing through the pass."
+  },
+  {
+    q: "In a classical brigade, the 'Friturier' is responsible for:",
+    opts: [
+      "Managing all fruit-based desserts, coulis preparations, and fruit garnishes served across pastry and cold sections",
+      "All deep-frying operations — fish, vegetables, potatoes, breaded items — and maintaining the fryer stations at correct oil temperatures",
+      "Producing all fried egg and omelette dishes during breakfast service as part of the morning kitchen team",
+      "Overseeing the frying of all pastry items including doughnuts, churros, and choux products from the pastry section"
+    ],
+    ans: 1,
+    exp: "The Friturier manages the deep-fry station — responsible for all fried items including chips, breaded proteins, fritters, and fried vegetables. They maintain oil quality, temperature, and cleanliness of all fryer equipment."
+  },
+  {
+    q: "Why was the kitchen brigade system modelled on military structure?",
+    opts: [
+      "Because most early professional chefs had military backgrounds and brought the structure they knew into hotel kitchens",
+      "To create clear ranks, defined responsibilities, efficient communication, and accountability in a high-pressure, fast-paced environment",
+      "To allow hotel management to apply military discipline rules including mandatory overtime and rigid uniform regulations",
+      "Because Escoffier worked as a military cook and adapted army catering practices directly into fine dining kitchen operations"
+    ],
+    ans: 1,
+    exp: "Escoffier modelled the brigade on military structure because a professional kitchen — like an army — requires clear hierarchy, fast communication, defined roles, and accountability under pressure. The system eliminated confusion and improved efficiency dramatically."
+  }
+];
+
+let order=[],cur=0,picks={},playerName='',score=0;
+function shuffle(arr){const a=[...arr];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');window.scrollTo(0,0);}
+function startQuiz(){const inp=document.getElementById('name-input').value.trim();playerName=inp||'Anonymous';order=shuffle(BANK.map((_,i)=>i));cur=0;picks={};score=0;document.getElementById('q-total').textContent=BANK.length;show('quiz-screen');render();}
+function render(){
+  const idx=order[cur],q=BANK[idx],total=BANK.length;
+  document.getElementById('q-num').textContent=cur+1;
+  document.getElementById('q-score').textContent=score;
+  document.getElementById('q-label').textContent=`Question ${cur+1} of ${total}`;
+  document.getElementById('q-text').textContent=q.q;
+  document.getElementById('progress-fill').style.width=((cur/total)*100)+'%';
+  document.getElementById('explanation').className='explanation';
+  document.getElementById('explanation').textContent='';
+  document.getElementById('next-btn').className='next-btn';
+  const letters=['A','B','C','D'],optEl=document.getElementById('options');
+  optEl.innerHTML='';
+  shuffle([0,1,2,3]).forEach((oi,li)=>{
+    const btn=document.createElement('button');
+    btn.className='opt-btn';btn.dataset.opt=oi;
+    btn.innerHTML=`<span class="opt-letter">${letters[li]}</span><span>${q.opts[oi]}</span>`;
+    btn.onclick=()=>selectAnswer(oi,idx);
+    optEl.appendChild(btn);
+  });
+}
+function selectAnswer(chosen,idx){
+  const q=BANK[idx],correct=chosen===q.ans;
+  picks[idx]=chosen;if(correct)score++;
+  document.getElementById('q-score').textContent=score;
+  document.querySelectorAll('.opt-btn').forEach(btn=>{
+    btn.disabled=true;const oi=parseInt(btn.dataset.opt);
+    if(oi===q.ans)btn.classList.add('correct');
+    else if(oi===chosen&&!correct)btn.classList.add('wrong');
+  });
+  if(!correct){const e=document.getElementById('explanation');e.textContent='✗ '+q.exp;e.classList.add('show');}
+  const nb=document.getElementById('next-btn');nb.classList.add('show');
+  nb.textContent=cur+1<BANK.length?'Next Question →':'See Results →';
+}
+function nextQuestion(){cur++;if(cur>=BANK.length)showResults();else{render();window.scrollTo(0,0);}}
+function showResults(){
+  show('results-screen');
+  const total=BANK.length,pct=Math.round((score/total)*100),passed=pct>=70;
+  document.getElementById('result-name').textContent=playerName;
+  document.getElementById('ring-pct').textContent=pct+'%';
+  document.getElementById('ring-pct').style.color=passed?'var(--green)':'var(--red)';
+  document.getElementById('ring-fill').style.stroke=passed?'var(--green)':'var(--red)';
+  setTimeout(()=>{document.getElementById('ring-fill').style.strokeDashoffset=439.82-(439.82*pct/100);},100);
+  document.getElementById('res-title').textContent=pct>=90?'Excellent!':pct>=70?'Passed!':'Needs Work';
+  document.getElementById('res-sub').textContent=`${score} correct out of ${total} questions`;
+  const v=document.getElementById('res-verdict');
+  if(passed){v.textContent='✓ You passed — score above 70%';v.className='result-verdict pass';}
+  else{v.textContent='✗ Below 70% — please retake the quiz';v.className='result-verdict fail';}
+  const rv=document.getElementById('review');rv.innerHTML='<h3>Review</h3>';
+  order.forEach(idx=>{
+    const q=BANK[idx],ua=picks[idx],ok=ua===q.ans;
+    const d=document.createElement('div');d.className='rv-item '+(ok?'ok':'miss');
+    d.innerHTML=`<div class="rv-q">${q.q}</div><div class="rv-a">${ok
+      ?`<span class="c">✓ Correct: ${q.opts[q.ans]}</span>`
+      :`<span class="w">✗ You chose: ${ua!==undefined?q.opts[ua]:'Skipped'}</span><br><span class="c">✓ Correct: ${q.opts[q.ans]}</span><br><span style="color:var(--muted)">${q.exp}</span>`
+    }</div>`;
+    rv.appendChild(d);
+  });
+}
+function retryQuiz(){order=shuffle(order);cur=0;picks={};score=0;document.getElementById('q-score').textContent=0;show('quiz-screen');render();}
+document.getElementById('name-input').addEventListener('keydown',e=>{if(e.key==='Enter')startQuiz();});
+</script>
+</body>
+</html>

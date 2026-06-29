@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Knife Handling, Sharpening & Vegetable Cuts — July 2026 Exam</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍳</text></svg>">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@400;500&display=swap');
+  :root{--bg:#080810;--surface:#11111f;--border:#1e1e35;--purple:#7c3aed;--purple-l:#9d5bf0;--green:#22c55e;--red:#ef4444;--text:#e8e8f0;--muted:#7070a0;}
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Syne',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;align-items:center;justify-content:center;}
+  body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px);background-size:40px 40px;opacity:.4;pointer-events:none;z-index:0;}
+  .screen{position:relative;z-index:1;width:100%;max-width:660px;margin:0 auto;padding:24px 20px 48px;display:none;}
+  .screen.active{display:block;}
+  #name-screen{text-align:center;padding-top:80px;}
+  .back-link{display:inline-flex;align-items:center;gap:6px;font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);text-decoration:none;letter-spacing:1px;margin-bottom:48px;transition:color .2s;}
+  .back-link:hover{color:var(--purple-l);}
+  .subject-tag{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--purple-l);margin-bottom:12px;}
+  #name-screen h1{font-size:clamp(22px,5vw,36px);font-weight:800;line-height:1.15;margin-bottom:8px;background:linear-gradient(135deg,#fff 30%,var(--purple-l));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+  #name-screen p{color:var(--muted);font-family:'DM Mono',monospace;font-size:12px;margin-bottom:40px;}
+  .name-box{display:flex;flex-direction:column;align-items:center;gap:12px;}
+  .name-box input{width:100%;max-width:320px;padding:12px 16px;background:var(--surface);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:'Syne',sans-serif;font-size:15px;outline:none;text-align:center;transition:border-color .2s;}
+  .name-box input:focus{border-color:var(--purple);}
+  .name-box input::placeholder{color:var(--muted);}
+  .btn-primary{padding:12px 32px;background:var(--purple);color:#fff;border:none;border-radius:8px;font-family:'Syne',sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:background .2s,transform .1s;letter-spacing:.5px;}
+  .btn-primary:hover{background:var(--purple-l);transform:translateY(-1px);}
+  .quiz-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;}
+  .quiz-meta{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);}
+  .quiz-meta span{color:var(--purple-l);font-weight:500;}
+  .progress-bar{width:100%;height:3px;background:var(--border);border-radius:2px;margin-bottom:32px;overflow:hidden;}
+  .progress-fill{height:100%;background:linear-gradient(90deg,var(--purple),var(--purple-l));border-radius:2px;transition:width .3s ease;}
+  .question-num{font-family:'DM Mono',monospace;font-size:10px;color:var(--purple-l);letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;}
+  .question-text{font-size:clamp(15px,3vw,18px);font-weight:600;line-height:1.5;margin-bottom:28px;color:var(--text);}
+  .options{display:flex;flex-direction:column;gap:10px;}
+  .opt-btn{display:flex;align-items:center;gap:12px;padding:13px 16px;background:var(--surface);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:'Syne',sans-serif;font-size:14px;font-weight:400;cursor:pointer;text-align:left;transition:border-color .15s,background .15s;width:100%;}
+  .opt-btn:hover:not(:disabled){border-color:var(--purple);background:#16162a;}
+  .opt-btn .opt-letter{flex-shrink:0;width:26px;height:26px;border-radius:6px;background:var(--border);display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);transition:background .15s,color .15s;}
+  .opt-btn:hover:not(:disabled) .opt-letter{background:var(--purple);color:#fff;}
+  .opt-btn.correct{border-color:var(--green);background:rgba(34,197,94,.1);}
+  .opt-btn.correct .opt-letter{background:var(--green);color:#fff;}
+  .opt-btn.wrong{border-color:var(--red);background:rgba(239,68,68,.1);}
+  .opt-btn.wrong .opt-letter{background:var(--red);color:#fff;}
+  .opt-btn:disabled{cursor:default;}
+  .explanation{display:none;margin-top:16px;padding:14px 16px;background:rgba(124,58,237,.1);border:1px solid rgba(124,58,237,.25);border-left:3px solid var(--purple);border-radius:8px;font-size:13px;line-height:1.6;color:#c4b5fd;font-family:'DM Mono',monospace;}
+  .explanation.show{display:block;}
+  .next-btn{margin-top:24px;width:100%;padding:13px;background:var(--purple);color:#fff;border:none;border-radius:8px;font-family:'Syne',sans-serif;font-size:14px;font-weight:700;cursor:pointer;display:none;transition:background .2s;letter-spacing:.5px;}
+  .next-btn:hover{background:var(--purple-l);}
+  .next-btn.show{display:block;}
+  #results-screen{text-align:center;padding-top:40px;}
+  .result-name{font-family:'DM Mono',monospace;font-size:12px;color:var(--muted);margin-bottom:32px;}
+  .score-ring{position:relative;width:160px;height:160px;margin:0 auto 28px;}
+  .score-ring svg{transform:rotate(-90deg);}
+  .score-ring .ring-bg{fill:none;stroke:var(--border);stroke-width:10;}
+  .score-ring .ring-fill{fill:none;stroke-width:10;stroke-linecap:round;transition:stroke-dashoffset 1s ease,stroke .5s;}
+  .score-ring .ring-text{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+  .ring-pct{font-size:34px;font-weight:800;line-height:1;}
+  .ring-label{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);margin-top:4px;letter-spacing:1px;}
+  .result-title{font-size:24px;font-weight:800;margin-bottom:8px;}
+  .result-sub{font-family:'DM Mono',monospace;font-size:12px;color:var(--muted);margin-bottom:8px;}
+  .result-verdict{font-family:'DM Mono',monospace;font-size:12px;padding:8px 20px;border-radius:20px;display:inline-block;margin-bottom:32px;}
+  .result-verdict.pass{background:rgba(34,197,94,.12);color:var(--green);border:1px solid rgba(34,197,94,.3);}
+  .result-verdict.fail{background:rgba(239,68,68,.12);color:var(--red);border:1px solid rgba(239,68,68,.3);}
+  .result-actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:40px;}
+  .btn-outline{padding:11px 24px;background:none;border:1px solid var(--border);border-radius:8px;color:var(--muted);font-family:'Syne',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:border-color .2s,color .2s;}
+  .btn-outline:hover{border-color:var(--purple);color:var(--text);}
+  .review{text-align:left;}
+  .review h3{font-size:13px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:2px;margin-bottom:16px;font-family:'DM Mono',monospace;}
+  .rv-item{padding:14px 16px;border-radius:8px;margin-bottom:10px;border:1px solid var(--border);}
+  .rv-item.ok{border-color:rgba(34,197,94,.25);background:rgba(34,197,94,.05);}
+  .rv-item.miss{border-color:rgba(239,68,68,.25);background:rgba(239,68,68,.05);}
+  .rv-q{font-size:13px;font-weight:600;margin-bottom:8px;line-height:1.4;}
+  .rv-a{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);line-height:1.6;}
+  .rv-a .c{color:var(--green);}
+  .rv-a .w{color:var(--red);}
+</style>
+</head>
+<body>
+
+<div class="screen active" id="name-screen">
+  <a class="back-link" href="index.html">← Back to subjects</a>
+  <div class="subject-tag">Culinary Arts · Topic 05</div>
+  <h1>Knife Handling, Sharpening & Vegetable Cuts</h1>
+  <p>30 questions · Knife types, safety, sharpening & classical cuts</p>
+  <div class="name-box">
+    <input type="text" id="name-input" placeholder="Enter your name" maxlength="30" autocomplete="off">
+    <button class="btn-primary" onclick="startQuiz()">Start Quiz</button>
+  </div>
+</div>
+
+<div class="screen" id="quiz-screen">
+  <div class="quiz-header">
+    <div class="quiz-meta">Question <span id="q-num">1</span> of <span id="q-total">30</span></div>
+    <div class="quiz-meta">Score <span id="q-score">0</span></div>
+  </div>
+  <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+  <div class="question-num" id="q-label"></div>
+  <div class="question-text" id="q-text"></div>
+  <div class="options" id="options"></div>
+  <div class="explanation" id="explanation"></div>
+  <button class="next-btn" id="next-btn" onclick="nextQuestion()">Next Question →</button>
+</div>
+
+<div class="screen" id="results-screen">
+  <div class="result-name" id="result-name"></div>
+  <div class="score-ring">
+    <svg viewBox="0 0 160 160" width="160" height="160">
+      <circle class="ring-bg" cx="80" cy="80" r="70"/>
+      <circle class="ring-fill" id="ring-fill" cx="80" cy="80" r="70" stroke-dasharray="439.82" stroke-dashoffset="439.82" stroke="var(--green)"/>
+    </svg>
+    <div class="ring-text">
+      <div class="ring-pct" id="ring-pct">0%</div>
+      <div class="ring-label">SCORE</div>
+    </div>
+  </div>
+  <div class="result-title" id="res-title"></div>
+  <div class="result-sub" id="res-sub"></div>
+  <div class="result-verdict" id="res-verdict"></div>
+  <div class="result-actions">
+    <button class="btn-primary" onclick="retryQuiz()">Retry →</button>
+    <button class="btn-outline" onclick="window.location.href='index.html'">All Subjects</button>
+  </div>
+  <div class="review" id="review"></div>
+</div>
+
+<script>
+const BANK = [
+  {
+    q: "What is the correct grip for holding a chef's knife for maximum control and safety?",
+    opts: [
+      "Wrap all four fingers and thumb around the handle, keeping the index finger extended along the top spine of the blade for directional guidance",
+      "Pinch the blade between the thumb and index finger just above the bolster, with the remaining fingers wrapped firmly around the handle",
+      "Hold the handle with all five fingers completely wrapped around it, keeping the thumb pressed flat against the side of the handle",
+      "Grip the handle at its very end with four fingers, extending the index finger along the flat side of the blade toward the tip"
+    ],
+    ans: 1,
+    exp: "The pinch grip — thumb and index finger pinching the blade just above the bolster — gives the most control, reduces fatigue, and is the professional standard. The remaining fingers wrap around the handle for support."
+  },
+  {
+    q: "What is the 'claw grip' used for when cutting vegetables?",
+    opts: [
+      "A grip used to hold large round vegetables such as onions steady on the board while splitting them in half with a single downward cut",
+      "A hand position where fingertips are curled under and knuckles face the blade, guiding the knife and protecting fingers from cuts",
+      "A technique for gripping the knife handle with curled fingers to increase downward pressure when cutting through dense root vegetables",
+      "A method of holding bundles of herbs together with curled fingers so they can be chiffonaded without the bundle rolling on the board"
+    ],
+    ans: 1,
+    exp: "The claw grip protects the fingers by curling the fingertips under while the flat side of the blade rests against the knuckles. The knuckles guide the knife and act as a safety guard, preventing the blade from reaching the fingertips."
+  },
+  {
+    q: "What is the primary purpose of a chef's knife (cook's knife) in a professional kitchen?",
+    opts: [
+      "A specialist knife designed exclusively for breaking down whole carcasses, separating joints, and portioning large cuts of raw meat",
+      "A general-purpose knife used for the majority of kitchen tasks including chopping, slicing, dicing, mincing, and rough preparation",
+      "A knife used specifically for peeling, trimming, and detailed work on small fruits and vegetables that require precision and control",
+      "A flexible knife designed for filleting fish and removing skin from fillets without damaging the delicate flesh underneath"
+    ],
+    ans: 1,
+    exp: "The chef's knife is the most versatile and commonly used knife in a professional kitchen. Its broad, tapered blade handles the majority of cutting tasks — chopping vegetables, slicing meat, mincing herbs, and general prep work."
+  },
+  {
+    q: "What is a paring knife used for in professional food preparation?",
+    opts: [
+      "Slicing bread and soft baked goods with a long serrated edge that cuts without compressing the crumb structure of the loaf",
+      "Breaking down large cuts of meat and separating muscle groups from bone in butchery and protein preparation tasks",
+      "Detailed close work such as peeling, trimming, deveining, and intricate cuts on small items held in or near the hand",
+      "Filleting round fish and flat fish by running the blade along the spine to separate flesh cleanly from the bone structure"
+    ],
+    ans: 2,
+    exp: "The paring knife (typically 6–10 cm blade) is used for small, precise tasks — peeling fruit, trimming vegetables, deveining prawns, and intricate garnish work. It is often used in-hand rather than on a board."
+  },
+  {
+    q: "What distinguishes a boning knife from other kitchen knives?",
+    opts: [
+      "A long, thin, flexible blade designed for slicing large roasted joints into even portions for banquet service presentations",
+      "A thick, heavy spine and curved blade designed for cracking through bones and joints during large carcass breakdown",
+      "A narrow, pointed blade — either stiff or flexible — designed specifically to work close to bone and separate meat cleanly",
+      "A serrated edge that grips slippery raw proteins and allows controlled slicing without the blade deflecting off the surface"
+    ],
+    ans: 2,
+    exp: "A boning knife has a narrow, pointed blade that allows the cook to work closely along bones, through joints, and around cartilage. Stiff boning knives suit beef and pork; flexible ones are used for poultry and fish."
+  },
+  {
+    q: "What is a 'honing steel' (sharpening steel) used for, and how does it differ from a whetstone?",
+    opts: [
+      "A honing steel removes metal from the blade to create a new edge, while a whetstone only realigns the edge without removing any material",
+      "A honing steel realigns the microscopic edge of a blade that has rolled during use, while a whetstone actually grinds away metal to create or restore a sharp edge",
+      "A honing steel is used only on Japanese knives with single-bevel edges, while a whetstones is the correct tool for all Western-style double-bevel blades",
+      "A honing steel polishes the blade surface to reduce friction during cutting, while a whetstone sharpens the spine rather than the cutting edge"
+    ],
+    ans: 1,
+    exp: "Honing realigns the edge — the fine edge rolls during use and the steel straightens it back. No metal is removed. A whetstone actually abrades metal to create a new edge. Honing should be done frequently; sharpening on a stone is done less often."
+  },
+  {
+    q: "What is the correct angle for honing a Western-style chef's knife on a honing steel?",
+    opts: [
+      "Between 5° and 10°, which produces an extremely fine edge suited to paper-thin slicing of delicate proteins and soft vegetables",
+      "Between 15° and 20°, which balances sharpness and edge durability for the range of tasks a chef's knife performs in daily use",
+      "Between 25° and 30°, which creates a robust, heavy-duty edge designed to withstand the pressure of chopping through hard root vegetables",
+      "Between 35° and 45°, which is the standard angle for all professional kitchen knives regardless of their origin or blade geometry"
+    ],
+    ans: 1,
+    exp: "Western chef's knives are typically honed at 15–20° per side. Japanese knives are often honed at a finer 10–15°. The angle balances sharpness (lower angle = sharper but more fragile) against durability (higher angle = less sharp but more robust)."
+  },
+  {
+    q: "What is the correct procedure when carrying a knife across a kitchen?",
+    opts: [
+      "Hold the knife horizontally at waist height with the blade facing upward so other staff can clearly see the knife as you move",
+      "Hold the knife firmly in one hand with the blade pointing downward and forward, walking carefully and announcing your presence",
+      "Place the knife in a folded side towel and carry it at arm's length away from your body with the tip pointed toward the floor",
+      "Carry the knife with the blade held flat against your thigh, tip pointing forward, to minimise risk to other staff in the kitchen"
+    ],
+    ans: 1,
+    exp: "When carrying a knife: hold it firmly in one hand, blade pointing down and slightly forward, tip toward the floor. Walk — never run. Alert others of your presence. Never carry a knife blade-up or leave it hidden under cloths on a work surface."
+  },
+  {
+    q: "What should you do if you drop a knife in a professional kitchen?",
+    opts: [
+      "Catch it quickly with your dominant hand before it hits the floor to prevent the blade from chipping on impact with hard tiles",
+      "Step back immediately and let it fall — never attempt to catch a falling knife, then retrieve it safely once it has landed",
+      "Use your foot to redirect the knife away from yourself and other staff, then pick it up using a side towel for protection",
+      "Alert nearby staff immediately by shouting and use your non-dominant hand to push the knife away from your body as it falls"
+    ],
+    ans: 1,
+    exp: "Never catch a falling knife — instinct is to grab it, which causes cuts to the fingers and palm. Step back, let it fall, alert others with a shout, then retrieve it safely once it has stopped moving."
+  },
+  {
+    q: "How should knives be stored safely in a professional kitchen?",
+    opts: [
+      "In a shared utensil drawer with other kitchen tools, wrapped loosely in a cloth to prevent blade contact with metal surfaces",
+      "On a magnetic knife strip, in a knife block, or in individual blade guards — never loose in a drawer where hands could contact the edge",
+      "Submerged in the sink alongside other utensils to be washed, allowing the kitchen team to clean all tools together efficiently",
+      "Hanging from a hook by the handle above the main prep station so they are immediately accessible to all chefs during service"
+    ],
+    ans: 1,
+    exp: "Knives must be stored so the blade cannot be accidentally contacted. Magnetic strips, knife blocks, and individual blade guards are all correct. A loose knife in a drawer is a serious safety hazard — reaching in blindly can cause deep cuts."
+  },
+  {
+    q: "What is a 'julienne' cut and what are its dimensions?",
+    opts: [
+      "A thin, uniform disk cut across a cylindrical vegetable producing round slices approximately 3 mm thick for garnish and salad use",
+      "A very fine dice of approximately 1–2 mm producing tiny uniform cubes used as a refined garnish for consommé and sauces",
+      "A long, thin matchstick cut approximately 3 mm × 3 mm × 6 cm, used as a garnish, for stir-fries, and in salads",
+      "A rough, irregular chop of approximately 2–3 cm used for vegetables destined for stocks, soups, and long-cooked preparations"
+    ],
+    ans: 2,
+    exp: "Julienne is a matchstick cut: approximately 3 mm × 3 mm × 6 cm. It is used for garnishes, stir-fries, salads, and refined vegetable presentations. A fine julienne (1 mm × 1 mm × 6 cm) is called a julienne fin or chiffonade for vegetables."
+  },
+  {
+    q: "What is a 'brunoise' cut and how is it produced from a julienne?",
+    opts: [
+      "A rough chop of approximately 1–2 cm produced by cutting vegetables into irregular pieces for rustic soups and country-style stews",
+      "A very fine dice of 2–3 mm produced by first cutting julienne strips and then cross-cutting them into tiny uniform cubes",
+      "A medium dice of approximately 1 cm produced by squaring off a vegetable and cutting it into even cubes for sautéed dishes",
+      "A diagonal slice of approximately 5 mm thickness cut across cylindrical vegetables such as carrots and courgettes for stir-fries"
+    ],
+    ans: 1,
+    exp: "Brunoise (2–3 mm cube) is produced by first cutting the vegetable into julienne strips, then cross-cutting those strips into tiny cubes. It is used as a refined garnish for soups, sauces, and classical French preparations."
+  },
+  {
+    q: "What is a 'small dice' (petite brunoise) cut and how does it differ from a brunoise?",
+    opts: [
+      "A small dice is cut to 6 mm cube and is larger than a brunoise; it is used for sautéed dishes, soups, and filling preparations",
+      "A small dice is cut to 3 mm cube and is the same size as a brunoise — the two terms are interchangeable in professional kitchens",
+      "A small dice is cut to 1 cm cube and is used for rough preparations such as mirepoix and stocks where precision is less critical",
+      "A small dice is cut to 5 mm cube, sitting between a brunoise and a medium dice, and is used for salsas and vegetable side dishes"
+    ],
+    ans: 0,
+    exp: "Standard dice sizes: Brunoise = 2–3 mm, Small dice (petite) = 6 mm, Medium dice = 1 cm, Large dice = 2 cm. Each size has specific culinary applications — brunoise for garnishes, medium dice for sautés, large dice for roasting."
+  },
+  {
+    q: "What is a 'chiffonade' cut and to which type of ingredient is it applied?",
+    opts: [
+      "A cut applied to root vegetables where they are squared into rectangular blocks before being sliced into thin uniform planks",
+      "A technique applied to leafy herbs and greens — leaves are stacked, rolled tightly, and sliced across into fine ribbons",
+      "A cut applied to firm vegetables such as carrots and celery, producing long diagonal slices for stir-fries and Asian dishes",
+      "A method applied to onions and shallots where they are halved and then sliced thinly from root to tip for caramelising"
+    ],
+    ans: 1,
+    exp: "Chiffonade is used on leafy greens and herbs (basil, spinach, mint, sorrel). Stack leaves, roll tightly into a cylinder, then slice across the roll into fine ribbons. The thinner the slice, the finer the chiffonade."
+  },
+  {
+    q: "What is a 'rondelle' cut?",
+    opts: [
+      "A long, tapered cut that produces pointed oval shapes from cylindrical vegetables, used in classical French vegetable garnishes",
+      "A barrel-shaped cut produced by turning a vegetable with a small knife into a seven-sided oval for classical French presentations",
+      "A straight cross-cut of a cylindrical vegetable producing uniform round disks — typically 3–5 mm thick — for soups and garnishes",
+      "A diagonal cross-cut of a cylindrical vegetable producing elongated oval slices used in stir-fries and Asian-style preparations"
+    ],
+    ans: 2,
+    exp: "Rondelle (also called a round or coin cut) is a simple straight cross-cut of cylindrical vegetables — carrots, courgettes, cucumbers — producing round disk shapes. Thickness varies by application: thin for garnish, thicker for roasting."
+  },
+  {
+    q: "What is a 'diagonal' or 'bias' cut and why is it used?",
+    opts: [
+      "A cut where the knife is held at 90° to the vegetable and moved in a rocking motion to produce uniform round cross-sections",
+      "A cut made at a 45° angle across a cylindrical vegetable, producing elongated oval slices that increase the surface area for faster cooking",
+      "A cut made by rolling a cylindrical vegetable while cutting at a consistent angle, producing irregular wedge-shaped pieces for roasting",
+      "A cut that squares the sides of a vegetable before slicing it into even rectangular planks for layered gratins and terrines"
+    ],
+    ans: 1,
+    exp: "The diagonal (bias) cut is made at 45° across cylindrical vegetables such as carrots, spring onions, and asparagus. The angled cut increases the surface area exposed, allowing faster cooking and better sauce absorption — common in Asian cooking."
+  },
+  {
+    q: "What is the 'oblique' or 'roll cut' and how is it produced?",
+    opts: [
+      "A cut where the vegetable is held steady and the knife rolls over its surface at a consistent angle to produce wavy, textured slices",
+      "A cut where the vegetable is rolled 90° between each cut while the knife is held at a constant 45° angle, producing irregular wedge shapes",
+      "A cut applied to large round vegetables where they are rolled into position before being halved and then cut into even wedges",
+      "A cut made by rolling the blade of the knife across the cutting board in a smooth arc to produce curved, crescent-shaped pieces"
+    ],
+    ans: 1,
+    exp: "The oblique/roll cut: hold the knife at 45° and make one cut, then roll the vegetable 90° and cut again at the same angle. This produces irregular wedge-shaped pieces with two angled faces — maximising surface area. Common for carrots and parsnips in Asian cooking."
+  },
+  {
+    q: "What is the 'tourner' (turned) cut and what shape does it produce?",
+    opts: [
+      "A cut that produces a perfectly round ball shape by using a melon baller to scoop spheres from firm vegetables for garnish use",
+      "A cut that produces a thin, flat disk by slicing across a blanched vegetable with a very sharp paring knife at a precise angle",
+      "A classical French technique using a paring knife to carve a vegetable into a seven-sided barrel or football shape with smooth curves",
+      "A cut that produces a long, thin cylinder by peeling and trimming a carrot or courgette to a uniform diameter along its entire length"
+    ],
+    ans: 2,
+    exp: "Tourner (turned) vegetables have seven equal, smooth, curved sides and two flat ends — like a small barrel or American football. It is a classical French technique used for fine dining garnishes. It requires a bird's-beak (tourner) knife and considerable practice."
+  },
+  {
+    q: "What is a 'paysanne' cut and where is it typically used?",
+    opts: [
+      "A refined garnish cut producing 2–3 mm cubes used in classical consommé and clear broths for fine dining presentations",
+      "A flat, thin cut producing irregular shapes — squares, triangles, rounds, or half-moons — approximately 1 cm across and 3 mm thick",
+      "A large rough chop of approximately 3–4 cm used for vegetables going into long-cooked stocks and robust country-style soups",
+      "A matchstick cut of 2 mm × 2 mm × 5 cm used in Asian stir-fries and as a julienne garnish for consommé and clear soups"
+    ],
+    ans: 1,
+    exp: "Paysanne (peasant cut) produces flat, thin irregular shapes — squares, triangles, rounds, or half-moons — approximately 1 cm across and 3 mm thick. It is used in rustic soups, broths, and country-style dishes where a refined dice is not required."
+  },
+  {
+    q: "What is a 'lozenge' cut?",
+    opts: [
+      "A thin diagonal slice cut at 45° across the grain of a vegetable to produce elongated oval shapes for stir-fry and Asian dishes",
+      "A diamond-shaped flat cut approximately 1 cm across produced by making parallel diagonal cuts in two directions across a vegetable",
+      "A cylindrical cut produced by using a round cutter on blanched flat vegetables to produce uniform coin shapes for garnish platters",
+      "A long, thin rectangular cut approximately 6 cm long used as a base for julienne and brunoise in classical French preparation"
+    ],
+    ans: 1,
+    exp: "A lozenge is a diamond or rhombus-shaped flat cut — produced by making diagonal parallel cuts in two directions. It is approximately 1 cm across and used as a decorative garnish in soups and vegetable presentations."
+  },
+  {
+    q: "What is a 'gaufrette' or waffle cut, and what equipment is required to make it?",
+    opts: [
+      "A cut produced with a chef's knife using a rocking motion at alternating angles to create a crosshatch pattern on the surface of soft vegetables",
+      "A crinkle-edged disk produced by a mandoline with a corrugated blade, rotating the vegetable 90° between each pass to create a waffle grid pattern",
+      "A decorative barrel shape carved by hand using a turning knife to create ridged grooves along the surface of root vegetables for garnish use",
+      "A thin, even sheet produced by shaving a vegetable lengthways on a mandoline with a flat blade, used for wrapping and layering in terrines"
+    ],
+    ans: 1,
+    exp: "Gaufrette (waffle) chips are produced on a mandoline with a corrugated/wavy blade. The vegetable is passed across the blade, then rotated 90° before the next pass. The criss-crossing of the ridges creates the distinctive waffle grid pattern."
+  },
+  {
+    q: "What is a 'mirepoix' and what are its standard components?",
+    opts: [
+      "A fine dice of shallots, leeks, and celery root used as a refined garnish base for classical French clear soups and consommés",
+      "A rough chop of onion, carrot, and celery in a 2:1:1 ratio, used as an aromatic base for stocks, soups, braises, and sauces",
+      "A mixture of diced onion, garlic, and tomato used as the flavour base for Mediterranean sauces and slow-cooked stew preparations",
+      "A combination of leek, parsnip, and turnip cut into large chunks and used to flavour roasting trays and braising liquids"
+    ],
+    ans: 1,
+    exp: "Mirepoix is the classical aromatic base: 2 parts onion, 1 part carrot, 1 part celery — roughly chopped since it is usually strained out after cooking. It forms the flavour foundation for stocks, sauces, braises, and soups."
+  },
+  {
+    q: "What is a 'brunoise' of mirepoix used for compared to a regular mirepoix?",
+    opts: [
+      "A brunoise mirepoix is used for stock-making because the smaller cut allows more surface area to be extracted during long simmering",
+      "A brunoise mirepoix is used as a refined garnish left visible in the finished dish — such as a consommé — rather than being strained out",
+      "A brunoise mirepoix is used only for roasting trays where the small cut caramelises faster and produces a deeper, richer colour",
+      "A brunoise mirepoix replaces a standard mirepoix in all modern kitchens because the smaller cut reduces total cooking time significantly"
+    ],
+    ans: 1,
+    exp: "A fine brunoise of mirepoix is left in the finished dish as a garnish — most classically in consommé. A standard rough mirepoix is strained out after it has given its flavour to the stock or sauce."
+  },
+  {
+    q: "Why is it important to keep a knife's blade dry and clean during use?",
+    opts: [
+      "A wet or dirty blade increases friction on the cutting surface, slowing down the cutting motion and causing uneven slices in soft vegetables",
+      "Moisture and food debris on the blade can cause it to slip on the surface of the ingredient, increasing the risk of an uncontrolled cut",
+      "Keeping the blade dry prevents oxidation of the metal, which would permanently stain the blade and reduce its sharpness over time",
+      "A clean blade prevents cross-flavour contamination between ingredients being cut at the same station during a busy service period"
+    ],
+    ans: 1,
+    exp: "A wet or greasy blade can slip off the surface of an ingredient, causing a loss of control and potential injury. Wiping the blade regularly with a clean cloth during use also prevents cross-contamination between different ingredients."
+  },
+  {
+    q: "What is the correct method for washing knives in a professional kitchen?",
+    opts: [
+      "Place knives in the dishwasher with blades facing downward, using the high-temperature sanitising cycle for full hygiene compliance",
+      "Wash knives by hand individually with warm soapy water, rinse thoroughly, dry immediately, and store safely — never in a dishwasher",
+      "Submerge knives in a sink of hot soapy water with other utensils and scrub all surfaces together to save time during busy service",
+      "Wipe knives with a sanitised cloth after each use and wash them fully only at the end of service to maintain cutting edge integrity"
+    ],
+    ans: 1,
+    exp: "Knives must be hand-washed individually. Dishwashers damage knife edges through heat, vibration, and harsh detergents. Soaking in a sink with other tools is dangerous — reaching into murky water can cause a cut. Dry immediately after washing to prevent rust."
+  },
+  {
+    q: "What does 'squaring off' a vegetable mean in preparation for precision cuts?",
+    opts: [
+      "Cutting the vegetable into a perfect sphere using a turning knife before proceeding to the final decorative cut required for service",
+      "Trimming all rounded sides of a vegetable to create a rectangular block with flat, even faces — the foundation for all dice cuts",
+      "Peeling the vegetable completely and removing all blemishes to expose a clean, smooth surface before any cutting begins",
+      "Blanching the vegetable to soften it slightly, making it easier to cut into precise shapes without cracking or splitting the flesh"
+    ],
+    ans: 1,
+    exp: "Squaring off means trimming rounded or curved edges to create a uniform rectangular block (sometimes called a 'barrel' or 'loaf' shape). This flat-sided block is then sliced into planks, then sticks, then diced — ensuring all pieces are the same size."
+  },
+  {
+    q: "What is the purpose of a 'mandoline' slicer in a professional kitchen?",
+    opts: [
+      "A hand-held electric slicing tool used for portioning large roasted joints into uniform slices for banquet and carvery service",
+      "A mechanical slicing board with an adjustable blade that produces consistently thin, uniform slices or julienne cuts at high speed",
+      "A tool used for scoring the surface of proteins before marinating, creating channels that allow the marinade to penetrate deeply",
+      "A device used to core and peel cylindrical fruits and vegetables in a single operation to reduce preparation time in high-volume kitchens"
+    ],
+    ans: 1,
+    exp: "A mandoline is a flat board with an adjustable fixed blade that produces extremely thin, consistent slices or julienne cuts far faster than hand cutting. It is used for crisps, gratins, salads, and garnishes. Always use the hand guard — mandoline injuries are among the most common in professional kitchens."
+  },
+  {
+    q: "What is the difference between a 'whetstone' with coarse and fine grit sides?",
+    opts: [
+      "The coarse side is used for polishing and refining a sharp edge, while the fine side removes significant metal to reshape a damaged blade",
+      "The coarse side removes metal to repair a damaged edge or establish a new bevel, while the fine side refines and polishes the edge",
+      "The coarse side is used only for Japanese single-bevel knives, while the fine side is designed for Western double-bevel blade geometry",
+      "Both sides remove the same amount of metal — the only difference is the finish quality, with the fine side producing a mirror polish"
+    ],
+    ans: 1,
+    exp: "Coarse grit (low number, e.g. 120–400) removes metal aggressively — used for repairing chips or re-establishing a bevel. Fine grit (high number, e.g. 1000–3000+) refines and polishes the edge for cutting sharpness. Always progress from coarse to fine."
+  },
+  {
+    q: "What is the safety rule regarding knives and 'never pointing'?",
+    opts: [
+      "A knife should never be pointed at another person or left with its tip overhanging the edge of a work surface unattended",
+      "A knife tip should never point toward the cook during the cutting stroke as this redirects force toward the hand holding the food",
+      "The tip of a knife should never point downward when being carried as this directs the blade toward the floor and increases drop risk",
+      "A knife should never be pointed at the cutting board during storage as this causes the tip to blunt faster than the rest of the blade"
+    ],
+    ans: 0,
+    exp: "Two key 'never point' rules: never point a knife at another person (obvious safety risk), and never leave a knife with its tip or blade overhanging the edge of a work surface — it can be knocked off and fall onto someone below."
+  },
+  {
+    q: "What is the correct response if you cut yourself with a knife during food preparation?",
+    opts: [
+      "Apply pressure with a side cloth immediately to stop the bleeding, then continue working after a brief rest if the wound is minor",
+      "Remove yourself from the food preparation area immediately, apply first aid, inform a supervisor, and do not return until the wound is fully covered with a blue waterproof plaster",
+      "Rinse the cut under cold water at the prep sink, apply a standard fabric plaster, and resume work after informing a colleague",
+      "Apply hand sanitiser to the wound to prevent infection, bandage with any available cloth, and continue only if the bleeding has stopped"
+    ],
+    ans: 1,
+    exp: "For a knife cut: leave the food prep area immediately to prevent blood contamination. Apply first aid. Report to a supervisor. Return only after the wound is fully covered with a blue waterproof detectable plaster (blue is used in food environments because it is detectable by metal detectors and visible in food)."
+  }
+];
+
+let order=[],cur=0,picks={},playerName='',score=0;
+function shuffle(arr){const a=[...arr];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');window.scrollTo(0,0);}
+function startQuiz(){const inp=document.getElementById('name-input').value.trim();playerName=inp||'Anonymous';order=shuffle(BANK.map((_,i)=>i));cur=0;picks={};score=0;document.getElementById('q-total').textContent=BANK.length;show('quiz-screen');render();}
+function render(){
+  const idx=order[cur],q=BANK[idx],total=BANK.length;
+  document.getElementById('q-num').textContent=cur+1;
+  document.getElementById('q-score').textContent=score;
+  document.getElementById('q-label').textContent=`Question ${cur+1} of ${total}`;
+  document.getElementById('q-text').textContent=q.q;
+  document.getElementById('progress-fill').style.width=((cur/total)*100)+'%';
+  document.getElementById('explanation').className='explanation';
+  document.getElementById('explanation').textContent='';
+  document.getElementById('next-btn').className='next-btn';
+  const letters=['A','B','C','D'],optEl=document.getElementById('options');
+  optEl.innerHTML='';
+  shuffle([0,1,2,3]).forEach((oi,li)=>{
+    const btn=document.createElement('button');
+    btn.className='opt-btn';btn.dataset.opt=oi;
+    btn.innerHTML=`<span class="opt-letter">${letters[li]}</span><span>${q.opts[oi]}</span>`;
+    btn.onclick=()=>selectAnswer(oi,idx);
+    optEl.appendChild(btn);
+  });
+}
+function selectAnswer(chosen,idx){
+  const q=BANK[idx],correct=chosen===q.ans;
+  picks[idx]=chosen;if(correct)score++;
+  document.getElementById('q-score').textContent=score;
+  document.querySelectorAll('.opt-btn').forEach(btn=>{
+    btn.disabled=true;const oi=parseInt(btn.dataset.opt);
+    if(oi===q.ans)btn.classList.add('correct');
+    else if(oi===chosen&&!correct)btn.classList.add('wrong');
+  });
+  if(!correct){const e=document.getElementById('explanation');e.textContent='✗ '+q.exp;e.classList.add('show');}
+  const nb=document.getElementById('next-btn');nb.classList.add('show');
+  nb.textContent=cur+1<BANK.length?'Next Question →':'See Results →';
+}
+function nextQuestion(){cur++;if(cur>=BANK.length)showResults();else{render();window.scrollTo(0,0);}}
+function showResults(){
+  show('results-screen');
+  const total=BANK.length,pct=Math.round((score/total)*100),passed=pct>=70;
+  document.getElementById('result-name').textContent=playerName;
+  document.getElementById('ring-pct').textContent=pct+'%';
+  document.getElementById('ring-pct').style.color=passed?'var(--green)':'var(--red)';
+  document.getElementById('ring-fill').style.stroke=passed?'var(--green)':'var(--red)';
+  setTimeout(()=>{document.getElementById('ring-fill').style.strokeDashoffset=439.82-(439.82*pct/100);},100);
+  document.getElementById('res-title').textContent=pct>=90?'Excellent!':pct>=70?'Passed!':'Needs Work';
+  document.getElementById('res-sub').textContent=`${score} correct out of ${total} questions`;
+  const v=document.getElementById('res-verdict');
+  if(passed){v.textContent='✓ You passed — score above 70%';v.className='result-verdict pass';}
+  else{v.textContent='✗ Below 70% — please retake the quiz';v.className='result-verdict fail';}
+  const rv=document.getElementById('review');rv.innerHTML='<h3>Review</h3>';
+  order.forEach(idx=>{
+    const q=BANK[idx],ua=picks[idx],ok=ua===q.ans;
+    const d=document.createElement('div');d.className='rv-item '+(ok?'ok':'miss');
+    d.innerHTML=`<div class="rv-q">${q.q}</div><div class="rv-a">${ok
+      ?`<span class="c">✓ Correct: ${q.opts[q.ans]}</span>`
+      :`<span class="w">✗ You chose: ${ua!==undefined?q.opts[ua]:'Skipped'}</span><br><span class="c">✓ Correct: ${q.opts[q.ans]}</span><br><span style="color:var(--muted)">${q.exp}</span>`
+    }</div>`;
+    rv.appendChild(d);
+  });
+}
+function retryQuiz(){order=shuffle(order);cur=0;picks={};score=0;document.getElementById('q-score').textContent=0;show('quiz-screen');render();}
+document.getElementById('name-input').addEventListener('keydown',e=>{if(e.key==='Enter')startQuiz();});
+</script>
+</body>
+</html>
