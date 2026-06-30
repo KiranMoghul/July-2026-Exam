@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MS Excel Advanced — July 2026 Exam</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💻</text></svg>">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@400;500&display=swap');
+  :root{--bg:#080810;--surface:#11111f;--border:#1e1e35;--purple:#7c3aed;--purple-l:#9d5bf0;--green:#22c55e;--red:#ef4444;--text:#e8e8f0;--muted:#7070a0;}
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Syne',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;align-items:center;justify-content:center;}
+  body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px);background-size:40px 40px;opacity:.4;pointer-events:none;z-index:0;}
+  .screen{position:relative;z-index:1;width:100%;max-width:660px;margin:0 auto;padding:24px 20px 48px;display:none;}
+  .screen.active{display:block;}
+  #name-screen{text-align:center;padding-top:80px;}
+  .back-link{display:inline-flex;align-items:center;gap:6px;font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);text-decoration:none;letter-spacing:1px;margin-bottom:48px;transition:color .2s;}
+  .back-link:hover{color:var(--purple-l);}
+  .subject-tag{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--purple-l);margin-bottom:12px;}
+  #name-screen h1{font-size:clamp(22px,5vw,36px);font-weight:800;line-height:1.15;margin-bottom:8px;background:linear-gradient(135deg,#fff 30%,var(--purple-l));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+  #name-screen p{color:var(--muted);font-family:'DM Mono',monospace;font-size:12px;margin-bottom:40px;}
+  .name-box{display:flex;flex-direction:column;align-items:center;gap:12px;}
+  .name-box input{width:100%;max-width:320px;padding:12px 16px;background:var(--surface);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:'Syne',sans-serif;font-size:15px;outline:none;text-align:center;transition:border-color .2s;}
+  .name-box input:focus{border-color:var(--purple);}
+  .name-box input::placeholder{color:var(--muted);}
+  .btn-primary{padding:12px 32px;background:var(--purple);color:#fff;border:none;border-radius:8px;font-family:'Syne',sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:background .2s,transform .1s;letter-spacing:.5px;}
+  .btn-primary:hover{background:var(--purple-l);transform:translateY(-1px);}
+  .quiz-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;}
+  .quiz-meta{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);}
+  .quiz-meta span{color:var(--purple-l);font-weight:500;}
+  .quiz-back{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);background:none;border:1px solid var(--border);padding:5px 10px;border-radius:6px;cursor:pointer;transition:color .2s,border-color .2s;}
+  .quiz-back:hover{color:var(--text);border-color:var(--purple);}
+  .progress-bar{width:100%;height:3px;background:var(--border);border-radius:2px;margin-bottom:32px;overflow:hidden;}
+  .progress-fill{height:100%;background:linear-gradient(90deg,var(--purple),var(--purple-l));border-radius:2px;transition:width .3s ease;}
+  .question-num{font-family:'DM Mono',monospace;font-size:10px;color:var(--purple-l);letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;}
+  .question-text{font-size:clamp(15px,3vw,18px);font-weight:600;line-height:1.5;margin-bottom:28px;color:var(--text);}
+  .options{display:flex;flex-direction:column;gap:10px;}
+  .opt-btn{display:flex;align-items:center;gap:12px;padding:13px 16px;background:var(--surface);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:'Syne',sans-serif;font-size:14px;font-weight:400;cursor:pointer;text-align:left;transition:border-color .15s,background .15s;width:100%;}
+  .opt-btn:hover:not(:disabled){border-color:var(--purple);background:#16162a;}
+  .opt-btn .opt-letter{flex-shrink:0;width:26px;height:26px;border-radius:6px;background:var(--border);display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);transition:background .15s,color .15s;}
+  .opt-btn:hover:not(:disabled) .opt-letter{background:var(--purple);color:#fff;}
+  .opt-btn.correct{border-color:var(--green);background:rgba(34,197,94,.1);}
+  .opt-btn.correct .opt-letter{background:var(--green);color:#fff;}
+  .opt-btn.wrong{border-color:var(--red);background:rgba(239,68,68,.1);}
+  .opt-btn.wrong .opt-letter{background:var(--red);color:#fff;}
+  .opt-btn:disabled{cursor:default;}
+  .explanation{display:none;margin-top:16px;padding:14px 16px;background:rgba(124,58,237,.1);border:1px solid rgba(124,58,237,.25);border-left:3px solid var(--purple);border-radius:8px;font-size:13px;line-height:1.6;color:#c4b5fd;font-family:'DM Mono',monospace;}
+  .explanation.show{display:block;}
+  .action-row{display:flex;gap:10px;margin-top:24px;}
+  .next-btn{flex:1;padding:13px;background:var(--purple);color:#fff;border:none;border-radius:8px;font-family:'Syne',sans-serif;font-size:14px;font-weight:700;cursor:pointer;display:none;transition:background .2s;letter-spacing:.5px;}
+  .next-btn:hover{background:var(--purple-l);}
+  .next-btn.show{display:block;}
+  .quit-btn{padding:13px 18px;background:none;border:1px solid var(--border);border-radius:8px;color:var(--muted);font-family:'DM Mono',monospace;font-size:12px;cursor:pointer;display:none;transition:color .2s,border-color .2s;white-space:nowrap;}
+  .quit-btn:hover{color:var(--text);border-color:var(--purple);}
+  .quit-btn.show{display:block;}
+  #results-screen{text-align:center;padding-top:40px;}
+  .result-name{font-family:'DM Mono',monospace;font-size:12px;color:var(--muted);margin-bottom:32px;}
+  .score-ring{position:relative;width:160px;height:160px;margin:0 auto 28px;}
+  .score-ring svg{transform:rotate(-90deg);}
+  .score-ring .ring-bg{fill:none;stroke:var(--border);stroke-width:10;}
+  .score-ring .ring-fill{fill:none;stroke-width:10;stroke-linecap:round;transition:stroke-dashoffset 1s ease,stroke .5s;}
+  .score-ring .ring-text{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+  .ring-pct{font-size:34px;font-weight:800;line-height:1;}
+  .ring-label{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);margin-top:4px;letter-spacing:1px;}
+  .result-title{font-size:24px;font-weight:800;margin-bottom:8px;}
+  .result-sub{font-family:'DM Mono',monospace;font-size:12px;color:var(--muted);margin-bottom:8px;}
+  .result-verdict{font-family:'DM Mono',monospace;font-size:12px;padding:8px 20px;border-radius:20px;display:inline-block;margin-bottom:32px;}
+  .result-verdict.pass{background:rgba(34,197,94,.12);color:var(--green);border:1px solid rgba(34,197,94,.3);}
+  .result-verdict.fail{background:rgba(239,68,68,.12);color:var(--red);border:1px solid rgba(239,68,68,.3);}
+  .result-actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:40px;}
+  .btn-outline{padding:11px 24px;background:none;border:1px solid var(--border);border-radius:8px;color:var(--muted);font-family:'Syne',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:border-color .2s,color .2s;}
+  .btn-outline:hover{border-color:var(--purple);color:var(--text);}
+  .review{text-align:left;}
+  .review h3{font-size:13px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:2px;margin-bottom:16px;font-family:'DM Mono',monospace;}
+  .rv-item{padding:14px 16px;border-radius:8px;margin-bottom:10px;border:1px solid var(--border);}
+  .rv-item.ok{border-color:rgba(34,197,94,.25);background:rgba(34,197,94,.05);}
+  .rv-item.miss{border-color:rgba(239,68,68,.25);background:rgba(239,68,68,.05);}
+  .rv-q{font-size:13px;font-weight:600;margin-bottom:8px;line-height:1.4;}
+  .rv-a{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);line-height:1.6;}
+  .rv-a .c{color:var(--green);}
+  .rv-a .w{color:var(--red);}
+</style>
+</head>
+<body>
+<div class="screen active" id="name-screen">
+  <a class="back-link" href="index.html">← Back to subjects</a>
+  <div class="subject-tag">Computer · Topic 03B</div>
+  <h1>MS Excel Advanced</h1>
+  <p>30 questions · Formulas, operators, charts, AutoSum, Filter & payroll calculations</p>
+  <div class="name-box">
+    <input type="text" id="name-input" placeholder="Enter your name" maxlength="30" autocomplete="off">
+    <button class="btn-primary" onclick="startQuiz()">Start Quiz</button>
+  </div>
+</div>
+<div class="screen" id="quiz-screen">
+  <div class="quiz-header">
+    <div class="quiz-meta">Question <span id="q-num">1</span> of <span id="q-total">30</span></div>
+    <div class="quiz-meta">Score <span id="q-score">0</span></div>
+    <button class="quiz-back" onclick="goBack()">← Quit</button>
+  </div>
+  <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+  <div class="question-num" id="q-label"></div>
+  <div class="question-text" id="q-text"></div>
+  <div class="options" id="options"></div>
+  <div class="explanation" id="explanation"></div>
+  <div class="action-row">
+    <button class="quit-btn" id="quit-btn" onclick="goBack()">← Back to subjects</button>
+    <button class="next-btn" id="next-btn" onclick="nextQuestion()">Next Question →</button>
+  </div>
+</div>
+<div class="screen" id="results-screen">
+  <div class="result-name" id="result-name"></div>
+  <div class="score-ring">
+    <svg viewBox="0 0 160 160" width="160" height="160">
+      <circle class="ring-bg" cx="80" cy="80" r="70"/>
+      <circle class="ring-fill" id="ring-fill" cx="80" cy="80" r="70" stroke-dasharray="439.82" stroke-dashoffset="439.82" stroke="var(--green)"/>
+    </svg>
+    <div class="ring-text">
+      <div class="ring-pct" id="ring-pct">0%</div>
+      <div class="ring-label">SCORE</div>
+    </div>
+  </div>
+  <div class="result-title" id="res-title"></div>
+  <div class="result-sub" id="res-sub"></div>
+  <div class="result-verdict" id="res-verdict"></div>
+  <div class="result-actions">
+    <button class="btn-primary" onclick="retryQuiz()">Retry →</button>
+    <button class="btn-outline" onclick="window.location.href='index.html'">All Subjects</button>
+  </div>
+  <div class="review" id="review"></div>
+</div>
+<script>
+const BANK=[
+{q:"What is the difference between a Worksheet and a Spreadsheet in MS Excel?",opts:["A worksheet and spreadsheet are completely identical terms with no difference in meaning or scope","A worksheet is the entire working area in MS Excel — a spreadsheet is a selected area within the worksheet used for calculations","A spreadsheet is the entire file saved on disk — a worksheet is a single page visible on screen at one time","A worksheet is the file that can be saved and shared — a spreadsheet is the unsaved temporary working area"],ans:1,exp:"A Worksheet is the entire working area in MS Excel. A Spreadsheet is a selected area within the worksheet that is used for calculations. Every workbook contains one or more worksheets."},
+{q:"What are Columns, Rows, and Cells in MS Excel?",opts:["Columns are horizontal lines, rows are vertical lines, and cells are the spaces between rows and columns","Columns are vertical lines running top to bottom, rows are horizontal lines running left to right, and cells are the intersections between columns and rows","Columns are the lettered headings at the top, rows are the numbered labels on the side, and cells are the data stored inside the file","Columns are formula containers, rows are value containers, and cells are text-only containers in the worksheet"],ans:1,exp:"Columns are vertical lines running from top to bottom (labelled A, B, C...). Rows are horizontal lines running from left to right (numbered 1, 2, 3...). Cells are the intersections between a column and a row — identified by column letter + row number (e.g. A1, B3)."},
+{q:"How many columns, rows, and cells are available on one MS Excel worksheet?",opts:["128 columns, 32,768 rows, and 4,194,304 cells — the standard capacity of MS Excel 2003","256 columns, 65,536 rows, and 16,777,216 cells — the capacity available on each worksheet","512 columns, 131,072 rows, and 67,108,864 cells — the extended capacity introduced in Excel 2007","1,024 columns, 262,144 rows, and 268,435,456 cells — the maximum capacity of MS Excel 2016"],ans:1,exp:"Each MS Excel worksheet has 256 columns, 65,536 rows, and 16,777,216 cells available for use."},
+{q:"What symbol does the * (asterisk) represent as a mathematical operator in MS Excel?",opts:["Division — used to divide one value by another in all Excel formula calculations","Addition — used to add two or more values together in an Excel formula","Subtraction — used to subtract one value from another in an Excel formula","Multiplication — used to multiply two values together in an Excel formula"],ans:3,exp:"The * (asterisk) is the multiplication operator in MS Excel. For example, =A1*B1 multiplies the value in A1 by the value in B1. Never use × — Excel only recognises *."},
+{q:"What does the ^ symbol represent as an operator in MS Excel?",opts:["Greater than or less than — used for logical comparisons between two cell values","Division — an alternative division symbol used when the / forward slash is not available","Exponential (power) — used to raise a number to a power, for example =2^3 equals 8","Concatenation — used to join two text strings together in a formula"],ans:2,exp:"The ^ symbol is the Exponential operator in MS Excel — it raises a number to a power. For example, =2^3 calculates 2 to the power of 3 = 8. =A1^2 squares the value in A1."},
+{q:"What does the <> operator mean in MS Excel?",opts:["It means 'approximately equal to' — used when comparing values that may differ by a small margin","It means 'less than AND greater than' — meaning a value that is both smaller and larger simultaneously","It means 'not equal to' — used in logical tests to check if two values are different from each other","It means 'between' — used to check if a value falls within a specific numerical range"],ans:2,exp:"In MS Excel, <> means 'not equal to'. It is used in logical comparisons — for example, =IF(A1<>B1, \"Different\", \"Same\") checks if A1 and B1 are NOT equal. It combines < (less than) and > (greater than)."},
+{q:"All formulas in MS Excel must begin with which symbol?",opts:["# (hash) — the symbol that tells Excel the cell contains a formula rather than plain text","@ (at) — the symbol used in older Excel versions to indicate a formula entry","= (equals sign) — the symbol that tells Excel to expect a formula or function rather than text","+ (plus sign) — the symbol used to start addition formulas in some spreadsheet applications"],ans:2,exp:"All formulas in MS Excel must begin with the = (equals sign). This tells Excel that what follows is a formula or function to be calculated — not plain text. Example: =A1+B1, =SUM(A1:A10), =AVERAGE(B1:B5)."},
+{q:"What is the syntax for the SUM function in MS Excel?",opts:["SUM[cell range] — using square brackets around the cell range to be added together","=TOTAL(cell range) — using the TOTAL keyword to add all values in the specified range","=SUM(cell range) — using the SUM function with the cell range in parentheses, starting with an equals sign","ADD=(cell range) — putting the function name before the equals sign and the range in brackets"],ans:2,exp:"The correct syntax is =SUM(cell range). For example, =SUM(A1:A10) adds all values from A1 through A10. Formulas always start with =, the function name follows, and the range goes inside parentheses."},
+{q:"What is the AVERAGE function used for in MS Excel, and write its syntax?",opts:["It finds the highest value in a range — syntax: =MAX(range)","It adds all values in a range and divides by a fixed number — syntax: =TOTAL(range)/number","It determines the average (mean) value in a range of cells — syntax: =AVERAGE(range)","It counts the number of cells containing values in a range — syntax: =COUNT(range)"],ans:2,exp:"The AVERAGE function calculates the arithmetic mean of a range — it adds all values and divides by the count. Syntax: =AVERAGE(range). Example: =AVERAGE(B1:B10) finds the average of all values in B1 through B10."},
+{q:"What does the MIN function do in MS Excel?",opts:["It finds the arithmetic mean of all numerical values in the specified range of cells","It counts the number of cells in the range that contain numerical values","It finds the highest (largest) numerical value in the specified range of cells","It determines the minimum (lowest) value in a specified range of cells"],ans:3,exp:"The MIN function finds the minimum (lowest) value in a range. Syntax: =MIN(range). Example: =MIN(C1:C20) returns the smallest number in cells C1 through C20. Opposite of MAX."},
+{q:"What is the formula to calculate Total Price when Unit Price is in column C and Quantity is in column D, for row 2?",opts:["=C2+D2 — adding the unit price and quantity together to get the total","=C2-D2 — subtracting the quantity from the unit price to find the net value","=C2/D2 — dividing the unit price by quantity to get the per-unit cost","=C2*D2 — multiplying unit price by quantity to calculate total price"],ans:3,exp:"Total Price = Unit Price × Quantity. In Excel: =C2*D2. The * asterisk is the multiplication operator. If Unit Price is 7300 and Quantity is 50, the formula returns 365,000."},
+{q:"What is the Monthly Basic Salary (MBS) formula if Annual Basic Salary (ABS) is in a cell?",opts:["=ABS*12 — multiplying the monthly salary by 12 months to get the annual amount","=ABS+12 — adding 12 to the annual salary to account for monthly bonuses","=ABS/12 — dividing the Annual Basic Salary by 12 to get the Monthly Basic Salary","=ABS-12 — subtracting 12 from the annual salary as a monthly tax deduction"],ans:2,exp:"Monthly Basic Salary (MBS) = Annual Basic Salary (ABS) ÷ 12. In Excel: =ABS/12. For example, if ABS = 5000, then MBS = 5000/12 = 416.67."},
+{q:"How is Transport Allowance (TP) calculated at 1% of Monthly Basic Salary in Excel?",opts:["=MBS-1 — subtracting 1 from the monthly basic salary as a flat transport deduction","=MBS+100 — adding a fixed 100 transport allowance regardless of salary level","=(1/100)*MBS — calculating 1 divided by 100 then multiplying by MBS to get 1%","=MBS*100 — multiplying MBS by 100 to convert it into a percentage value"],ans:2,exp:"Transport Allowance at 1% = (1/100) × MBS. In Excel: =(1/100)*MBS or =MBS*0.01. Both formulas give the same result — 1% of the monthly basic salary."},
+{q:"What is the Gross Salary formula in an Excel payroll calculation?",opts:["Gross = ABS + Tax — adding the annual basic salary to the total tax deduction","Gross = MBS - all deductions — subtracting all deductions from monthly basic salary","Gross = MBS + all allowances (House + Transport + Feeding etc.) — summing monthly salary and all allowances","Gross = ABS / 12 + Net Pay — dividing annual salary and adding the previous net pay amount"],ans:2,exp:"Gross Salary = Monthly Basic Salary (MBS) + all allowances (House + Transport + Feeding + etc.). In Excel: =SUM(MBS, House, TP, Feeding) or =MBS+House+TP+Feeding. Gross is the total earnings before any deductions."},
+{q:"What is the Net Pay formula in an Excel payroll calculation?",opts:["Net Pay = Gross + Total Deductions — adding deductions to gross to find the final amount","Net Pay = Gross - Total Deductions — subtracting all deductions from gross salary","Net Pay = ABS - MBS — subtracting the monthly salary from the annual salary","Net Pay = Total Deductions × 12 — multiplying monthly deductions by 12 for annual net"],ans:1,exp:"Net Pay = Gross Salary - Total Deductions. In Excel: =Gross-TotalDeductions. For example, if Gross = 1916.67 and Total Deductions = 508.33, then Net Pay = 1916.67 - 508.33 = 1408.34."},
+{q:"What is the Cell Fill Handle in MS Excel?",opts:["The cell reference shown in the Name Box that identifies the currently selected cell address","The thick black border that appears around the active cell to show it is currently selected","A small black box located at the lower right corner of a selected cell — used to copy formulas or data down or across cells","The double-click boundary on the right of a column heading used to auto-fit the column width"],ans:2,exp:"The Cell Fill Handle is the small black box (square) at the lower right corner of a selected cell. You can click and drag it to copy the formula or data in that cell to adjacent cells — Excel automatically adjusts cell references."},
+{q:"What is the AutoSum button used for in MS Excel?",opts:["It automatically applies currency formatting to the selected range of cells","It automatically creates a chart from the selected data range with one click","It automatically sums a cell range — you position the cursor, click AutoSum, Excel guesses the range, and you press Enter to confirm","It automatically sorts the selected column of data in ascending alphabetical or numerical order"],ans:2,exp:"The AutoSum button automatically sums a cell range. Position the cursor where you want the result → click AutoSum → Excel enters the SUM function with its best guess of the range → if correct, press Enter (or double-click AutoSum to bypass pressing Enter)."},
+{q:"What is a Bar Chart used for in MS Excel?",opts:["Showing trends and continuous data over time set against a common scale on the vertical axis","Showing the proportion of each individual element compared to the whole as percentage slices","Comparing data elements and illustrating comparisons among individual items over a period of time","Showing the relationship between two variables plotted against both X and Y axes simultaneously"],ans:2,exp:"A Bar Chart compares data elements over a period of time. It illustrates comparisons among individual items — categories are typically on the vertical axis and values on the horizontal axis (unlike Column Charts where categories are horizontal)."},
+{q:"What is the key difference between a Bar Chart and a Column Chart in MS Excel?",opts:["A bar chart uses 3D formatting while a column chart is always displayed in flat 2D format","They are completely identical — bar chart and column chart are two names for the same chart type","Both compare data over time, but in Column Charts categories are typically along the horizontal axis and values along the vertical axis — while Bar Charts have these reversed","A bar chart shows percentages while a column chart always shows raw numerical values"],ans:2,exp:"Both Bar and Column charts compare data over time, but their orientation differs. Column Charts: categories on horizontal axis, values on vertical axis (bars go up). Bar Charts: categories on vertical axis, values on horizontal axis (bars go sideways)."},
+{q:"What is a Line Chart best suited for in MS Excel?",opts:["Comparing individual data values side by side across different categories at a single point in time","Showing the proportion of each part relative to the total — displayed as slices of a circular chart","Showing trends in data at equal intervals — displaying continuous data over time on a common scale","Showing the relationship between paired data points plotted on both X and Y axes simultaneously"],ans:2,exp:"A Line Chart shows trends in continuous data over time — ideal for data at equal intervals. Category data is distributed evenly along the horizontal axis; value data along the vertical axis. Perfect for showing upward/downward trends."},
+{q:"What are the components of a Chart in MS Excel — what is the Plot Area?",opts:["The overall chart frame including the title, legend, and all surrounding decorative elements","The data table that appears below the chart showing all the numerical values that were plotted","The area inside the chart where the data is actually plotted — containing the axes and data series","The legend box that describes which colour or symbol represents each data series in the chart"],ans:2,exp:"The Plot Area is the area inside the chart where data values are actually plotted — it contains the axes (X and Y) and the data series (the bars, lines, or pie slices). It is the core visual area of the chart."},
+{q:"What is a Legend in a chart in MS Excel?",opts:["The chart title that appears at the top of the chart describing what the chart shows","The data labels placed directly on each bar or data point showing its numerical value","A key that describes the different data series appearing in the plot area — matching colours/symbols to their data series names","The X-axis label at the bottom of the chart showing the category names for each data point"],ans:2,exp:"A Legend is a key that describes the different data series in the chart — it matches colours, patterns, or symbols to their data series names. For example, it shows which bar colour represents which employee or product."},
+{q:"What is a Data Marker in an MS Excel chart?",opts:["The text label placed at the end of each bar or column showing the exact numerical value","A single dot, bar, column, or symbol that represents one number from the worksheet","The title of the entire chart that appears above or below the chart frame","The gridlines that appear behind the data to make values easier to read"],ans:1,exp:"A Data Marker is a single dot, bar, column, slice, or symbol in a chart that represents one number from the worksheet. A collection of related data markers forms a Data Series."},
+{q:"What is the Filter (AutoFilter) feature in MS Excel used for?",opts:["Applying a specific number format (currency, percentage, date) to a selected range of cells","Protecting selected cells from being edited by restricting input to approved values only","Querying or selecting specific information from a worksheet — showing only rows that meet a chosen condition","Sorting all data in a column from smallest to largest or A to Z automatically"],ans:2,exp:"The Filter (AutoFilter) feature in MS Excel allows you to query and filter data — showing only the rows that meet a specific condition. For example, you can filter to show only customers from a specific region or orders above a certain value."},
+{q:"How do you apply AutoFilter in MS Excel to find the top 10 highest values?",opts:["Select the column → Click Format → AutoFilter → Top 10 → OK","Select the total cell → Click Data → Filter → AutoFilter → Click the arrow on Total → Select Top 10 → OK","Select the range → Click Insert → Chart → Top Values → specify 10 → OK","Click Home → Sort & Filter → Top 10 Filter → select the column → OK"],ans:1,exp:"To find the top 10: Select the total cell → Click Data → Click Filter → Click AutoFilter → arrows appear on each column heading → click the arrow on Total → select Top 10 → click OK. Excel automatically shows the 10 highest values."},
+{q:"How do you create a Custom Filter (for example, values greater than or equal to a specific amount)?",opts:["Select the cell → Click Format → Custom Format → type the condition in the format code box","Select the cell → Click Data → AutoFilter → Click the column arrow → Custom → Select 'greater than or equal to' → type the amount → OK","Select the range → Click Insert → Filter → Custom → specify the condition in the criteria dialog","Click Home → Conditional Formatting → New Rule → specify greater than → type the amount → OK"],ans:1,exp:"Custom AutoFilter: Select the cell → Click Data → AutoFilter → click the column arrow → select Custom → choose 'greater than or equal to' from the dropdown → type the amount → click OK. Excel shows only rows meeting that condition."},
+{q:"How do you add a new Worksheet to an MS Excel Workbook?",opts:["Right-click any cell and select Insert Worksheet from the context menu that appears","Press Ctrl+N to insert a new blank worksheet at the end of the current workbook","Click Insert on the menu bar → Select Worksheet. By default 3 worksheets exist; more can be added","Click File → New Sheet → type a name → click Create to add the new worksheet"],ans:2,exp:"To add a worksheet: Click Insert on the menu bar → Select Worksheet. By default a new workbook has 3 worksheets (Sheet1, Sheet2, Sheet3). You can add more using this method."},
+{q:"How do you delete a Worksheet in MS Excel?",opts:["Right-click the sheet tab → select Delete Sheet from the context menu to remove it","Press Ctrl+Delete while the sheet tab is selected to remove it from the workbook","Click the sheet tab → press the Delete key on the keyboard to erase all content and the sheet","Click File → Remove Sheet → select the sheet to delete → confirm the deletion"],ans:0,exp:"To delete a worksheet: Click or select the sheet tab you want to delete → on the Edit menu click Delete Sheet (or right-click the tab and select Delete). The sheet and all its content will be permanently removed."},
+{q:"What formula calculates a Discount of 0.5 (50%) of Total Price in Excel payroll/invoice?",opts:["=TotalPrice-0.5 — subtracting a flat 0.5 value from the total price","=TotalPrice/0.5 — dividing the total price by 0.5 to calculate the discount amount","=TotalPrice*0.5 — multiplying the total price by 0.5 to get 50% as the discount amount","=TotalPrice+0.5 — adding 0.5 to the total price as a discount surcharge"],ans:2,exp:"Discount at 50% (0.5) = TotalPrice × 0.5. In Excel: =TotalPrice*0.5 or equivalently =TotalPrice*(50/100). This gives 50% of the total price as the discount value."},
+{q:"What formula calculates Amount Paid after Discount is applied in an Excel invoice?",opts:["=TotalPrice+Discount — adding the discount back to the total price to get amount paid","=TotalPrice*Discount — multiplying total price by discount to get the amount paid","=Discount-TotalPrice — subtracting total price from discount to get amount due","=TotalPrice-Discount — subtracting the discount from the total price to get amount paid"],ans:3,exp:"Amount Paid = Total Price - Discount. In Excel: =TotalPrice-Discount. For example, if TotalPrice = 150,000 and Discount = 75,000, then Amount Paid = 75,000. This is the final amount the customer pays after the discount is deducted."},
+{q:"How do you delete a Comment from a cell in MS Excel?",opts:["Select the cell → press the Delete key on the keyboard to remove the comment and cell content","Click on the red triangle indicator → press Escape to dismiss and permanently delete the comment","Right-click on the cell with the comment → Click Delete Comment — the comment is removed","Click the cell → go to Insert → Comment → Delete to remove the attached comment"],ans:2,exp:"To delete a comment: Right-click on the cell that has the comment (indicated by a red triangle) → click Delete Comment. The comment is removed while the cell content remains unchanged."}
+];
+let order=[],cur=0,picks={},playerName='',score=0;
+function shuffle(arr){const a=[...arr];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');window.scrollTo(0,0);}
+function goBack(){if(confirm('Quit quiz and return to subjects?'))window.location.href='index.html';}
+function startQuiz(){const inp=document.getElementById('name-input').value.trim();playerName=inp||'Anonymous';order=shuffle(BANK.map((_,i)=>i));cur=0;picks={};score=0;document.getElementById('q-total').textContent=BANK.length;show('quiz-screen');render();}
+function render(){const idx=order[cur],q=BANK[idx],total=BANK.length;document.getElementById('q-num').textContent=cur+1;document.getElementById('q-score').textContent=score;document.getElementById('q-label').textContent=`Question ${cur+1} of ${total}`;document.getElementById('q-text').textContent=q.q;document.getElementById('progress-fill').style.width=((cur/total)*100)+'%';document.getElementById('explanation').className='explanation';document.getElementById('explanation').textContent='';document.getElementById('next-btn').className='next-btn';document.getElementById('quit-btn').className='quit-btn';const letters=['A','B','C','D'],optEl=document.getElementById('options');optEl.innerHTML='';shuffle([0,1,2,3]).forEach((oi,li)=>{const btn=document.createElement('button');btn.className='opt-btn';btn.dataset.opt=oi;btn.innerHTML=`<span class="opt-letter">${letters[li]}</span><span>${q.opts[oi]}</span>`;btn.onclick=()=>selectAnswer(oi,idx);optEl.appendChild(btn);});}
+function selectAnswer(chosen,idx){const q=BANK[idx],correct=chosen===q.ans;picks[idx]=chosen;if(correct)score++;document.getElementById('q-score').textContent=score;document.querySelectorAll('.opt-btn').forEach(btn=>{btn.disabled=true;const oi=parseInt(btn.dataset.opt);if(oi===q.ans)btn.classList.add('correct');else if(oi===chosen&&!correct)btn.classList.add('wrong');});if(!correct){const e=document.getElementById('explanation');e.textContent='✗ '+q.exp;e.classList.add('show');}const nb=document.getElementById('next-btn');nb.classList.add('show');nb.textContent=cur+1<BANK.length?'Next Question →':'See Results →';document.getElementById('quit-btn').classList.add('show');}
+function nextQuestion(){cur++;if(cur>=BANK.length)showResults();else{render();window.scrollTo(0,0);}}
+function showResults(){show('results-screen');const total=BANK.length,pct=Math.round((score/total)*100),passed=pct>=70;document.getElementById('result-name').textContent=playerName;document.getElementById('ring-pct').textContent=pct+'%';document.getElementById('ring-pct').style.color=passed?'var(--green)':'var(--red)';document.getElementById('ring-fill').style.stroke=passed?'var(--green)':'var(--red)';setTimeout(()=>{document.getElementById('ring-fill').style.strokeDashoffset=439.82-(439.82*pct/100);},100);document.getElementById('res-title').textContent=pct>=90?'Excellent!':pct>=70?'Passed!':'Needs Work';document.getElementById('res-sub').textContent=`${score} correct out of ${total} questions`;const v=document.getElementById('res-verdict');if(passed){v.textContent='✓ You passed — score above 70%';v.className='result-verdict pass';}else{v.textContent='✗ Below 70% — please retake the quiz';v.className='result-verdict fail';}const rv=document.getElementById('review');rv.innerHTML='<h3>Review</h3>';order.forEach(idx=>{const q=BANK[idx],ua=picks[idx],ok=ua===q.ans;const d=document.createElement('div');d.className='rv-item '+(ok?'ok':'miss');d.innerHTML=`<div class="rv-q">${q.q}</div><div class="rv-a">${ok?`<span class="c">✓ Correct: ${q.opts[q.ans]}</span>`:`<span class="w">✗ You chose: ${ua!==undefined?q.opts[ua]:'Skipped'}</span><br><span class="c">✓ Correct: ${q.opts[q.ans]}</span><br><span style="color:var(--muted)">${q.exp}</span>`}</div>`;rv.appendChild(d);});}
+function retryQuiz(){order=shuffle(order);cur=0;picks={};score=0;document.getElementById('q-score').textContent=0;show('quiz-screen');render();}
+document.getElementById('name-input').addEventListener('keydown',e=>{if(e.key==='Enter')startQuiz();});
+</script>
+</body>
+</html>

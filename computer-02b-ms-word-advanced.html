@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MS Word Advanced — July 2026 Exam</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💻</text></svg>">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@400;500&display=swap');
+  :root{--bg:#080810;--surface:#11111f;--border:#1e1e35;--purple:#7c3aed;--purple-l:#9d5bf0;--green:#22c55e;--red:#ef4444;--text:#e8e8f0;--muted:#7070a0;}
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Syne',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;align-items:center;justify-content:center;}
+  body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px);background-size:40px 40px;opacity:.4;pointer-events:none;z-index:0;}
+  .screen{position:relative;z-index:1;width:100%;max-width:660px;margin:0 auto;padding:24px 20px 48px;display:none;}
+  .screen.active{display:block;}
+  #name-screen{text-align:center;padding-top:80px;}
+  .back-link{display:inline-flex;align-items:center;gap:6px;font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);text-decoration:none;letter-spacing:1px;margin-bottom:48px;transition:color .2s;}
+  .back-link:hover{color:var(--purple-l);}
+  .subject-tag{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--purple-l);margin-bottom:12px;}
+  #name-screen h1{font-size:clamp(22px,5vw,36px);font-weight:800;line-height:1.15;margin-bottom:8px;background:linear-gradient(135deg,#fff 30%,var(--purple-l));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+  #name-screen p{color:var(--muted);font-family:'DM Mono',monospace;font-size:12px;margin-bottom:40px;}
+  .name-box{display:flex;flex-direction:column;align-items:center;gap:12px;}
+  .name-box input{width:100%;max-width:320px;padding:12px 16px;background:var(--surface);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:'Syne',sans-serif;font-size:15px;outline:none;text-align:center;transition:border-color .2s;}
+  .name-box input:focus{border-color:var(--purple);}
+  .name-box input::placeholder{color:var(--muted);}
+  .btn-primary{padding:12px 32px;background:var(--purple);color:#fff;border:none;border-radius:8px;font-family:'Syne',sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:background .2s,transform .1s;letter-spacing:.5px;}
+  .btn-primary:hover{background:var(--purple-l);transform:translateY(-1px);}
+  .quiz-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;}
+  .quiz-meta{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);}
+  .quiz-meta span{color:var(--purple-l);font-weight:500;}
+  .quiz-back{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);background:none;border:1px solid var(--border);padding:5px 10px;border-radius:6px;cursor:pointer;transition:color .2s,border-color .2s;}
+  .quiz-back:hover{color:var(--text);border-color:var(--purple);}
+  .progress-bar{width:100%;height:3px;background:var(--border);border-radius:2px;margin-bottom:32px;overflow:hidden;}
+  .progress-fill{height:100%;background:linear-gradient(90deg,var(--purple),var(--purple-l));border-radius:2px;transition:width .3s ease;}
+  .question-num{font-family:'DM Mono',monospace;font-size:10px;color:var(--purple-l);letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;}
+  .question-text{font-size:clamp(15px,3vw,18px);font-weight:600;line-height:1.5;margin-bottom:28px;color:var(--text);}
+  .options{display:flex;flex-direction:column;gap:10px;}
+  .opt-btn{display:flex;align-items:center;gap:12px;padding:13px 16px;background:var(--surface);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:'Syne',sans-serif;font-size:14px;font-weight:400;cursor:pointer;text-align:left;transition:border-color .15s,background .15s;width:100%;}
+  .opt-btn:hover:not(:disabled){border-color:var(--purple);background:#16162a;}
+  .opt-btn .opt-letter{flex-shrink:0;width:26px;height:26px;border-radius:6px;background:var(--border);display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);transition:background .15s,color .15s;}
+  .opt-btn:hover:not(:disabled) .opt-letter{background:var(--purple);color:#fff;}
+  .opt-btn.correct{border-color:var(--green);background:rgba(34,197,94,.1);}
+  .opt-btn.correct .opt-letter{background:var(--green);color:#fff;}
+  .opt-btn.wrong{border-color:var(--red);background:rgba(239,68,68,.1);}
+  .opt-btn.wrong .opt-letter{background:var(--red);color:#fff;}
+  .opt-btn:disabled{cursor:default;}
+  .explanation{display:none;margin-top:16px;padding:14px 16px;background:rgba(124,58,237,.1);border:1px solid rgba(124,58,237,.25);border-left:3px solid var(--purple);border-radius:8px;font-size:13px;line-height:1.6;color:#c4b5fd;font-family:'DM Mono',monospace;}
+  .explanation.show{display:block;}
+  .action-row{display:flex;gap:10px;margin-top:24px;}
+  .next-btn{flex:1;padding:13px;background:var(--purple);color:#fff;border:none;border-radius:8px;font-family:'Syne',sans-serif;font-size:14px;font-weight:700;cursor:pointer;display:none;transition:background .2s;letter-spacing:.5px;}
+  .next-btn:hover{background:var(--purple-l);}
+  .next-btn.show{display:block;}
+  .quit-btn{padding:13px 18px;background:none;border:1px solid var(--border);border-radius:8px;color:var(--muted);font-family:'DM Mono',monospace;font-size:12px;cursor:pointer;display:none;transition:color .2s,border-color .2s;white-space:nowrap;}
+  .quit-btn:hover{color:var(--text);border-color:var(--purple);}
+  .quit-btn.show{display:block;}
+  #results-screen{text-align:center;padding-top:40px;}
+  .result-name{font-family:'DM Mono',monospace;font-size:12px;color:var(--muted);margin-bottom:32px;}
+  .score-ring{position:relative;width:160px;height:160px;margin:0 auto 28px;}
+  .score-ring svg{transform:rotate(-90deg);}
+  .score-ring .ring-bg{fill:none;stroke:var(--border);stroke-width:10;}
+  .score-ring .ring-fill{fill:none;stroke-width:10;stroke-linecap:round;transition:stroke-dashoffset 1s ease,stroke .5s;}
+  .score-ring .ring-text{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+  .ring-pct{font-size:34px;font-weight:800;line-height:1;}
+  .ring-label{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);margin-top:4px;letter-spacing:1px;}
+  .result-title{font-size:24px;font-weight:800;margin-bottom:8px;}
+  .result-sub{font-family:'DM Mono',monospace;font-size:12px;color:var(--muted);margin-bottom:8px;}
+  .result-verdict{font-family:'DM Mono',monospace;font-size:12px;padding:8px 20px;border-radius:20px;display:inline-block;margin-bottom:32px;}
+  .result-verdict.pass{background:rgba(34,197,94,.12);color:var(--green);border:1px solid rgba(34,197,94,.3);}
+  .result-verdict.fail{background:rgba(239,68,68,.12);color:var(--red);border:1px solid rgba(239,68,68,.3);}
+  .result-actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:40px;}
+  .btn-outline{padding:11px 24px;background:none;border:1px solid var(--border);border-radius:8px;color:var(--muted);font-family:'Syne',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:border-color .2s,color .2s;}
+  .btn-outline:hover{border-color:var(--purple);color:var(--text);}
+  .review{text-align:left;}
+  .review h3{font-size:13px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:2px;margin-bottom:16px;font-family:'DM Mono',monospace;}
+  .rv-item{padding:14px 16px;border-radius:8px;margin-bottom:10px;border:1px solid var(--border);}
+  .rv-item.ok{border-color:rgba(34,197,94,.25);background:rgba(34,197,94,.05);}
+  .rv-item.miss{border-color:rgba(239,68,68,.25);background:rgba(239,68,68,.05);}
+  .rv-q{font-size:13px;font-weight:600;margin-bottom:8px;line-height:1.4;}
+  .rv-a{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);line-height:1.6;}
+  .rv-a .c{color:var(--green);}
+  .rv-a .w{color:var(--red);}
+</style>
+</head>
+<body>
+<div class="screen active" id="name-screen">
+  <a class="back-link" href="index.html">← Back to subjects</a>
+  <div class="subject-tag">Computer · Topic 02B</div>
+  <h1>MS Word Advanced</h1>
+  <p>30 questions · Word wrap, change case, shortcuts, borders, tables & more</p>
+  <div class="name-box">
+    <input type="text" id="name-input" placeholder="Enter your name" maxlength="30" autocomplete="off">
+    <button class="btn-primary" onclick="startQuiz()">Start Quiz</button>
+  </div>
+</div>
+<div class="screen" id="quiz-screen">
+  <div class="quiz-header">
+    <div class="quiz-meta">Question <span id="q-num">1</span> of <span id="q-total">30</span></div>
+    <div class="quiz-meta">Score <span id="q-score">0</span></div>
+    <button class="quiz-back" onclick="goBack()">← Quit</button>
+  </div>
+  <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+  <div class="question-num" id="q-label"></div>
+  <div class="question-text" id="q-text"></div>
+  <div class="options" id="options"></div>
+  <div class="explanation" id="explanation"></div>
+  <div class="action-row">
+    <button class="quit-btn" id="quit-btn" onclick="goBack()">← Back to subjects</button>
+    <button class="next-btn" id="next-btn" onclick="nextQuestion()">Next Question →</button>
+  </div>
+</div>
+<div class="screen" id="results-screen">
+  <div class="result-name" id="result-name"></div>
+  <div class="score-ring">
+    <svg viewBox="0 0 160 160" width="160" height="160">
+      <circle class="ring-bg" cx="80" cy="80" r="70"/>
+      <circle class="ring-fill" id="ring-fill" cx="80" cy="80" r="70" stroke-dasharray="439.82" stroke-dashoffset="439.82" stroke="var(--green)"/>
+    </svg>
+    <div class="ring-text">
+      <div class="ring-pct" id="ring-pct">0%</div>
+      <div class="ring-label">SCORE</div>
+    </div>
+  </div>
+  <div class="result-title" id="res-title"></div>
+  <div class="result-sub" id="res-sub"></div>
+  <div class="result-verdict" id="res-verdict"></div>
+  <div class="result-actions">
+    <button class="btn-primary" onclick="retryQuiz()">Retry →</button>
+    <button class="btn-outline" onclick="window.location.href='index.html'">All Subjects</button>
+  </div>
+  <div class="review" id="review"></div>
+</div>
+<script>
+const BANK=[
+{q:"What is Word Wrapping in MS Word?",opts:["The process of automatically saving a document at set intervals to prevent data loss during editing","The feature that allows text to be formatted in multiple columns like a newspaper layout","The concept where text automatically moves to the next line when the end of the line is reached — without pressing the Enter key","The process of indenting the first line of each new paragraph automatically as you begin to type"],ans:2,exp:"Word Wrapping means you do not need to press the Enter key at the end of each line — the text automatically moves to the next line. You only press Enter when you reach the end of a paragraph or want to start a new paragraph."},
+{q:"What does the Status Bar in MS Word display?",opts:["The available formatting options for the currently selected text including font, size, and colour","The ruler showing the margins and indentation settings for the current paragraph","The current status of the document — including the current page number, line number, column, and other information","The list of recently used commands organised into groups for quick access during editing"],ans:2,exp:"The Status Bar is found at the bottom of the MS Word window. It displays the current status of the document — the current page number, line number, column number, and other useful information."},
+{q:"What does the Vertical Scroll Bar do in MS Word?",opts:["It allows the user to move horizontally through a wide document by scrolling left or right","It controls the zoom level of the document — dragging it up increases the zoom, dragging it down decreases it","It is used to move vertically through a long document — scrolling the page up or down","It switches between different document views such as Normal, Print Layout, and Web Layout"],ans:2,exp:"The Vertical Scroll Bar is used to move vertically through a long document — scrolling the page up or down. The Horizontal Scroll Bar moves a wide document left or right."},
+{q:"What is the Ruler in MS Word used for?",opts:["Measuring the physical size of inserted images to ensure they fit within the page boundaries","Displaying the word count and character count for the currently selected text","Displaying the margins and indentation settings of the text currently being typed in the document","Setting the line spacing for the entire document from a visual scale at the top of the screen"],ans:2,exp:"The Ruler in MS Word displays the margins of the text you are typing. It shows the left and right margins, indentation settings, and tab stops — and it appears at the top of the document editing area."},
+{q:"What are the five types of Change Case available in MS Word?",opts:["Normal case, Title Case, Bold Case, ITALIC CASE, and Underline Case — based on the formatting applied","UPPER CASE, lower case, Title Case, Sentence case, and tOGGLE cASE — each changes how letters are capitalised","Large case, small case, mixed case, heading case, and body case — standard case types for document formatting","Print case, Screen case, Default case, Custom case, and Auto case — based on the output destination"],ans:1,exp:"MS Word has five Change Case types: Sentence case (capital after full stop), lower case (all small), UPPER CASE (all capitals), Title Case (first letter of each word capitalised), and tOGGLE cASE (first letter small, rest capital). Apply via Format → Change Case."},
+{q:"What does Sentence Case do in MS Word's Change Case feature?",opts:["It converts every letter in the selected text to a capital letter regardless of its position","It makes every first letter of every word a capital letter throughout the selected text","Every alphabet after a full stop is automatically made a capital letter — like a normal sentence","It alternates between upper and lower case for each letter throughout the selected text"],ans:2,exp:"Sentence Case makes every alphabet after a full stop a capital letter automatically — just like a normal sentence starting with a capital. Example: 'Sentence case.'"},
+{q:"What is Toggle Case in MS Word?",opts:["A case that converts only the very first letter of the entire selected text to upper case","A case where every first alphabet of a word is made a capital letter throughout the text","A case where all letters are converted to lower case with no capitals anywhere in the text","A case where every first alphabet of a word is a small letter and the rest are capitals — e.g. tOGGLE cASE"],ans:3,exp:"Toggle Case makes every first alphabet of a word a small letter and the remaining letters capitals — the reverse of Title Case. Example: tOGGLE cASE. Apply via Format → Change Case → Toggle Case."},
+{q:"What is the keyboard shortcut for Double Line Spacing in MS Word?",opts:["Ctrl+1 — which applies single line spacing to the currently selected paragraph or text","Ctrl+5 — which applies 1.5 line spacing to the currently selected paragraph or text","Ctrl+2 — which applies double line spacing to the currently selected paragraph or text","Ctrl+3 — which applies triple line spacing to the currently selected paragraph or text"],ans:2,exp:"Ctrl+2 applies double line spacing in MS Word. Ctrl+1 = single spacing, Ctrl+5 = 1.5 spacing. These shortcuts also work after selecting text."},
+{q:"What is the keyboard shortcut for 1.5 Line Spacing in MS Word?",opts:["Ctrl+1 — applying single line spacing to condense the text into the minimum line height","Ctrl+2 — applying double line spacing to create extra space between each line of text","Ctrl+4 — applying 1.5 line spacing to create a moderate amount of space between lines","Ctrl+5 — applying 1.5 line spacing between each line of the selected or current paragraph"],ans:3,exp:"Ctrl+5 applies 1.5 line spacing in MS Word. Note: Ctrl+1 = single spacing, Ctrl+2 = double spacing, Ctrl+5 = 1.5 spacing."},
+{q:"What is the keyboard shortcut for Find and Replace in MS Word?",opts:["Ctrl+F — which opens the Find toolbar to search for text within the document","Ctrl+G — which opens the Go To dialog to navigate to a specific page or section","Ctrl+H — which opens the Find and Replace dialog to search for text and replace it with new text","Ctrl+R — which opens the Right Align function to align the current paragraph to the right margin"],ans:2,exp:"Ctrl+H opens the Find and Replace dialog in MS Word. This allows you to type the word you want to find in the 'Find what' box and the replacement word in the 'Replace with' box."},
+{q:"What is the keyboard shortcut to open a New document in MS Word?",opts:["Ctrl+O — which opens an existing previously saved document from the file system","Ctrl+S — which saves the current document to its existing file location","Ctrl+N — which opens a new blank document without closing the current one","Ctrl+W — which closes the current document window without closing MS Word"],ans:2,exp:"Ctrl+N opens a new blank document in MS Word. Ctrl+O opens an existing document, Ctrl+S saves, and Ctrl+W closes the current window."},
+{q:"What is the keyboard shortcut to Open an existing document in MS Word?",opts:["Ctrl+N — which creates a new blank document without any content","Ctrl+O — which opens the Open dialog box to locate and open an existing saved document","Ctrl+S — which saves the current document to the last used file location","Ctrl+P — which opens the Print dialog to print the current document"],ans:1,exp:"Ctrl+O opens the Open dialog box in MS Word, allowing you to locate and open an existing saved document from your file system."},
+{q:"What does the keyboard shortcut Ctrl+G do in MS Word?",opts:["It opens the Grammar check dialog to scan the document for grammatical errors","It applies a green highlight colour to the currently selected text","It opens the Go To dialog — allowing the user to navigate to a specific page, section, or line number","It opens the grid settings for adjusting table column and row alignment"],ans:2,exp:"Ctrl+G opens the Go To dialog in MS Word, which allows you to navigate directly to a specific page number, section, line, bookmark, or other document element."},
+{q:"What does Shift+F7 do in MS Word?",opts:["It opens the Spelling and Grammar check dialog to scan for errors in the document","It opens the Thesaurus — a tool that provides synonyms and related words for the selected word","It applies the next available heading style to the currently selected paragraph","It opens the Find and Replace dialog to search for and replace text in the document"],ans:1,exp:"Shift+F7 opens the Thesaurus in MS Word. The Thesaurus suggests synonyms (words with similar meanings) for the selected word — useful for improving writing variety and precision."},
+{q:"What is Superscript in MS Word and what shortcut applies it?",opts:["Text that is displayed below the normal line of text — like the subscript in a chemical formula H₂O","Text that is raised above the normal line of text — like the exponent in 2³ or a footnote reference. Shortcut: Ctrl+Shift+=","Text that is displayed in a larger font size than surrounding text for emphasis or headings","Text that appears in a different colour to highlight important information within a paragraph"],ans:1,exp:"Superscript raises text above the normal line — used for exponents (2³), footnote numbers, or ordinal suffixes (1st). Shortcut: Ctrl+Shift+= (or Format → Font → Superscript checkbox)."},
+{q:"What is Subscript in MS Word and what shortcut applies it?",opts:["Text raised above the normal line — used for mathematical exponents and footnote references","Text displayed in a smaller font than surrounding text — used for fine print and legal disclaimers","Text displayed below the normal line of text — used in chemical formulas like H₂O. Shortcut: Ctrl+=","Text that appears in italics and is indented from the left margin for block quotations"],ans:2,exp:"Subscript places text below the normal line — used in chemical formulas like H₂O or mathematical expressions. Shortcut: Ctrl+= (or Format → Font → Subscript checkbox)."},
+{q:"What are Borders and Shading used for in MS Word?",opts:["They are used to create multiple columns in a document for newspaper-style layouts","They are used to add a decorative border or coloured background around selected text, paragraphs, or the entire page","They are used to apply watermarks or background images that appear dimly behind all document text","They are used to insert tables with pre-defined border styles into a Word document"],ans:1,exp:"Borders and Shading in MS Word allow you to enclose selected characters, words, paragraphs, or graphics in a border and/or add a shading colour behind them. Applied from Format → Borders and Shading."},
+{q:"In the Borders and Shading dialog, what does the 'Preview' option do?",opts:["It sends the current formatting to the printer as a sample page before applying it to the full document","It shows a live preview of all fonts available in the system so you can compare them side by side","It allows you to preview the effects of the various formatting combinations you have created for your border before applying","It automatically applies the selected border style to the document and shows the result without any dialog"],ans:2,exp:"The Preview option in the Borders and Shading dialog allows you to preview the effects of the various formatting combinations (style, colour, width, setting) that you have chosen before clicking OK to apply them."},
+{q:"How do you insert Page Numbers in MS Word?",opts:["From the Home tab — click Page Number in the Paragraph group to open the numbering options","From the Design tab — click Page Numbers in the Header & Footer group to insert them","Click Insert on the menu bar → Select Page Numbers → Choose position and alignment → Click OK","From the Review tab — click Insert Page Numbers in the Proofing group to add them automatically"],ans:2,exp:"To insert page numbers in MS Word: Click Insert on the menu bar → Select Page Numbers → Choose the position (top or bottom) and alignment (left, centre, right) → Click OK."},
+{q:"What is the keyboard shortcut to open the Font dialog box in MS Word?",opts:["Ctrl+F — which opens the Find toolbar to search for specific text in the document","Ctrl+B — which applies bold formatting to the currently selected text","Ctrl+D — which opens the Font dialog box for detailed character formatting options","Ctrl+E — which centres the currently selected text or paragraph on the page"],ans:2,exp:"Ctrl+D opens the Font dialog box in MS Word — providing access to all character formatting options including font, size, style, effects (superscript, subscript, outline, emboss), and character spacing."},
+{q:"What is the keyboard shortcut for Word Count in MS Word?",opts:["Ctrl+W — which closes the current document window in MS Word","Ctrl+Shift+G — which opens the Word Count dialog showing words, characters, paragraphs, and lines","Ctrl+G — which opens the Go To dialog for navigating to a specific page or section","Ctrl+C followed by Ctrl+G — a two-step shortcut for counting selected text only"],ans:1,exp:"Ctrl+Shift+G opens the Word Count dialog in MS Word, showing the number of pages, words, characters (with and without spaces), paragraphs, and lines in the document."},
+{q:"What is the keyboard shortcut to Close a document Window in MS Word?",opts:["Ctrl+Q — which quits MS Word entirely and closes all open documents simultaneously","Ctrl+X — which cuts the selected content and removes the document from the screen","Ctrl+W — which closes the current document window without necessarily closing MS Word itself","Alt+F4 — which is the only correct shortcut for closing any window in MS Word"],ans:2,exp:"Ctrl+W closes the current document window in MS Word. If unsaved changes exist, it prompts you to save. Ctrl+W does not close MS Word itself if other documents are open."},
+{q:"How do you create a Table in MS Word?",opts:["From the Insert tab — click Table → drag to select the number of rows and columns, or use Insert Table from the menu","From the Home tab — click the Table button in the Paragraph group to specify rows and columns","From the Format tab — select Table Layout and specify the number of rows, columns, and cell sizes","From the Design tab — click Create Table in the Document Formatting group and draw the table manually"],ans:0,exp:"To create a table in MS Word: Click Table on the menu bar (or Insert tab) → Select Insert → Click Table → Specify the number of rows and columns in the dialog box → Click OK."},
+{q:"How do you Merge Cells in a MS Word table?",opts:["Select the cells → Click the Home tab → Click Merge in the Clipboard group → Choose Merge Selected Cells","Select the cells → Right-click → Choose Format Cells → Click the Merge tab in the Format dialog","Highlight the columns or rows to merge → Click Table on the menu bar → Click Merge Cells","Click on a cell → Press Ctrl+M to trigger automatic merging of the cell with the one to its right"],ans:2,exp:"To merge cells in a Word table: Highlight the columns or rows to merge → Click Table on the menu bar → Click Merge Cells. This combines the selected cells into one larger cell."},
+{q:"What is the keyboard shortcut to apply a Bullet List in MS Word?",opts:["Ctrl+Shift+B — which applies the default bullet style to the currently selected paragraph","Ctrl+Shift+N — which applies the Normal paragraph style removing any existing bullet formatting","Ctrl+Shift+L — which applies the default bullet list style to the selected text","Ctrl+Shift+M — which increases the indent level to create a nested bullet sub-list"],ans:2,exp:"Ctrl+Shift+L applies the bullet list format in MS Word. Bullets can also be applied from Format → Bullets and Numbering → select bullet style → OK."},
+{q:"What is the keyboard shortcut for Open and Close Bracket (field code) in MS Word?",opts:["Ctrl+[ and Ctrl+] — used to decrease and increase font size in one-point increments","Ctrl+Shift+B — used to insert an opening bracket and close bracket around selected text","Ctrl+F9 — which inserts a field code bracket pair {} used for inserting fields and merge codes","Ctrl+( and Ctrl+) — the bracket insertion shortcuts that work only in table cells"],ans:2,exp:"Ctrl+F9 inserts a field code bracket pair { } in MS Word — used for inserting field codes such as page numbers, dates, and merge fields in documents."},
+{q:"What does Ctrl+] do in MS Word?",opts:["It decreases the font size of the selected text by one point at a time","It closes the current document and prompts the user to save any unsaved changes","It increases the font size of the selected text by one point at a time","It applies the next heading style level to the currently selected paragraph"],ans:2,exp:"Ctrl+] increases the font size of selected text by one point at a time in MS Word. Ctrl+[ decreases the font size by one point. These are useful for quick precise font size adjustments."},
+{q:"What is the keyboard shortcut to select the Beginning of the Document in MS Word?",opts:["Home key — which moves the cursor to the beginning of the current line only","Ctrl+Home — which moves the cursor to the very beginning of the entire document","End key — which moves the cursor to the end of the current line where it is positioned","Ctrl+End — which moves the cursor to the very end of the entire document"],ans:1,exp:"Ctrl+Home moves the cursor to the very beginning of the entire document. Home alone moves to the beginning of the current line. Ctrl+End goes to the end of the document."},
+{q:"What does the F7 key do when pressed in MS Word?",opts:["It opens Print Preview — showing how the document will look when it is printed","It opens the Find and Replace dialog to search for and replace text in the document","It starts the Spelling and Grammar checker — scanning the document for errors from the insertion point","It opens the Font dialog box for applying detailed character formatting to selected text"],ans:2,exp:"Pressing F7 in MS Word starts the Spelling and Grammar check. It scans the document from the insertion point, displaying unrecognised words in a dialog where you can ignore, change, or add them to the dictionary."},
+{q:"What is the keyboard shortcut for Paste in MS Word, and what about Cut and Copy?",opts:["Cut = Ctrl+C, Copy = Ctrl+X, Paste = Ctrl+V — the standard clipboard operations in MS Word","Cut = Ctrl+X, Copy = Ctrl+C, Paste = Ctrl+V — the standard clipboard shortcuts used throughout MS Word and Windows","Cut = Ctrl+V, Copy = Ctrl+C, Paste = Ctrl+X — based on the order of clipboard operations performed","Cut = Ctrl+D, Copy = Ctrl+C, Paste = Ctrl+P — the shortcut keys assigned in the Edit menu"],ans:1,exp:"The standard clipboard shortcuts in MS Word: Cut = Ctrl+X (removes selected content to clipboard), Copy = Ctrl+C (copies to clipboard), Paste = Ctrl+V (inserts from clipboard). These work across all Windows applications."},
+{q:"How do you apply Page Orientation (Portrait or Landscape) in MS Word?",opts:["From the Insert tab — click Orientation in the Header & Footer group and choose Portrait or Landscape","From the Home tab — click the Orientation button in the Paragraph group and select from the dropdown","Click File on the menu bar → Click Page Setup → In the dialog box select Orientation → Click Portrait or Landscape → Click OK","From the View tab — click Orientation in the Zoom group and toggle between Portrait and Landscape modes"],ans:2,exp:"To set page orientation: Click File on the menu bar → Click Page Setup → In the dialog box select Orientation → Click on either Portrait (vertical) or Landscape (horizontal) → Click OK."}
+];
+let order=[],cur=0,picks={},playerName='',score=0;
+function shuffle(arr){const a=[...arr];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');window.scrollTo(0,0);}
+function goBack(){if(confirm('Quit quiz and return to subjects?'))window.location.href='index.html';}
+function startQuiz(){const inp=document.getElementById('name-input').value.trim();playerName=inp||'Anonymous';order=shuffle(BANK.map((_,i)=>i));cur=0;picks={};score=0;document.getElementById('q-total').textContent=BANK.length;show('quiz-screen');render();}
+function render(){const idx=order[cur],q=BANK[idx],total=BANK.length;document.getElementById('q-num').textContent=cur+1;document.getElementById('q-score').textContent=score;document.getElementById('q-label').textContent=`Question ${cur+1} of ${total}`;document.getElementById('q-text').textContent=q.q;document.getElementById('progress-fill').style.width=((cur/total)*100)+'%';document.getElementById('explanation').className='explanation';document.getElementById('explanation').textContent='';document.getElementById('next-btn').className='next-btn';document.getElementById('quit-btn').className='quit-btn';const letters=['A','B','C','D'],optEl=document.getElementById('options');optEl.innerHTML='';shuffle([0,1,2,3]).forEach((oi,li)=>{const btn=document.createElement('button');btn.className='opt-btn';btn.dataset.opt=oi;btn.innerHTML=`<span class="opt-letter">${letters[li]}</span><span>${q.opts[oi]}</span>`;btn.onclick=()=>selectAnswer(oi,idx);optEl.appendChild(btn);});}
+function selectAnswer(chosen,idx){const q=BANK[idx],correct=chosen===q.ans;picks[idx]=chosen;if(correct)score++;document.getElementById('q-score').textContent=score;document.querySelectorAll('.opt-btn').forEach(btn=>{btn.disabled=true;const oi=parseInt(btn.dataset.opt);if(oi===q.ans)btn.classList.add('correct');else if(oi===chosen&&!correct)btn.classList.add('wrong');});if(!correct){const e=document.getElementById('explanation');e.textContent='✗ '+q.exp;e.classList.add('show');}const nb=document.getElementById('next-btn');nb.classList.add('show');nb.textContent=cur+1<BANK.length?'Next Question →':'See Results →';document.getElementById('quit-btn').classList.add('show');}
+function nextQuestion(){cur++;if(cur>=BANK.length)showResults();else{render();window.scrollTo(0,0);}}
+function showResults(){show('results-screen');const total=BANK.length,pct=Math.round((score/total)*100),passed=pct>=70;document.getElementById('result-name').textContent=playerName;document.getElementById('ring-pct').textContent=pct+'%';document.getElementById('ring-pct').style.color=passed?'var(--green)':'var(--red)';document.getElementById('ring-fill').style.stroke=passed?'var(--green)':'var(--red)';setTimeout(()=>{document.getElementById('ring-fill').style.strokeDashoffset=439.82-(439.82*pct/100);},100);document.getElementById('res-title').textContent=pct>=90?'Excellent!':pct>=70?'Passed!':'Needs Work';document.getElementById('res-sub').textContent=`${score} correct out of ${total} questions`;const v=document.getElementById('res-verdict');if(passed){v.textContent='✓ You passed — score above 70%';v.className='result-verdict pass';}else{v.textContent='✗ Below 70% — please retake the quiz';v.className='result-verdict fail';}const rv=document.getElementById('review');rv.innerHTML='<h3>Review</h3>';order.forEach(idx=>{const q=BANK[idx],ua=picks[idx],ok=ua===q.ans;const d=document.createElement('div');d.className='rv-item '+(ok?'ok':'miss');d.innerHTML=`<div class="rv-q">${q.q}</div><div class="rv-a">${ok?`<span class="c">✓ Correct: ${q.opts[q.ans]}</span>`:`<span class="w">✗ You chose: ${ua!==undefined?q.opts[ua]:'Skipped'}</span><br><span class="c">✓ Correct: ${q.opts[q.ans]}</span><br><span style="color:var(--muted)">${q.exp}</span>`}</div>`;rv.appendChild(d);});}
+function retryQuiz(){order=shuffle(order);cur=0;picks={};score=0;document.getElementById('q-score').textContent=0;show('quiz-screen');render();}
+document.getElementById('name-input').addEventListener('keydown',e=>{if(e.key==='Enter')startQuiz();});
+</script>
+</body>
+</html>
