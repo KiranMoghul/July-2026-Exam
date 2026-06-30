@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Viva Prep Checklist — July 2026</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎤</text></svg>">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@400;500&display=swap');
+  :root{--bg:#080810;--surface:#11111f;--border:#1e1e35;--purple:#7c3aed;--purple-l:#9d5bf0;--green:#22c55e;--text:#e8e8f0;--muted:#7070a0;}
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Syne',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
+  body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px);background-size:40px 40px;opacity:.4;pointer-events:none;z-index:0;}
+  .wrap{position:relative;z-index:1;max-width:820px;margin:0 auto;padding:0 20px 80px;}
+
+  /* header */
+  header{padding:48px 0 32px;text-align:center;}
+  .back-link{display:inline-flex;align-items:center;gap:6px;font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);text-decoration:none;letter-spacing:1px;margin-bottom:32px;transition:color .2s;}
+  .back-link:hover{color:var(--purple-l);}
+  header .eyebrow{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--purple-l);margin-bottom:10px;}
+  header h1{font-size:clamp(26px,5vw,42px);font-weight:800;background:linear-gradient(135deg,#fff 30%,var(--purple-l));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:8px;}
+  header p{color:var(--muted);font-family:'DM Mono',monospace;font-size:12px;}
+
+  /* progress bar */
+  .overall-progress{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:20px 24px;margin-bottom:36px;}
+  .op-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;}
+  .op-label{font-size:13px;font-weight:600;}
+  .op-count{font-family:'DM Mono',monospace;font-size:12px;color:var(--purple-l);}
+  .bar-track{height:6px;background:var(--border);border-radius:3px;overflow:hidden;}
+  .bar-fill{height:100%;background:linear-gradient(90deg,var(--purple),var(--green));border-radius:3px;transition:width .4s ease;}
+
+  /* section */
+  .section{margin-bottom:32px;}
+  .section-header{display:flex;align-items:center;gap:10px;margin-bottom:16px;padding-bottom:10px;border-bottom:1px solid var(--border);}
+  .section-icon{font-size:20px;}
+  .section-title{font-size:16px;font-weight:700;}
+  .section-badge{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);padding:3px 8px;border:1px solid var(--border);border-radius:20px;}
+
+  /* checklist item */
+  .item{display:flex;gap:14px;padding:14px 16px;background:var(--surface);border:1px solid var(--border);border-radius:8px;margin-bottom:8px;cursor:pointer;transition:border-color .15s,background .15s;}
+  .item:hover{border-color:var(--purple);background:#13132a;}
+  .item.checked{border-color:rgba(34,197,94,.3);background:rgba(34,197,94,.05);}
+  .item.checked .item-title{color:var(--muted);text-decoration:line-through;}
+  .check-box{flex-shrink:0;width:22px;height:22px;border-radius:6px;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;transition:border-color .15s,background .15s;margin-top:1px;}
+  .item.checked .check-box{background:var(--green);border-color:var(--green);}
+  .check-mark{display:none;color:#fff;font-size:13px;font-weight:700;}
+  .item.checked .check-mark{display:block;}
+  .item-body{flex:1;min-width:0;}
+  .item-title{font-size:14px;font-weight:600;margin-bottom:4px;transition:color .15s;}
+  .item-desc{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);line-height:1.6;}
+
+  /* image grid inside item */
+  .img-grid{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;}
+  .img-card{display:flex;flex-direction:column;align-items:center;gap:4px;}
+  .img-card img{width:100px;height:70px;object-fit:cover;border-radius:6px;border:1px solid var(--border);background:var(--border);}
+  .img-card span{font-family:'DM Mono',monospace;font-size:9px;color:var(--muted);text-align:center;max-width:100px;}
+
+  /* temperature table */
+  .temp-table{width:100%;border-collapse:collapse;margin-top:10px;font-family:'DM Mono',monospace;font-size:11px;}
+  .temp-table th{text-align:left;padding:6px 10px;background:rgba(124,58,237,.15);color:var(--purple-l);border:1px solid var(--border);font-weight:600;}
+  .temp-table td{padding:6px 10px;border:1px solid var(--border);color:var(--text);}
+  .temp-table tr:nth-child(even) td{background:rgba(255,255,255,.02);}
+  .temp-table .danger{color:#ef4444;}
+  .temp-table .safe{color:var(--green);}
+
+  /* key point tag */
+  .tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;}
+  .tag{font-family:'DM Mono',monospace;font-size:10px;padding:2px 8px;border-radius:12px;background:rgba(124,58,237,.12);color:var(--purple-l);border:1px solid rgba(124,58,237,.2);}
+
+  /* reset button */
+  .reset-btn{display:block;margin:32px auto 0;padding:11px 28px;background:none;border:1px solid var(--border);border-radius:8px;color:var(--muted);font-family:'DM Mono',monospace;font-size:12px;cursor:pointer;transition:color .2s,border-color .2s;}
+  .reset-btn:hover{color:var(--text);border-color:var(--purple);}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <a class="back-link" href="index.html">← Back to subjects</a>
+    <div class="eyebrow">Culinary Arts · Viva Preparation</div>
+    <h1>Viva Prep Checklist</h1>
+    <p>Tick each topic as you revise it · Progress saves in your browser</p>
+  </header>
+
+  <div class="overall-progress">
+    <div class="op-top">
+      <span class="op-label">Overall Progress</span>
+      <span class="op-count" id="op-count">0 / 0 topics reviewed</span>
+    </div>
+    <div class="bar-track"><div class="bar-fill" id="bar-fill" style="width:0%"></div></div>
+  </div>
+
+  <!-- ── MOTHER SAUCES ── -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-icon">🥣</span>
+      <span class="section-title">5 Mother Sauces</span>
+      <span class="section-badge">5 points</span>
+    </div>
+
+    <div class="item" onclick="toggle(this)" id="v-bechamel">
+      <div class="check-box"><span class="check-mark">✓</span></div>
+      <div class="item-body">
+        <div class="item-title">Béchamel</div>
+        <div class="item-desc">Milk + white roux, seasoned with nutmeg. Base for Mornay (+ cheese), Soubise (+ onion). Used in gratins, pasta bakes, croque monsieur.</div>
+        <div class="tags"><span class="tag">milk + white roux</span><span class="tag">Mornay derivative</span><span class="tag">nutmeg</span></div>
+      </div>
+    </div>
+
+    <div class="item" onclick="toggle(this)" id="v-veloute">
+      <div class="check-box"><span class="check-mark">✓</span></div>
+      <div class="item-body">
+        <div class="item-title">Velouté</div>
+        <div class="item-desc">White stock (chicken / fish / veal) + blonde roux. Three types by stock used. Derivatives: Suprême (+ cream), Allemande (+ liaison).</div>
+        <div class="tags"><span class="tag">white stock + blonde roux</span><span class="tag">3 types</span><span class="tag">Suprême derivative</span></div>
+      </div>
+    </div>
+
+    <div class="item" onclick="toggle(this)" id="v-espagnole">
+      <div class="check-box"><span class="check-mark">✓</span></div>
+      <div class="item-body">
+        <div class="item-title">Espagnole</div>
+        <div class="item-desc">Brown stock + brown roux + mirepoix + tomato purée + bouquet garni. Reduced to demi-glace. Base for Bordelaise, Périgueux, Chasseur.</div>
+        <div class="tags"><span class="tag">brown stock + brown roux</span><span class="tag">demi-glace</span><span class="tag">Bordelaise derivative</span></div>
+      </div>
+    </div>
+
+    <div class="item" onclick="toggle(this)" id="v-hollandaise">
+      <div class="check-box"><span class="check-mark">✓</span></div>
+      <div class="item-body">
+        <div class="item-title">Hollandaise</div>
+        <div class="item-desc">Warm butter emulsion — egg yolks + clarified butter over bain-marie. Risk: scrambling yolks. Derivatives: Béarnaise (+ tarragon), Mousseline (+ cream).</div>
+        <div class="tags"><span class="tag">warm emulsion</span><span class="tag">bain-marie</span><span class="tag">Béarnaise derivative</span></div>
+      </div>
+    </div>
+
+    <div class="item" onclick="toggle(this)" id="v-tomat">
+      <div class="check-box"><span class="check-mark">✓</span></div>
+      <div class="item-body">
+        <div class="item-title">Sauce Tomat</div>
+        <div class="item-desc">Tomatoes + pork fat + mirepoix + light roux + veal stock. Richer and more complex than pasta sauce. Derivatives: Creole, Portuguese.</div>
+        <div class="tags"><span class="tag">tomato + pork + stock</span><span class="tag">light roux</span><span class="tag">Creole derivative</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── STOCKS ── -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-icon">🍲</span>
+      <span class="section-title">Stocks, Soups & Broths</span>
+      <span class="section-badge">6 points</span>
+    </div>
+
+    <div class="item" onclick="toggle(this)" id="v-white-stock">
+      <div class="check-box"><span class="check-mark">✓</span></div>
+      <div class="item-body">
+        <div class="item-title">White Stock (Fond Blanc)</div>
+        <div class="item-desc">Raw bones + cold water + mirepoix + bouquet garni. Blanch bones first. Simmer gently — never boil. Chicken: 3–4 hrs. Veal/beef: 6–8 hrs. Never season.</div>
+        <div class="tags"><span class="tag">raw bones</span><span class="tag">cold water start</span><span class="tag">no seasoning</span></div>
+      </div>
+    </div>
+
+    <div class="item" onclick="toggle(this)" id="v-brown-stock">
+      <div class="check-box"><span class="check-mark">✓</span></div>
+      <div class="item-body">
+        <div class="item-title">Brown Stock (Fond Brun)</div>
+        <div class="item-desc">Roast bones + caramelise mirepoix first (Maillard reaction). Deep colour and rich flavour. Base for demi-glace and all classical brown sauces.</div>
+        <div class="tags"><span class="tag">roasted bones</span><span class="tag">Maillard reaction</span><span class="tag">demi-glace base</span></div>
+      </div>
+    </div>
+
+    <div class="item" onclick="toggle(this)" id="v-fumet">
+      <div class="check-box"><span class="check-mark">✓</span></div>
+      <div class="item-body">
+        <div class="item-title">Fish Stock (Fumet)</div>
+        <div class="item-desc">Fish bones + white wine + aromatics. 20–30 minutes ONLY — longer makes it bitter. Base for fish velouté and seafood sauces.</div>
+        <div class="tags"><span class="tag">20–30 mins max</span><span class="tag">white wine</span><span class="tag">fish velouté base</span></div>
+      </div>
+    </div>
+
+    <div class="item" onclick="toggle(this)" id="v-consomme">
+      <div class="check-box"><span class="check-mark">✓</span></div>
+      <div class="item-body">
+        <div class="item-title">Consommé</div>
+        <div class="item-desc">Crystal-clear clarified soup. Cloudy stock + clearmeat raft (lean mince + egg white + mirepoix + acid). Raft traps all impurities, then strained.</div>
+        <div class="tags"><span class="tag">clearmeat raft</span><span class="tag">egg white clarification</span><span class="tag">crystal clear</span></div>
+      </div>
+    </div>
+
+    <div class="item" onclick="toggle(this)" id="v-soup-types">
+      <div class="check-box"><span class="check-mark">✓</span></div>
+      <div class="item-body">
+        <div class="item-title">Soup Categories</div>
+        <div class="item-desc">Clear (consommé, broth) · Cream (velouté base + cream liaison) · Purée (blended starchy veg, no roux) · Bisque (crustacean cream soup) · National (French Onion, Gazpacho, Vichyssoise).</div>
+        <div class="tags"><span class="tag">clear</span><span class="tag">cream</span><span class="tag">purée</span><span class="tag">bisque</span></div>
+      </div>
+    </div>
+
+    <div class="item" onclick="toggle(this)" id="v-glace">
+      <div class="check-box"><span class="check-mark">✓</span></div>
+      <div class="item-body">
+        <div class="item-title">Glace de Viande</div>
+        <div class="item-desc">Brown stock reduced by ~90% to a thick, syrupy, intensely flavoured concentrate. Sets solid when cold. Used in tiny amounts to boost sauce depth.</div>
+        <div class="tags"><span class="tag">90% reduction</span><span class="tag">syrupy</span><span class="tag">flavour bomb</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── COOKING METHODS ── -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-icon">🔥</span>
+      <span class="section-title">Cooking Methods</span>
+      <span class="section-badge">4 points</span>
+    </div>
+
+    <div class="item" onclick="toggle(this)" id="v-dry-heat">
+      <div class="check-box"><span class="check-mark">✓</span></div>
+      <div class="item-body">
+        <div class="item-title">Dry Heat Methods</div>
+        <div class="item-desc">No moisture involved. Roasting, baking, grilling, griddling, sautéing, shallow frying, deep frying, stir-frying. Browning via Maillard reaction and caramelisation.</div>
+        <div class="tags"><span class="tag">no moisture</span><span class="tag">Maillard reaction</span><span class="tag">7 methods</span></div>
+      </div>
+    </div>
+
+    <div class="item" onclick="toggle(this)" id="v-moist-heat">
+      <div class="check-box"><span class="check-mark">✓</span></div>
+      <div class="item-body">
+        <div class="item-title">Moist Heat Methods</div>
+        <div class="item-desc">Boiling (100°C) · Simmering (85–95°C) · Poaching (70–82°C) · Steaming (100°C, no contact) · Braising (sear then slow liquid) · Stewing (submerged small pieces).</div>
+        <div class="tags"><span class="tag">liquid or steam</span><span class="tag">6 methods</span><span class="tag">collagen→gelatin</span></div>
+      </div>
+    </div>
+
+    <div class="item" onclick="toggle(this)" id="v-heat-transfer">
+      <div class="check-box"><span class="check-mark">✓</span></div>
+      <div class="item-body">
+        <div class="item-title">Heat Transfer: Conduction, Convection, Radiation</div>
+        <div class="item-desc">Conduction = direct contact (pan to food). Convection = fluid movement (oven air, boiling water). Radiation = electromagnetic waves (salamander, charcoal).</div>
+        <div class="tags"><span class="tag">conduction</span><span class="tag">convection</span><span class="tag">radiation</span></div>
+      </div>
+    </div>
+
+    <div class="item" onclick="toggle(this)" id="v-combination">
+      <div class="check-box"><span class="check-mark">✓</span></div>
+      <div class="item-body">
+        <div class="item-title">Combination Cooking & Sous Vide</div>
+        <div class="item-desc">Combination = sear (dry heat) then braise (moist heat). Converts collagen to gelatin in tough cuts. Sous vide = vacuum-sealed food in precisely controlled water bath temperature.</div>
+        <div class="tags"><span class="tag">sear then braise</span><span class="tag">sous vide precision</span><span class="tag">tough cuts</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── BEEF CUTS ── -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-icon">🥩</span>
+      <span class="section-title">Beef Cuts Identification</span>
+      <span class="section-badge">5 points</span>
+    </div>
+
+    <div class="item" onclick="toggle(this)" id="v-primal">
+      <div class="check-box"><span class="check-mark">✓</span></div>
+      <div class="item-body">
+        <div class="item-title">Primal Cuts Overview</div>
+        <div class="item-desc">Large sections divided first from the carcass. Forequarter (chuck, brisket, rib, shank) = tough, more collagen, slow cook. Hindquarter (loin, sirloin, rump, round) = tender, less collagen, fast cook.</div>
+        <div class="img-grid">
+          <div class="img-card">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9b/Beef_cuts_France.jpg/320px-Beef_cuts_France.jpg" alt="Beef primal cuts diagram" onerror="this.style.display='none'">
+            <span>Primal cuts map</span>
+          </div>
+          <div class="img-card">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/41/US_cuts_of_beef.svg/320px-US_cuts_of_beef.svg.png" alt="US beef cuts" onerror="this.style.display='none'">
+            <span>Cut diagram</span>
+          </div>
+        </div>
+        <div class="tags"><span class="tag">forequarter = tough</span><span class="tag">hindquarter = tender</span><span class="tag">collagen rule</span></div>
+      </div>
+    </div>
+
+    <div class="item" onclick="toggle(this)" id="v-tender-cuts">
+      <div class="check-box"><span class="check-mark">✓</span></div>
+      <div class="item-body">
+        <div class="item-title">Tender Cuts (Hindquarter)</div>
+        <div class="item-desc">Fillet/Tenderloin = most tender, beneath backbone, least used muscle. Sirloin = between loin and rump, fat cap, grill or pan-fry. Rump = firmer, more flavour. Rib eye = high marbling.</div>
+        <div class="tags"><span class="tag">fillet = most tender</span><span class="tag">rib eye = marbling</span><span class="tag">grill or pan-fry</span></div>
+      </div>
+    </div>
+
+    <div class="item" onclick="toggle(this)" id="v-tough-cuts">
+      <div class="check-box"><span class="check-mark">✓</span></div>
+      <div class="item-body">
+        <div class="item-title">Tough Cuts (Forequarter)</div>
+        <div class="item-desc">Chuck (shoulder) = high collagen, braise or stew. Brisket (breast) = slow braise, BBQ, nihari. Shank/Nalli = marrow bone, nihari, paya. Oxtail = gelatin-rich, slow stew.</div>
+        <div class="tags"><span class="tag">chuck = shoulder</span><span class="tag">brisket = breast</span><span class="tag">shank = nihari</span></div>
+      </div>
+    </div>
+
+    <div class="item" onclick="toggle(this)" id="v-offal">
+      <div class="check-box"><span class="check-mark">✓</span></div>
+      <div class="item-body">
+        <div class="item-title">Offal (Variety Meats)</div>
+        <div class="item-desc">Liver (kaleji) · Kidney (gurda) · Tripe (ojhri) · Brain (maghaz) · Tongue (zabaan) · Trotters (paya). All are organ meats — high nutrition, distinct preparation required.</div>
+        <div class="tags"><span class="tag">kaleji</span><span class="tag">gurda</span><span class="tag">ojhri</span><span class="tag">paya</span><span class="tag">maghaz</span></div>
+      </div>
+    </div>
+
+    <div class="item" onclick="toggle(this)" id="v-marbling">
+      <div class="check-box"><span class="check-mark">✓</span></div>
+      <div class="item-body">
+        <div class="item-title">Marbling & Quality Indicators</div>
+        <div class="item-desc">Marbling = intramuscular fat flecks → more flavour, moisture, tenderness. Fresh beef = bright cherry-red, firm, clean smell. Vacuum-packed = dark purple (normal — brightens on air exposure).</div>
+        <div class="tags"><span class="tag">marbling = quality</span><span class="tag">cherry-red = fresh</span><span class="tag">no off odour</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── TYPES OF KNIVES ── -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-icon">🔪</span>
+      <span class="section-title">Types of Knives</span>
+      <span class="section-badge">7 points</span>
+    </div>
+
+    <div class="item" onclick="toggle(this)" id="v-chefs-knife">
+      <div class="check-box"><span class="check-mark">✓</span></div>
+      <div class="item-body">
+        <div class="item-title">Chef's Knife (Cook's Knife)</div>
+        <div class="item-desc">20–25 cm. General purpose — chopping, slicing, dicing, mincing. Most used knife in any kitchen. Broad tapered blade. Western style uses rocking chop.</div>
+        <div class="img-grid">
+          <div class="img-card">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Chef%27s_Knife.jpg/320px-Chef%27s_Knife.jpg" alt="Chef's knife" onerror="this.style.display='none'">
+            <span>Chef's knife</span>
+          </div>
+        </div>
+        <div class="tags"><span class="tag">20–25cm</span><span class="tag">general purpose</span><span class="tag">rocking chop</span></div>
+      </div>
+    </div>
+
+    <div class="item" onclick="toggle(this)" id="v-paring">
+      <div class="check-box"><span class="check-mark">✓</span></div>
+      <div class="item-body">
+        <div class="item-title">Paring Knife</div>
+        <div class="item-desc">6–10 cm. Small precision knife for peeling, trimming, deveining prawns, and intricate work. Often used in-hand rather than on a board.</div>
+        <div class="tags"><span class="tag">6–10cm</span><span class="tag">in-hand use</span><span class="tag">peeling & trimming</span></div>
+      </div>
+    </div>
+
+    <div class="item" onclick="toggle(this)" id="v-boning">
+      <div class="check-box"><span class="check-mark">✓</span></div>
+      <div class="item-body">
+        <div class="item-title">Boning Knife</div>
+        <div class="item-desc">Narrow, pointed blade. Stiff = beef/pork. Flexible = poultry/fish. Works close to bone, through joints and cartilage to separate meat cleanly.</div>
+        <div class="tags"><span class="tag">narrow pointed</span><span class="tag">stiff or flexible</span><span class="tag">close to bone</span></div>
+      </div>
+    </div>
+
+    <div class="item" onclick="toggle(this)" id="v-bread-knife">
+      <div class="check-box"><span class="check-mark">✓</span></div>
+      <div class="item-body">
+        <div class="item-title">Bread Knife (Serrated)</div>
+        <div class="item-desc">Long serrated edge. Teeth grip the crust then saw through soft crumb without compressing it. Also for tomatoes and soft fruit. Cannot be resharpened easily.</div>
+        <div class="tags"><span class="tag">serrated</span><span class="tag">crust grip</span><span class="tag">no compression</span></div>
+      </div>
+    </div>
+
+    <div class="item" onclick="toggle(this)" id="v-filleting">
+      <div class="check-box"><span class="check-mark">✓</span></div>
+      <div class="item-body">
+        <div class="item-title">Filleting Knife</div>
+        <div class="item-desc">Long, thin, very flexible blade. Runs along fish spine to separate flesh from bone cleanly with minimal waste. Also removes skin from fillets.</div>
+        <div class="tags"><span class="tag">long flexible</span><span class="tag">fish filleting</span><span class="tag">skin removal</span></div>
+      </div>
+    </div>
+
+    <div class="item" onclick="toggle(this)" id="v-santoku">
+      <div class="check-box"><span class="check-mark">✓</span></div>
+      <div class="item-body">
+        <div class="item-title">Santoku</div>
+        <div class="item-desc">Japanese. 16–18 cm. Shorter, wider, sheep's foot tip (rounded). Often granton edge. Push-cut technique, not rocking. Versatile: slice, dice, mince.</div>
+        <div class="img-grid">
+          <div class="img-card">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/Santoku.jpg/320px-Santoku.jpg" alt="Santoku knife" onerror="this.style.display='none'">
+            <span>Santoku</span>
+          </div>
+        </div>
+        <div class="tags"><span class="tag">Japanese</span><span class="tag">push-cut</span><span class="tag">sheep's foot tip</span></div>
+      </div>
+    </div>
+
+    <div class="item" onclick="toggle(this)" id="v-nakiri">
+      <div class="check-box"><span class="check-mark">✓</span></div>
+      <div class="item-body">
+        <div class="item-title">Nakiri (Vegetable Knife)</div>
+        <div class="item-desc">Japanese. Rectangular blade, straight edge, blunt tip. Designed exclusively for vegetables. Straight push-cut — full edge contacts board simultaneously for clean, even cuts.</div>
+        <div class="tags"><span class="tag">rectangular</span><span class="tag">vegetables only</span><span class="tag">straight push-cut</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── KNIFE ANATOMY ── -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-icon">⚙️</span>
+      <span class="section-title">Knife Anatomy</span>
+      <span class="section-badge">6 points</span>
+    </div>
+
+    <div class="item" onclick="toggle(this)" id="v-blade-parts">
+      <div class="check-box"><span class="check-mark">✓</span></div>
+      <div class="item-body">
+        <div class="item-title">Blade Parts</div>
+        <div class="item-desc">Tip (precision, piercing) · Cutting edge (sharpened bottom) · Heel (strongest, dense foods) · Spine (thick blunt top, rigidity) · Flat/cheek (sides, for crushing garlic) · Bevel (angled surface forming edge).</div>
+        <div class="img-grid">
+          <div class="img-card">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/thirty/Knife_parts.svg/320px-Knife_parts.svg.png" alt="Knife anatomy" onerror="this.style.display='none'">
+            <span>Knife parts</span>
+          </div>
+        </div>
+        <div class="tags"><span class="tag">tip</span><span class="tag">heel</span><span class="tag">spine</span><span class="tag">bevel</span></div>
+      </div>
+    </div>
+
+    <div class="item" onclick="toggle(this)" id="v-handle-parts">
+      <div class="check-box"><span class="check-mark">✓</span></div>
+      <div class="item-body">
+        <div class="item-title">Handle Parts</div>
+        <div class="item-desc">Bolster (thick collar, balance, finger guard) · Tang (blade metal inside handle — full tang = full length/width = stronger) · Rivets (pins holding handle scales to tang) · Handle scales (slabs of wood, composite, or plastic).</div>
+        <div class="tags"><span class="tag">full tang = strongest</span><span class="tag">bolster = balance</span><span class="tag">rivets = 3 pins</span></div>
+      </div>
+    </div>
+
+    <div class="item" onclick="toggle(this)" id="v-steel-types">
+      <div class="check-box"><span class="check-mark">✓</span></div>
+      <div class="item-body">
+        <div class="item-title">Steel Types & Hardness</div>
+        <div class="item-desc">High-carbon steel = harder, sharper, rusts if not dried. Stainless = corrosion resistant, softer. HRC scale: Western 52–58, Japanese 60–66+. Higher HRC = sharper, holds edge longer, but more brittle.</div>
+        <div class="tags"><span class="tag">HRC = hardness</span><span class="tag">Japanese harder</span><span class="tag">dry carbon steel</span></div>
+      </div>
+    </div>
+
+    <div class="item" onclick="toggle(this)" id="v-forged-stamped">
+      <div class="check-box"><span class="check-mark">✓</span></div>
+      <div class="item-body">
+        <div class="item-title">Forged vs Stamped</div>
+        <div class="item-desc">Forged = heated steel shaped under pressure → denser, better balance, natural bolster, superior performance. Stamped = cut from flat sheet → lighter, cheaper, no natural bolster. Forged preferred professionally.</div>
+        <div class="tags"><span class="tag">forged = superior</span><span class="tag">stamped = lighter</span><span class="tag">bolster = forged indicator</span></div>
+      </div>
+    </div>
+
+    <div class="item" onclick="toggle(this)" id="v-sharpening">
+      <div class="check-box"><span class="check-mark">✓</span></div>
+      <div class="item-body">
+        <div class="item-title">Honing vs Sharpening</div>
+        <div class="item-desc">Honing steel = realigns rolled edge, no metal removed. Done frequently. Angle: 15–20° Western, 10–15° Japanese. Whetstone = removes metal to create new edge. Coarse grit first (repair), then fine (polish).</div>
+        <div class="tags"><span class="tag">honing = realign</span><span class="tag">whetstone = sharpen</span><span class="tag">15–20° Western</span></div>
+      </div>
+    </div>
+
+    <div class="item" onclick="toggle(this)" id="v-sharpness-test">
+      <div class="check-box"><span class="check-mark">✓</span></div>
+      <div class="item-body">
+        <div class="item-title">Sharpness Test & Edge Geometry</div>
+        <div class="item-desc">Light test: hold edge to light — sharp edge reflects NO light. Single bevel (one side, Japanese) = sharper but fragile. Double bevel (both sides, Western) = durable. Granton = oval recesses on flat, prevents sticking.</div>
+        <div class="tags"><span class="tag">light test</span><span class="tag">single vs double bevel</span><span class="tag">granton edge</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── PERSONAL HYGIENE ── -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-icon">🧼</span>
+      <span class="section-title">Personal Hygiene</span>
+      <span class="section-badge">5 points</span>
+    </div>
+
+    <div class="item" onclick="toggle(this)" id="v-handwashing">
+      <div class="check-box"><span class="check-mark">✓</span></div>
+      <div class="item-body">
+        <div class="item-title">Handwashing Procedure & Timing</div>
+        <div class="item-desc">Warm water + soap, scrub ALL surfaces (palms, backs, between fingers, under nails, wrists) for 20 seconds minimum. Dry with single-use paper towel. Must wash: before food, after raw meat, after toilet, after touching face/hair/phone/waste.</div>
+        <div class="tags"><span class="tag">20 seconds minimum</span><span class="tag">single-use towel</span><span class="tag">all surfaces</span></div>
+      </div>
+    </div>
+
+    <div class="item" onclick="toggle(this)" id="v-uniform">
+      <div class="check-box"><span class="check-mark">✓</span></div>
+      <div class="item-body">
+        <div class="item-title">Uniform & Grooming Standards</div>
+        <div class="item-desc">Clean uniform every shift. Hair fully covered. Nails short, clean, unvarnished. No jewellery (plain wedding band exception). No strong perfume. Blue waterproof plasters on cuts. No eating/smoking/drinking in prep areas.</div>
+        <div class="tags"><span class="tag">blue plasters</span><span class="tag">hair covered</span><span class="tag">no nail varnish</span></div>
+      </div>
+    </div>
+
+    <div class="item" onclick="toggle(this)" id="v-illness-exclusion">
+      <div class="check-box"><span class="check-mark">✓</span></div>
+      <div class="item-body">
+        <div class="item-title">Illness Exclusion Rules</div>
+        <div class="item-desc">Vomiting or diarrhoea = stay home. Return only 48 hours after ALL symptoms resolved. Infected wounds, boils, weeping skin = report to supervisor. Norovirus sheds even after feeling better.</div>
+        <div class="tags"><span class="tag">48hr after symptoms</span><span class="tag">Norovirus shedding</span><span class="tag">report wounds</span></div>
+      </div>
+    </div>
+
+    <div class="item" onclick="toggle(this)" id="v-cayg">
+      <div class="check-box"><span class="check-mark">✓</span></div>
+      <div class="item-body">
+        <div class="item-title">Clean As You Go (CAYG)</div>
+        <div class="item-desc">Clean workstations, equipment, and spills immediately as they occur — not only at end of service. Prevents bacteria multiplying on soiled surfaces, reduces pest attraction, maintains food safety throughout the shift.</div>
+        <div class="tags"><span class="tag">continuous cleaning</span><span class="tag">not end-of-shift only</span><span class="tag">pest prevention</span></div>
+      </div>
+    </div>
+
+    <div class="item" onclick="toggle(this)" id="v-tasting">
+      <div class="check-box"><span class="check-mark">✓</span></div>
+      <div class="item-body">
+        <div class="item-title">Tasting & Personal Habits</div>
+        <div class="item-desc">Use a clean tasting spoon each time — never double-dip. Sneeze/cough: turn away, cover with tissue or elbow, wash hands immediately. Touching face or hair = wash hands before continuing. No mobile phones in prep areas.</div>
+        <div class="tags"><span class="tag">clean spoon each time</span><span class="tag">no double-dip</span><span class="tag">no phones</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── TEMPERATURES & FOOD SAFETY ── -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-icon">🌡️</span>
+      <span class="section-title">Food Safety Temperatures</span>
+      <span class="section-badge">6 points</span>
+    </div>
+
+    <div class="item" onclick="toggle(this)" id="v-danger-zone">
+      <div class="check-box"><span class="check-mark">✓</span></div>
+      <div class="item-body">
+        <div class="item-title">Temperature Danger Zone</div>
+        <div class="item-desc">5°C – 63°C. Bacteria double every 20 minutes in this range. Food must not spend more than 2 cumulative hours in this zone. In environments above 32°C, reduce to 1 hour.</div>
+        <table class="temp-table">
+          <tr><th>Zone</th><th>Temperature</th><th>Implication</th></tr>
+          <tr><td>Freezer</td><td class="safe">–18°C or below</td><td>Bacterial activity halted</td></tr>
+          <tr><td>Refrigerator</td><td class="safe">1°C – 5°C</td><td>Slows bacterial growth</td></tr>
+          <tr><td class="danger">DANGER ZONE</td><td class="danger">5°C – 63°C</td><td class="danger">Rapid bacterial growth</td></tr>
+          <tr><td>Hot holding</td><td class="safe">63°C minimum</td><td>Safe for service</td></tr>
+          <tr><td>Poultry safe</td><td class="safe">74°C throughout</td><td>Kills Salmonella</td></tr>
+          <tr><td>Reheating</td><td class="safe">75°C (70°C in Scotland)</td><td>Safe to serve</td></tr>
+        </table>
+        <div class="tags"><span class="tag">5–63°C = danger</span><span class="tag">2-hour rule</span></div>
+      </div>
+    </div>
+
+    <div class="item" onclick="toggle(this)" id="v-cooking-temps">
+      <div class="check-box"><span class="check-mark">✓</span></div>
+      <div class="item-body">
+        <div class="item-title">Safe Cooking Temperatures by Protein</div>
+        <div class="item-desc">Must verify with a calibrated probe thermometer — not by colour or appearance alone.</div>
+        <table class="temp-table">
+          <tr><th>Protein</th><th>Safe Internal Temp</th></tr>
+          <tr><td>Poultry (all)</td><td class="safe">74°C (165°F)</td></tr>
+          <tr><td>Minced / ground meat</td><td class="safe">71°C (160°F)</td></tr>
+          <tr><td>Whole beef / lamb cuts</td><td class="safe">63°C + 3 min rest</td></tr>
+          <tr><td>Pork</td><td class="safe">71°C</td></tr>
+          <tr><td>Fish</td><td class="safe">63°C</td></tr>
+          <tr><td>Eggs (fully cooked)</td><td class="safe">74°C</td></tr>
+        </table>
+        <div class="tags"><span class="tag">probe thermometer</span><span class="tag">poultry = 74°C</span></div>
+      </div>
+    </div>
+
+    <div class="item" onclick="toggle(this)" id="v-fat-tom">
+      <div class="check-box"><span class="check-mark">✓</span></div>
+      <div class="item-body">
+        <div class="item-title">FAT TOM — Bacterial Growth Conditions</div>
+        <div class="item-desc">Food (protein/carb rich) · Acidity (pH 4.6–7.5 optimal) · Temperature (5–63°C) · Time (2+ hrs in danger zone) · Oxygen (most bacteria need it) · Moisture (high water activity). Control these = control bacteria.</div>
+        <div class="tags"><span class="tag">F-A-T-T-O-M</span><span class="tag">pH 4.6–7.5</span><span class="tag">water activity</span></div>
+      </div>
+    </div>
+
+    <div class="item" onclick="toggle(this)" id="v-cooling">
+      <div class="check-box"><span class="check-mark">✓</span></div>
+      <div class="item-body">
+        <div class="item-title">Safe Cooling & Thawing</div>
+        <div class="item-desc">Cool: ice bath, shallow containers. From 60°C → below 21°C in 2 hours, then to 5°C in 4 more hours. Thaw: refrigerator (safest), cold running water, or microwave if cooking immediately. NEVER at room temperature.</div>
+        <div class="tags"><span class="tag">2+4 hour cooling rule</span><span class="tag">ice bath</span><span class="tag">never room temp thaw</span></div>
+      </div>
+    </div>
+
+    <div class="item" onclick="toggle(this)" id="v-haccp-temps">
+      <div class="check-box"><span class="check-mark">✓</span></div>
+      <div class="item-body">
+        <div class="item-title">HACCP & Temperature Monitoring</div>
+        <div class="item-desc">Temperature is a Critical Control Point (CCP) in HACCP. Fridges and freezers logged minimum twice daily. Probe thermometer calibrated in ice water (0°C) and boiling water (100°C). Sanitise probe between uses.</div>
+        <div class="tags"><span class="tag">CCP</span><span class="tag">log twice daily</span><span class="tag">calibrate probe</span></div>
+      </div>
+    </div>
+
+    <div class="item" onclick="toggle(this)" id="v-storage-order">
+      <div class="check-box"><span class="check-mark">✓</span></div>
+      <div class="item-body">
+        <div class="item-title">Refrigerator Storage Order</div>
+        <div class="item-desc">Top to bottom: Ready-to-eat foods → Whole fish → Whole cuts of beef/pork → Minced meat → Raw poultry (bottom). Raw poultry on bottom — highest contamination risk if juices drip. FIFO and FEFO for rotation.</div>
+        <div class="tags"><span class="tag">poultry = bottom</span><span class="tag">RTE = top</span><span class="tag">FIFO / FEFO</span></div>
+      </div>
+    </div>
+  </div>
+
+  <button class="reset-btn" onclick="resetAll()">↺ Reset all checkboxes</button>
+</div>
+
+<script>
+const KEYS = [
+  'v-bechamel','v-veloute','v-espagnole','v-hollandaise','v-tomat',
+  'v-white-stock','v-brown-stock','v-fumet','v-consomme','v-soup-types','v-glace',
+  'v-dry-heat','v-moist-heat','v-heat-transfer','v-combination',
+  'v-primal','v-tender-cuts','v-tough-cuts','v-offal','v-marbling',
+  'v-chefs-knife','v-paring','v-boning','v-bread-knife','v-filleting','v-santoku','v-nakiri',
+  'v-blade-parts','v-handle-parts','v-steel-types','v-forged-stamped','v-sharpening','v-sharpness-test',
+  'v-handwashing','v-uniform','v-illness-exclusion','v-cayg','v-tasting',
+  'v-danger-zone','v-cooking-temps','v-fat-tom','v-cooling','v-haccp-temps','v-storage-order'
+];
+const TOTAL = KEYS.length;
+
+function loadState(){
+  KEYS.forEach(k=>{
+    if(localStorage.getItem('viva_'+k)==='1'){
+      const el=document.getElementById(k);
+      if(el) el.classList.add('checked');
+    }
+  });
+  updateBar();
+}
+
+function toggle(el){
+  el.classList.toggle('checked');
+  const k=el.id;
+  if(el.classList.contains('checked')){
+    localStorage.setItem('viva_'+k,'1');
+  } else {
+    localStorage.removeItem('viva_'+k);
+  }
+  updateBar();
+}
+
+function updateBar(){
+  const done=KEYS.filter(k=>localStorage.getItem('viva_'+k)==='1').length;
+  const pct=Math.round((done/TOTAL)*100);
+  document.getElementById('op-count').textContent=done+' / '+TOTAL+' topics reviewed';
+  document.getElementById('bar-fill').style.width=pct+'%';
+}
+
+function resetAll(){
+  if(!confirm('Reset all checkboxes?')) return;
+  KEYS.forEach(k=>localStorage.removeItem('viva_'+k));
+  document.querySelectorAll('.item').forEach(el=>el.classList.remove('checked'));
+  updateBar();
+}
+
+loadState();
+</script>
+</body>
+</html>
