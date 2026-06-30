@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MS Word — July 2026 Exam</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💻</text></svg>">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@400;500&display=swap');
+  :root{--bg:#080810;--surface:#11111f;--border:#1e1e35;--purple:#7c3aed;--purple-l:#9d5bf0;--green:#22c55e;--red:#ef4444;--text:#e8e8f0;--muted:#7070a0;}
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Syne',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;align-items:center;justify-content:center;}
+  body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px);background-size:40px 40px;opacity:.4;pointer-events:none;z-index:0;}
+  .screen{position:relative;z-index:1;width:100%;max-width:660px;margin:0 auto;padding:24px 20px 48px;display:none;}
+  .screen.active{display:block;}
+  #name-screen{text-align:center;padding-top:80px;}
+  .back-link{display:inline-flex;align-items:center;gap:6px;font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);text-decoration:none;letter-spacing:1px;margin-bottom:48px;transition:color .2s;}
+  .back-link:hover{color:var(--purple-l);}
+  .subject-tag{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--purple-l);margin-bottom:12px;}
+  #name-screen h1{font-size:clamp(22px,5vw,36px);font-weight:800;line-height:1.15;margin-bottom:8px;background:linear-gradient(135deg,#fff 30%,var(--purple-l));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+  #name-screen p{color:var(--muted);font-family:'DM Mono',monospace;font-size:12px;margin-bottom:40px;}
+  .name-box{display:flex;flex-direction:column;align-items:center;gap:12px;}
+  .name-box input{width:100%;max-width:320px;padding:12px 16px;background:var(--surface);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:'Syne',sans-serif;font-size:15px;outline:none;text-align:center;transition:border-color .2s;}
+  .name-box input:focus{border-color:var(--purple);}
+  .name-box input::placeholder{color:var(--muted);}
+  .btn-primary{padding:12px 32px;background:var(--purple);color:#fff;border:none;border-radius:8px;font-family:'Syne',sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:background .2s,transform .1s;letter-spacing:.5px;}
+  .btn-primary:hover{background:var(--purple-l);transform:translateY(-1px);}
+  .quiz-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;}
+  .quiz-meta{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);}
+  .quiz-meta span{color:var(--purple-l);font-weight:500;}
+  .quiz-back{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);background:none;border:1px solid var(--border);padding:5px 10px;border-radius:6px;cursor:pointer;transition:color .2s,border-color .2s;}
+  .quiz-back:hover{color:var(--text);border-color:var(--purple);}
+  .progress-bar{width:100%;height:3px;background:var(--border);border-radius:2px;margin-bottom:32px;overflow:hidden;}
+  .progress-fill{height:100%;background:linear-gradient(90deg,var(--purple),var(--purple-l));border-radius:2px;transition:width .3s ease;}
+  .question-num{font-family:'DM Mono',monospace;font-size:10px;color:var(--purple-l);letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;}
+  .question-text{font-size:clamp(15px,3vw,18px);font-weight:600;line-height:1.5;margin-bottom:28px;color:var(--text);}
+  .options{display:flex;flex-direction:column;gap:10px;}
+  .opt-btn{display:flex;align-items:center;gap:12px;padding:13px 16px;background:var(--surface);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:'Syne',sans-serif;font-size:14px;font-weight:400;cursor:pointer;text-align:left;transition:border-color .15s,background .15s;width:100%;}
+  .opt-btn:hover:not(:disabled){border-color:var(--purple);background:#16162a;}
+  .opt-btn .opt-letter{flex-shrink:0;width:26px;height:26px;border-radius:6px;background:var(--border);display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);transition:background .15s,color .15s;}
+  .opt-btn:hover:not(:disabled) .opt-letter{background:var(--purple);color:#fff;}
+  .opt-btn.correct{border-color:var(--green);background:rgba(34,197,94,.1);}
+  .opt-btn.correct .opt-letter{background:var(--green);color:#fff;}
+  .opt-btn.wrong{border-color:var(--red);background:rgba(239,68,68,.1);}
+  .opt-btn.wrong .opt-letter{background:var(--red);color:#fff;}
+  .opt-btn:disabled{cursor:default;}
+  .explanation{display:none;margin-top:16px;padding:14px 16px;background:rgba(124,58,237,.1);border:1px solid rgba(124,58,237,.25);border-left:3px solid var(--purple);border-radius:8px;font-size:13px;line-height:1.6;color:#c4b5fd;font-family:'DM Mono',monospace;}
+  .explanation.show{display:block;}
+  .action-row{display:flex;gap:10px;margin-top:24px;}
+  .next-btn{flex:1;padding:13px;background:var(--purple);color:#fff;border:none;border-radius:8px;font-family:'Syne',sans-serif;font-size:14px;font-weight:700;cursor:pointer;display:none;transition:background .2s;letter-spacing:.5px;}
+  .next-btn:hover{background:var(--purple-l);}
+  .next-btn.show{display:block;}
+  .quit-btn{padding:13px 18px;background:none;border:1px solid var(--border);border-radius:8px;color:var(--muted);font-family:'DM Mono',monospace;font-size:12px;cursor:pointer;display:none;transition:color .2s,border-color .2s;white-space:nowrap;}
+  .quit-btn:hover{color:var(--text);border-color:var(--purple);}
+  .quit-btn.show{display:block;}
+  #results-screen{text-align:center;padding-top:40px;}
+  .result-name{font-family:'DM Mono',monospace;font-size:12px;color:var(--muted);margin-bottom:32px;}
+  .score-ring{position:relative;width:160px;height:160px;margin:0 auto 28px;}
+  .score-ring svg{transform:rotate(-90deg);}
+  .score-ring .ring-bg{fill:none;stroke:var(--border);stroke-width:10;}
+  .score-ring .ring-fill{fill:none;stroke-width:10;stroke-linecap:round;transition:stroke-dashoffset 1s ease,stroke .5s;}
+  .score-ring .ring-text{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+  .ring-pct{font-size:34px;font-weight:800;line-height:1;}
+  .ring-label{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);margin-top:4px;letter-spacing:1px;}
+  .result-title{font-size:24px;font-weight:800;margin-bottom:8px;}
+  .result-sub{font-family:'DM Mono',monospace;font-size:12px;color:var(--muted);margin-bottom:8px;}
+  .result-verdict{font-family:'DM Mono',monospace;font-size:12px;padding:8px 20px;border-radius:20px;display:inline-block;margin-bottom:32px;}
+  .result-verdict.pass{background:rgba(34,197,94,.12);color:var(--green);border:1px solid rgba(34,197,94,.3);}
+  .result-verdict.fail{background:rgba(239,68,68,.12);color:var(--red);border:1px solid rgba(239,68,68,.3);}
+  .result-actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:40px;}
+  .btn-outline{padding:11px 24px;background:none;border:1px solid var(--border);border-radius:8px;color:var(--muted);font-family:'Syne',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:border-color .2s,color .2s;}
+  .btn-outline:hover{border-color:var(--purple);color:var(--text);}
+  .review{text-align:left;}
+  .review h3{font-size:13px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:2px;margin-bottom:16px;font-family:'DM Mono',monospace;}
+  .rv-item{padding:14px 16px;border-radius:8px;margin-bottom:10px;border:1px solid var(--border);}
+  .rv-item.ok{border-color:rgba(34,197,94,.25);background:rgba(34,197,94,.05);}
+  .rv-item.miss{border-color:rgba(239,68,68,.25);background:rgba(239,68,68,.05);}
+  .rv-q{font-size:13px;font-weight:600;margin-bottom:8px;line-height:1.4;}
+  .rv-a{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);line-height:1.6;}
+  .rv-a .c{color:var(--green);}
+  .rv-a .w{color:var(--red);}
+</style>
+</head>
+<body>
+<div class="screen active" id="name-screen">
+  <a class="back-link" href="index.html">← Back to subjects</a>
+  <div class="subject-tag">Computer · Topic 02</div>
+  <h1>MS Word</h1>
+  <p>34 questions · Every point from your syllabus · Order shuffles each attempt</p>
+  <div class="name-box">
+    <input type="text" id="name-input" placeholder="Enter your name" maxlength="30" autocomplete="off">
+    <button class="btn-primary" onclick="startQuiz()">Start Quiz</button>
+  </div>
+</div>
+<div class="screen" id="quiz-screen">
+  <div class="quiz-header">
+    <div class="quiz-meta">Question <span id="q-num">1</span> of <span id="q-total">34</span></div>
+    <div class="quiz-meta">Score <span id="q-score">0</span></div>
+    <button class="quiz-back" onclick="goBack()">← Quit</button>
+  </div>
+  <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+  <div class="question-num" id="q-label"></div>
+  <div class="question-text" id="q-text"></div>
+  <div class="options" id="options"></div>
+  <div class="explanation" id="explanation"></div>
+  <div class="action-row">
+    <button class="quit-btn" id="quit-btn" onclick="goBack()">← Back to subjects</button>
+    <button class="next-btn" id="next-btn" onclick="nextQuestion()">Next Question →</button>
+  </div>
+</div>
+<div class="screen" id="results-screen">
+  <div class="result-name" id="result-name"></div>
+  <div class="score-ring">
+    <svg viewBox="0 0 160 160" width="160" height="160">
+      <circle class="ring-bg" cx="80" cy="80" r="70"/>
+      <circle class="ring-fill" id="ring-fill" cx="80" cy="80" r="70" stroke-dasharray="439.82" stroke-dashoffset="439.82" stroke="var(--green)"/>
+    </svg>
+    <div class="ring-text">
+      <div class="ring-pct" id="ring-pct">0%</div>
+      <div class="ring-label">SCORE</div>
+    </div>
+  </div>
+  <div class="result-title" id="res-title"></div>
+  <div class="result-sub" id="res-sub"></div>
+  <div class="result-verdict" id="res-verdict"></div>
+  <div class="result-actions">
+    <button class="btn-primary" onclick="retryQuiz()">Retry →</button>
+    <button class="btn-outline" onclick="window.location.href='index.html'">All Subjects</button>
+  </div>
+  <div class="review" id="review"></div>
+</div>
+<script>
+const BANK=[
+{q:"What is MS Word primarily used for?",opts:["Performing numerical calculations and building spreadsheets with rows, columns, and formulas","Creating slide-based presentations with animations, transitions, and multimedia content","Creating and editing text-based documents such as letters, reports, and articles","Managing and querying databases using tables, forms, and structured data records"],ans:2,exp:"MS Word is used for documentation purposes — writing and formatting letters, reports, articles, assignments, and any text-based documents."},
+{q:"What is the default file extension for MS Word 2007 documents?",opts:[".doc — the older Word format used by versions prior to Office 2007",".docx — the default format introduced in Office 2007 and used in all later versions",".wrd — the proprietary Microsoft Word format shared across all Office versions",".rtf — the rich text format that allows documents to be opened by any word processor"],ans:1,exp:"The default file extension for MS Word 2007 and later is .docx. The older format used before 2007 was .doc."},
+{q:"Which two file extensions are associated with MS Word documents?",opts:[".xls and .xlsx — the spreadsheet extensions used by MS Excel across all versions",".ppt and .pptx — the presentation extensions used by MS PowerPoint across all versions",".doc and .docx — the word processing extensions used by MS Word across its versions",".txt and .rtf — the plain text and rich text formats supported by all word processors"],ans:2,exp:"MS Word uses .doc (older versions before 2007) and .docx (2007 and later). Both are valid Word file formats."},
+{q:"What is MS Office, and which software packages does it include?",opts:["A hardware manufacturer that produces printers, scanners, and monitors for business use","An operating system developed by Microsoft to replace Windows for office environments","An application software package that includes MS Word, Excel, PowerPoint, and other programs","A system software suite that manages computer hardware and provides basic input/output services"],ans:2,exp:"MS Office is an application software package developed by Microsoft. It includes MS Word (documents), MS Excel (spreadsheets), MS PowerPoint (presentations), and other programs."},
+{q:"What is the top bar in MS Word called, and what is its default document name?",opts:["The Ribbon bar — its default name is 'Home' showing the currently active tab","The Menu bar — its default name is 'Untitled Document' until the file is first saved","The Title bar — its default name is 'Document 1' until the file is saved with a name","The Status bar — its default name is 'New Document' showing the word and page count"],ans:2,exp:"The top bar in MS Word is called the Title bar. Its default name is 'Document 1' until the document is saved with a specific name by the user."},
+{q:"What does the statement 'All elements of a Word document can be displayed on LCD in colour' depend on?",opts:["Having the latest version of MS Office installed with full colour rendering support enabled","Having a colour monitor or LCD display — without one, colour formatting cannot be shown","Having a high-speed internet connection that loads colour fonts from Microsoft's servers","Having a printer installed that supports colour output connected to the computer"],ans:1,exp:"All elements of a Word document can be displayed in colour only if you have a colour monitor or LCD. Without a colour display, colour formatting is not visible on screen."},
+{q:"Where are Header items placed in an MS Word document?",opts:["At the bottom of all document pages in the lower margin area below the main text","At the centre of each page as a semi-transparent watermark behind the main body text","At the top of all document pages in the upper margin area above the main body text","Only on the first page of the document as a title block separate from the body"],ans:2,exp:"Header items are placed at the top of all document pages. They appear in the upper margin area and automatically repeat on every page of the document."},
+{q:"Where are Footer items placed in an MS Word document?",opts:["At the top of all document pages in the upper margin area above the main body text","At the end of all document pages in the lower margin area below the main body text","Only on the last page of the document as a closing section or signature block","In the centre of each page as a background element positioned behind all body text"],ans:1,exp:"Footer items are placed at the end (bottom) of all document pages. They appear in the lower margin area and automatically repeat on every page."},
+{q:"Which of the following items can be added to both the Header and Footer sections of an MS Word document?",opts:["Watermarks, background colours, section breaks, and decorative page borders","Footnotes, endnotes, bibliography entries, and reference citations","Tables, charts, embedded spreadsheets, and linked Excel data objects","Page Numbers, Date, and Time"],ans:3,exp:"Page Numbers, Date, and Time can all be added to both the header and footer sections of an MS Word document — making them appear consistently on every page."},
+{q:"What is the default font size in MS Word?",opts:["10 point — the compact size used for dense reference documents and footnotes","12 point — the traditional size used in most academic and business documents","11 point — the default size set by Microsoft across MS Word, Excel, and PowerPoint","14 point — the larger default size used for improved readability on high-resolution displays"],ans:2,exp:"The default font size in MS Word is 11 point. This same default applies across MS Word, MS Excel, and MS PowerPoint."},
+{q:"What is the default page size in MS Word?",opts:["A4 size — 8.27 inches wide by 11.69 inches tall, the standard in most countries outside the US","Legal size — 8.5 inches wide by 14 inches tall, used for legal and government documents","Letter size — 8.5 inches wide by 11 inches tall, the default in MS Word, Excel, and PowerPoint","Executive size — 7.25 inches wide by 10.5 inches tall, used for premium stationery"],ans:2,exp:"The default page size in MS Word is Letter — 8.5 inches wide by 11 inches tall. This same default applies across MS Word, MS Excel, and MS PowerPoint."},
+{q:"What are the default page margins in MS Word?",opts:["0.5 inches on all four sides — a narrow margin setting used for maximising printable area","1.25 inches left and right, 1 inch top and bottom — the Office 2003 default setting","2 inches top and bottom, 1.5 inches left and right — a wide margin for academic submission","1 inch on all four sides — top, bottom, left, and right — the standard default in Word, Excel, and PowerPoint"],ans:3,exp:"The default page margin in MS Word is 1 inch on all four sides (top, bottom, left, right). This same default applies in MS Excel and MS PowerPoint."},
+{q:"What is a Gutter Margin in MS Word?",opts:["The minimum distance the printer must leave at the page edge because it cannot print all the way to the paper boundary","The space between two columns in a multi-column newspaper or newsletter layout in the document","The extra margin space added to the binding side of a page when printing, so text is not hidden in the bind","The additional margin applied to the top of every page to accommodate the running header text"],ans:2,exp:"A Gutter Margin is added to the binding side of a page — left margin for normal left-bound documents, top margin for top-bound documents — so that text is not obscured when the document is printed and bound."},
+{q:"How many types of text alignment are available in MS Word?",opts:["Two types — left alignment and right alignment, covering the most common document needs","Three types — left, centre, and right alignment, the standard trio used in most documents","Four types — Left (Ctrl+L), Right (Ctrl+R), Centre (Ctrl+E), and Justify (Ctrl+J)","Six types — including top, middle, bottom, left, right, and centre for full cell control"],ans:2,exp:"MS Word has 4 alignment types: Left (Ctrl+L), Right (Ctrl+R), Centre (Ctrl+E), and Justify (Ctrl+J). Six alignment types exist in MS Excel which adds vertical alignments."},
+{q:"What is the keyboard shortcut for Left alignment in MS Word?",opts:["Ctrl+E — centres the selected text evenly between the left and right margins","Ctrl+R — aligns the selected text to the right margin of the document","Ctrl+J — justifies the selected text evenly across the full width of the line","Ctrl+L — aligns the selected text to the left margin of the document"],ans:3,exp:"Ctrl+L applies Left alignment in MS Word, aligning text to the left margin. Ctrl+R = Right, Ctrl+E = Centre, Ctrl+J = Justify."},
+{q:"What is the keyboard shortcut for Centre alignment in MS Word?",opts:["Ctrl+L — aligns selected text to the left margin of the document","Ctrl+R — aligns selected text to the right margin of the document","Ctrl+E — centres selected text evenly between the left and right document margins","Ctrl+J — distributes selected text evenly across the full line width between both margins"],ans:2,exp:"Ctrl+E applies Centre alignment in MS Word. Ctrl+L = Left, Ctrl+R = Right, Ctrl+J = Justify."},
+{q:"What does the Find command (Ctrl+F) allow you to search for in MS Word?",opts:["Only whole words typed in the document body — it cannot search for partial words or special characters","Only the exact spelling of words with no formatting or symbol search options available","Characters, Formats, and Symbols within the document","Only hyperlinks, footnotes, and embedded objects inserted via the Insert tab"],ans:2,exp:"The Find command (Ctrl+F) in MS Word can search for Characters, Formats, and Symbols — not just plain text words."},
+{q:"What were Drop Caps traditionally used for in a Word document?",opts:["To indicate that a paragraph contains a legal disclaimer or copyright notice requiring special attention","To show that text has been quoted or copied directly from another published source","To mark headings that should appear automatically in the document's table of contents","To highlight new sections of a document by enlarging and dropping the first letter of the paragraph"],ans:3,exp:"Drop caps were traditionally used to highlight new sections of a document — the first letter of the paragraph is enlarged and drops down several lines, drawing the reader's eye to the start of a new section."},
+{q:"Which of the following are font effects available in MS Word?",opts:["Bold, italic, underline, and strikethrough — the four basic font style modifications","Left align, right align, centre, and justify — the four paragraph alignment options","Header, footer, watermark, and page border — the four page layout formatting features","Superscript, subscript, outline, emboss, and engrave — font effects applied from the Font dialog"],ans:3,exp:"Superscript, subscript, outline, emboss, and engrave are font effects in MS Word. Bold, italic, and underline are font styles — not effects."},
+{q:"What does Format Painter do in MS Word?",opts:["Converts all text in the entire document to a single uniform font, size, and colour automatically","Removes all existing formatting from selected text and resets it to the document's default style","Applies exactly the same formatting from one piece of text to another newly selected piece of text","Automatically formats headings and subheadings according to a pre-defined style template"],ans:2,exp:"Format Painter copies the formatting (font, size, colour, bold, spacing, etc.) from selected text and applies it to any newly selected text. Select formatted text → click Format Painter → select the target text."},
+{q:"What is the purpose of the End key in MS Word?",opts:["Moves the cursor to the very beginning of the document, before the first character on the first page","Moves the cursor to the very end of the entire document, after the last character on the last page","Moves the cursor to the end of the current line where the cursor is positioned","Deletes all text from the current cursor position to the end of the current line"],ans:2,exp:"The End key moves the cursor to the end of the current line. Ctrl+End moves to the very end of the entire document."},
+{q:"Which of the following is NOT a section break option in MS Word?",opts:["Next Page — inserts a section break and starts the new section on the next page","Continuous — inserts a section break but keeps the new section on the same page","Even Page — inserts a section break and starts the new section on the next even-numbered page","Previous Page — this option does not exist as a section break type in MS Word"],ans:3,exp:"Previous Page is NOT a section break option in MS Word. The available section breaks are: Next Page, Continuous, Even Page, and Odd Page."},
+{q:"What is Print Preview in MS Word and what is its keyboard shortcut?",opts:["A mode that shows the document in a simplified black-and-white view for proofreading — shortcut Ctrl+D","A feature that sends the document directly to the printer without showing any preview — shortcut Ctrl+P","The final view of the document exactly as it will appear when printed — shortcut Ctrl+P","A reduced thumbnail view of all pages shown simultaneously in a grid — shortcut Ctrl+F2"],ans:2,exp:"Print Preview shows the final view of the document as it will appear when printed. The shortcut is Ctrl+P (which opens the Print dialog including the preview). This is the same across MS Word, Excel, and PowerPoint."},
+{q:"What is the Ribbon in MS Word?",opts:["A decorative graphical border that can be added around the edges of any page in the document","The scrollbar on the right side of the document window used for navigating up and down","A command bar that organises the program's features into a series of tabs displayed at the top of the screen","The status bar at the very bottom of the screen showing page number, word count, and zoom level"],ans:2,exp:"The Ribbon is the command bar at the top of the screen that organises MS Word's features into tabs (Home, Insert, Layout, References, etc.). It replaced the traditional menu bar from Office 2007 onwards. The same Ribbon structure is used in Excel and PowerPoint."},
+{q:"From which menu tab can Pictures, Shapes, SmartArt, and Charts be inserted in MS Word?",opts:["Home tab — contains all basic formatting options including font, paragraph, and style controls","Design tab — contains themes, page colour, watermarks, and page border settings","Layout tab — contains page setup options including margins, orientation, size, and columns","Insert tab — contains all objects that can be added to the document including pictures, shapes, SmartArt, and charts"],ans:3,exp:"Pictures, Shapes, SmartArt, and Charts are all inserted from the Insert tab in MS Word. The same Insert tab structure is used in MS Excel and MS PowerPoint."},
+{q:"What is a Watermark in MS Word?",opts:["A bright, solid-coloured banner placed at the top of each page to identify the document category","A bold decorative border added around the edges of each page for professional presentation","Faint text or an image that appears dimly behind the main text of every page in the document","A hidden digital signature embedded inside the file for copyright protection and authentication"],ans:2,exp:"A watermark appears dimly behind the text of the page — examples include 'DRAFT', 'CONFIDENTIAL', or a company logo. It is semi-transparent so the main text remains clearly readable. Same feature exists in Excel and PowerPoint."},
+{q:"How are spelling mistakes indicated in MS Word?",opts:["With a blue wavy underline beneath each word that MS Word does not recognise as correctly spelled","With a green wavy underline beneath each word identified as a possible spelling error","With a red wavy underline beneath each word identified as a spelling mistake","With a yellow highlight behind each word that has been flagged as a potential spelling error"],ans:2,exp:"Spelling mistakes are indicated with a red wavy underline in MS Word. Green/blue underlines indicate grammar issues. This is the same in MS Excel and MS PowerPoint."},
+{q:"How are grammatical mistakes indicated in MS Word?",opts:["With a red wavy underline — the same colour used to indicate spelling errors in the document","With a yellow highlight placed behind the grammatically incorrect phrase or sentence","With a purple dotted underline beneath words that are grammatically correct but stylistically weak","With green and blue wavy underlines beneath text identified as having a grammatical issue"],ans:3,exp:"Grammatical mistakes are indicated with green and blue wavy underlines in MS Word. Red = spelling errors. Green/blue = grammar errors. This is the same in MS Excel and MS PowerPoint."},
+{q:"Under which tab is the New Comment option found in MS Word?",opts:["Home tab — which contains all basic text formatting and paragraph options","Insert tab — which contains all items that can be embedded or linked into the document","View tab — which controls how the document is displayed and the zoom level","Review tab — which contains proofing, comments, tracking changes, and language tools"],ans:3,exp:"New Comment is found under the Review tab in MS Word. The Review tab also contains spell check, track changes, and other proofing tools. The same applies in Excel and PowerPoint."},
+{q:"What MS Word feature allows you to design a document layout similar to a newspaper?",opts:["The Table feature under the Insert tab — used to create structured grids of rows and columns","The Columns feature under the Layout tab — divides the page into two or more vertical columns","The SmartArt feature under the Insert tab — used to create visual diagrams and flow charts","The Borders and Shading feature under the Design tab — adds decorative lines between sections"],ans:1,exp:"The Columns feature (Layout tab) in MS Word divides the page into multiple vertical columns — used for newspaper articles, newsletters, and multi-column documents."},
+{q:"What is the keyboard shortcut for Undo in MS Word?",opts:["Ctrl+Y — repeats or redoes the last action that was undone in the document","Ctrl+X — cuts the selected text and places it on the clipboard for pasting","Ctrl+Z — reverses the last action performed, restoring the document to its previous state","Ctrl+A — selects all content in the document including text, images, and objects"],ans:2,exp:"Ctrl+Z undoes the last action in MS Word. This shortcut works across all MS Office applications and most Windows programs."},
+{q:"What is the keyboard shortcut for Redo or Repeat an action in MS Word?",opts:["Ctrl+Z — reverses the most recent action and restores the previous document state","Ctrl+R — applies right alignment to the currently selected paragraph or text","Ctrl+Y — redoes or repeats the last action that was undone using Ctrl+Z","Ctrl+S — saves the current document to the last used file location"],ans:2,exp:"Ctrl+Y redoes or repeats the last undone action in MS Word. This shortcut works across all MS Office applications."},
+{q:"What is the keyboard shortcut for Select All in MS Word?",opts:["Ctrl+S — saves the document to the current file location without opening a dialog","Ctrl+D — opens the Font dialog box for detailed character formatting options","Ctrl+Q — removes paragraph formatting and resets the paragraph to the default style","Ctrl+A — selects all content in the document including all text, images, and objects"],ans:3,exp:"Ctrl+A selects all content in the document in MS Word. This shortcut works across all MS Office applications and most Windows programs."},
+{q:"What is the keyboard shortcut for applying Bold formatting in MS Word?",opts:["Ctrl+I — applies italic formatting to the currently selected text in the document","Ctrl+U — applies underline formatting to the currently selected text in the document","Ctrl+B — applies bold formatting to the currently selected text in the document","Ctrl+E — applies centre alignment to the currently selected paragraph in the document"],ans:2,exp:"Ctrl+B applies Bold formatting to selected text in MS Word. Ctrl+I = Italic, Ctrl+U = Underline, Ctrl+E = Centre align."},
+{q:"What is the keyboard shortcut for applying Italic formatting in MS Word?",opts:["Ctrl+B — applies bold formatting making selected text heavier and darker","Ctrl+I — applies italic formatting making selected text slant to the right","Ctrl+U — applies underline formatting adding a line beneath the selected text","Ctrl+L — applies left alignment to the currently selected paragraph"],ans:1,exp:"Ctrl+I applies Italic formatting to selected text in MS Word. Ctrl+B = Bold, Ctrl+U = Underline."},
+{q:"What is the keyboard shortcut for applying Underline formatting in MS Word?",opts:["Ctrl+B — applies bold formatting making selected text appear heavier and darker","Ctrl+I — applies italic formatting making the selected text slant to the right","Ctrl+U — applies underline formatting adding a line beneath the selected text","Ctrl+E — centres the selected text evenly between the left and right document margins"],ans:2,exp:"Ctrl+U applies Underline formatting to selected text in MS Word. Ctrl+B = Bold, Ctrl+I = Italic."}
+];
+let order=[],cur=0,picks={},playerName='',score=0;
+function shuffle(arr){const a=[...arr];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');window.scrollTo(0,0);}
+function goBack(){if(confirm('Quit quiz and return to subjects?'))window.location.href='index.html';}
+function startQuiz(){const inp=document.getElementById('name-input').value.trim();playerName=inp||'Anonymous';order=shuffle(BANK.map((_,i)=>i));cur=0;picks={};score=0;document.getElementById('q-total').textContent=BANK.length;show('quiz-screen');render();}
+function render(){const idx=order[cur],q=BANK[idx],total=BANK.length;document.getElementById('q-num').textContent=cur+1;document.getElementById('q-score').textContent=score;document.getElementById('q-label').textContent=`Question ${cur+1} of ${total}`;document.getElementById('q-text').textContent=q.q;document.getElementById('progress-fill').style.width=((cur/total)*100)+'%';document.getElementById('explanation').className='explanation';document.getElementById('explanation').textContent='';document.getElementById('next-btn').className='next-btn';document.getElementById('quit-btn').className='quit-btn';const letters=['A','B','C','D'],optEl=document.getElementById('options');optEl.innerHTML='';shuffle([0,1,2,3]).forEach((oi,li)=>{const btn=document.createElement('button');btn.className='opt-btn';btn.dataset.opt=oi;btn.innerHTML=`<span class="opt-letter">${letters[li]}</span><span>${q.opts[oi]}</span>`;btn.onclick=()=>selectAnswer(oi,idx);optEl.appendChild(btn);});}
+function selectAnswer(chosen,idx){const q=BANK[idx],correct=chosen===q.ans;picks[idx]=chosen;if(correct)score++;document.getElementById('q-score').textContent=score;document.querySelectorAll('.opt-btn').forEach(btn=>{btn.disabled=true;const oi=parseInt(btn.dataset.opt);if(oi===q.ans)btn.classList.add('correct');else if(oi===chosen&&!correct)btn.classList.add('wrong');});if(!correct){const e=document.getElementById('explanation');e.textContent='✗ '+q.exp;e.classList.add('show');}const nb=document.getElementById('next-btn');nb.classList.add('show');nb.textContent=cur+1<BANK.length?'Next Question →':'See Results →';document.getElementById('quit-btn').classList.add('show');}
+function nextQuestion(){cur++;if(cur>=BANK.length)showResults();else{render();window.scrollTo(0,0);}}
+function showResults(){show('results-screen');const total=BANK.length,pct=Math.round((score/total)*100),passed=pct>=70;document.getElementById('result-name').textContent=playerName;document.getElementById('ring-pct').textContent=pct+'%';document.getElementById('ring-pct').style.color=passed?'var(--green)':'var(--red)';document.getElementById('ring-fill').style.stroke=passed?'var(--green)':'var(--red)';setTimeout(()=>{document.getElementById('ring-fill').style.strokeDashoffset=439.82-(439.82*pct/100);},100);document.getElementById('res-title').textContent=pct>=90?'Excellent!':pct>=70?'Passed!':'Needs Work';document.getElementById('res-sub').textContent=`${score} correct out of ${total} questions`;const v=document.getElementById('res-verdict');if(passed){v.textContent='✓ You passed — score above 70%';v.className='result-verdict pass';}else{v.textContent='✗ Below 70% — please retake the quiz';v.className='result-verdict fail';}const rv=document.getElementById('review');rv.innerHTML='<h3>Review</h3>';order.forEach(idx=>{const q=BANK[idx],ua=picks[idx],ok=ua===q.ans;const d=document.createElement('div');d.className='rv-item '+(ok?'ok':'miss');d.innerHTML=`<div class="rv-q">${q.q}</div><div class="rv-a">${ok?`<span class="c">✓ Correct: ${q.opts[q.ans]}</span>`:`<span class="w">✗ You chose: ${ua!==undefined?q.opts[ua]:'Skipped'}</span><br><span class="c">✓ Correct: ${q.opts[q.ans]}</span><br><span style="color:var(--muted)">${q.exp}</span>`}</div>`;rv.appendChild(d);});}
+function retryQuiz(){order=shuffle(order);cur=0;picks={};score=0;document.getElementById('q-score').textContent=0;show('quiz-screen');render();}
+document.getElementById('name-input').addEventListener('keydown',e=>{if(e.key==='Enter')startQuiz();});
+</script>
+</body>
+</html>

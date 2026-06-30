@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MS Excel — July 2026 Exam</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💻</text></svg>">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@400;500&display=swap');
+  :root{--bg:#080810;--surface:#11111f;--border:#1e1e35;--purple:#7c3aed;--purple-l:#9d5bf0;--green:#22c55e;--red:#ef4444;--text:#e8e8f0;--muted:#7070a0;}
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Syne',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;align-items:center;justify-content:center;}
+  body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px);background-size:40px 40px;opacity:.4;pointer-events:none;z-index:0;}
+  .screen{position:relative;z-index:1;width:100%;max-width:660px;margin:0 auto;padding:24px 20px 48px;display:none;}
+  .screen.active{display:block;}
+  #name-screen{text-align:center;padding-top:80px;}
+  .back-link{display:inline-flex;align-items:center;gap:6px;font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);text-decoration:none;letter-spacing:1px;margin-bottom:48px;transition:color .2s;}
+  .back-link:hover{color:var(--purple-l);}
+  .subject-tag{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--purple-l);margin-bottom:12px;}
+  #name-screen h1{font-size:clamp(22px,5vw,36px);font-weight:800;line-height:1.15;margin-bottom:8px;background:linear-gradient(135deg,#fff 30%,var(--purple-l));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+  #name-screen p{color:var(--muted);font-family:'DM Mono',monospace;font-size:12px;margin-bottom:40px;}
+  .name-box{display:flex;flex-direction:column;align-items:center;gap:12px;}
+  .name-box input{width:100%;max-width:320px;padding:12px 16px;background:var(--surface);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:'Syne',sans-serif;font-size:15px;outline:none;text-align:center;transition:border-color .2s;}
+  .name-box input:focus{border-color:var(--purple);}
+  .name-box input::placeholder{color:var(--muted);}
+  .btn-primary{padding:12px 32px;background:var(--purple);color:#fff;border:none;border-radius:8px;font-family:'Syne',sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:background .2s,transform .1s;letter-spacing:.5px;}
+  .btn-primary:hover{background:var(--purple-l);transform:translateY(-1px);}
+  .quiz-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;}
+  .quiz-meta{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);}
+  .quiz-meta span{color:var(--purple-l);font-weight:500;}
+  .quiz-back{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);background:none;border:1px solid var(--border);padding:5px 10px;border-radius:6px;cursor:pointer;transition:color .2s,border-color .2s;}
+  .quiz-back:hover{color:var(--text);border-color:var(--purple);}
+  .progress-bar{width:100%;height:3px;background:var(--border);border-radius:2px;margin-bottom:32px;overflow:hidden;}
+  .progress-fill{height:100%;background:linear-gradient(90deg,var(--purple),var(--purple-l));border-radius:2px;transition:width .3s ease;}
+  .question-num{font-family:'DM Mono',monospace;font-size:10px;color:var(--purple-l);letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;}
+  .question-text{font-size:clamp(15px,3vw,18px);font-weight:600;line-height:1.5;margin-bottom:28px;color:var(--text);}
+  .options{display:flex;flex-direction:column;gap:10px;}
+  .opt-btn{display:flex;align-items:center;gap:12px;padding:13px 16px;background:var(--surface);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:'Syne',sans-serif;font-size:14px;font-weight:400;cursor:pointer;text-align:left;transition:border-color .15s,background .15s;width:100%;}
+  .opt-btn:hover:not(:disabled){border-color:var(--purple);background:#16162a;}
+  .opt-btn .opt-letter{flex-shrink:0;width:26px;height:26px;border-radius:6px;background:var(--border);display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);transition:background .15s,color .15s;}
+  .opt-btn:hover:not(:disabled) .opt-letter{background:var(--purple);color:#fff;}
+  .opt-btn.correct{border-color:var(--green);background:rgba(34,197,94,.1);}
+  .opt-btn.correct .opt-letter{background:var(--green);color:#fff;}
+  .opt-btn.wrong{border-color:var(--red);background:rgba(239,68,68,.1);}
+  .opt-btn.wrong .opt-letter{background:var(--red);color:#fff;}
+  .opt-btn:disabled{cursor:default;}
+  .explanation{display:none;margin-top:16px;padding:14px 16px;background:rgba(124,58,237,.1);border:1px solid rgba(124,58,237,.25);border-left:3px solid var(--purple);border-radius:8px;font-size:13px;line-height:1.6;color:#c4b5fd;font-family:'DM Mono',monospace;}
+  .explanation.show{display:block;}
+  .action-row{display:flex;gap:10px;margin-top:24px;}
+  .next-btn{flex:1;padding:13px;background:var(--purple);color:#fff;border:none;border-radius:8px;font-family:'Syne',sans-serif;font-size:14px;font-weight:700;cursor:pointer;display:none;transition:background .2s;letter-spacing:.5px;}
+  .next-btn:hover{background:var(--purple-l);}
+  .next-btn.show{display:block;}
+  .quit-btn{padding:13px 18px;background:none;border:1px solid var(--border);border-radius:8px;color:var(--muted);font-family:'DM Mono',monospace;font-size:12px;cursor:pointer;display:none;transition:color .2s,border-color .2s;white-space:nowrap;}
+  .quit-btn:hover{color:var(--text);border-color:var(--purple);}
+  .quit-btn.show{display:block;}
+  #results-screen{text-align:center;padding-top:40px;}
+  .result-name{font-family:'DM Mono',monospace;font-size:12px;color:var(--muted);margin-bottom:32px;}
+  .score-ring{position:relative;width:160px;height:160px;margin:0 auto 28px;}
+  .score-ring svg{transform:rotate(-90deg);}
+  .score-ring .ring-bg{fill:none;stroke:var(--border);stroke-width:10;}
+  .score-ring .ring-fill{fill:none;stroke-width:10;stroke-linecap:round;transition:stroke-dashoffset 1s ease,stroke .5s;}
+  .score-ring .ring-text{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+  .ring-pct{font-size:34px;font-weight:800;line-height:1;}
+  .ring-label{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);margin-top:4px;letter-spacing:1px;}
+  .result-title{font-size:24px;font-weight:800;margin-bottom:8px;}
+  .result-sub{font-family:'DM Mono',monospace;font-size:12px;color:var(--muted);margin-bottom:8px;}
+  .result-verdict{font-family:'DM Mono',monospace;font-size:12px;padding:8px 20px;border-radius:20px;display:inline-block;margin-bottom:32px;}
+  .result-verdict.pass{background:rgba(34,197,94,.12);color:var(--green);border:1px solid rgba(34,197,94,.3);}
+  .result-verdict.fail{background:rgba(239,68,68,.12);color:var(--red);border:1px solid rgba(239,68,68,.3);}
+  .result-actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:40px;}
+  .btn-outline{padding:11px 24px;background:none;border:1px solid var(--border);border-radius:8px;color:var(--muted);font-family:'Syne',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:border-color .2s,color .2s;}
+  .btn-outline:hover{border-color:var(--purple);color:var(--text);}
+  .review{text-align:left;}
+  .review h3{font-size:13px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:2px;margin-bottom:16px;font-family:'DM Mono',monospace;}
+  .rv-item{padding:14px 16px;border-radius:8px;margin-bottom:10px;border:1px solid var(--border);}
+  .rv-item.ok{border-color:rgba(34,197,94,.25);background:rgba(34,197,94,.05);}
+  .rv-item.miss{border-color:rgba(239,68,68,.25);background:rgba(239,68,68,.05);}
+  .rv-q{font-size:13px;font-weight:600;margin-bottom:8px;line-height:1.4;}
+  .rv-a{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);line-height:1.6;}
+  .rv-a .c{color:var(--green);}
+  .rv-a .w{color:var(--red);}
+</style>
+</head>
+<body>
+<div class="screen active" id="name-screen">
+  <a class="back-link" href="index.html">← Back to subjects</a>
+  <div class="subject-tag">Computer · Topic 03</div>
+  <h1>MS Excel</h1>
+  <p>32 questions · Every point from your syllabus · Order shuffles each attempt</p>
+  <div class="name-box">
+    <input type="text" id="name-input" placeholder="Enter your name" maxlength="30" autocomplete="off">
+    <button class="btn-primary" onclick="startQuiz()">Start Quiz</button>
+  </div>
+</div>
+<div class="screen" id="quiz-screen">
+  <div class="quiz-header">
+    <div class="quiz-meta">Question <span id="q-num">1</span> of <span id="q-total">32</span></div>
+    <div class="quiz-meta">Score <span id="q-score">0</span></div>
+    <button class="quiz-back" onclick="goBack()">← Quit</button>
+  </div>
+  <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+  <div class="question-num" id="q-label"></div>
+  <div class="question-text" id="q-text"></div>
+  <div class="options" id="options"></div>
+  <div class="explanation" id="explanation"></div>
+  <div class="action-row">
+    <button class="quit-btn" id="quit-btn" onclick="goBack()">← Back to subjects</button>
+    <button class="next-btn" id="next-btn" onclick="nextQuestion()">Next Question →</button>
+  </div>
+</div>
+<div class="screen" id="results-screen">
+  <div class="result-name" id="result-name"></div>
+  <div class="score-ring">
+    <svg viewBox="0 0 160 160" width="160" height="160">
+      <circle class="ring-bg" cx="80" cy="80" r="70"/>
+      <circle class="ring-fill" id="ring-fill" cx="80" cy="80" r="70" stroke-dasharray="439.82" stroke-dashoffset="439.82" stroke="var(--green)"/>
+    </svg>
+    <div class="ring-text">
+      <div class="ring-pct" id="ring-pct">0%</div>
+      <div class="ring-label">SCORE</div>
+    </div>
+  </div>
+  <div class="result-title" id="res-title"></div>
+  <div class="result-sub" id="res-sub"></div>
+  <div class="result-verdict" id="res-verdict"></div>
+  <div class="result-actions">
+    <button class="btn-primary" onclick="retryQuiz()">Retry →</button>
+    <button class="btn-outline" onclick="window.location.href='index.html'">All Subjects</button>
+  </div>
+  <div class="review" id="review"></div>
+</div>
+<script>
+const BANK=[
+{q:"What is MS Excel primarily used for?",opts:["Creating text-based documents such as letters, reports, and professional correspondence","Building slide presentations with animations, multimedia content, and visual themes","Performing calculations, data analysis, and building spreadsheets with rows and columns","Managing email communications and scheduling calendar appointments and meetings"],ans:2,exp:"MS Excel is used for calculation purposes — spreadsheets, financial analysis, data sorting, charting, and automation of calculations using formulas and functions."},
+{q:"Are MS Excel and MS PowerPoint the same software?",opts:["Yes — they are two different names for the same application within the MS Office suite","Yes — both applications share the same file format and can open each other's files directly","No — MS Excel is used for calculations and spreadsheets while MS PowerPoint is used for presentations","No — MS Excel is an operating system while MS PowerPoint is an application software program"],ans:2,exp:"MS Excel and MS PowerPoint are NOT the same software. Excel is used for calculations and spreadsheets; PowerPoint is used for creating slide-based presentations."},
+{q:"What are the file extensions associated with MS Excel?",opts:[".doc and .docx — the word processing file formats used by MS Word across all versions",".ppt and .pptx — the presentation file formats used by MS PowerPoint across all versions",".xls and .xlsx — the spreadsheet file formats used by MS Excel across its versions",".txt and .csv — the plain text and comma-separated value formats used for raw data export"],ans:2,exp:"MS Excel uses .xls (older versions before 2007) and .xlsx (2007 and later). Both are valid Excel spreadsheet file formats."},
+{q:"What is the top bar in MS Excel called, and what is its default file name?",opts:["The Ribbon bar — default name is 'Sheet1' showing the currently active worksheet tab","The Menu bar — default name is 'Untitled Workbook' until the file is first saved by the user","The Title bar — default name is 'Book 1' until the workbook is saved with a specific name","The Formula bar — default name is 'Workbook 1' showing the active cell reference and contents"],ans:2,exp:"The top bar in MS Excel is called the Title bar. Its default name is 'Book 1' until the workbook is saved with a specific name."},
+{q:"What is the last column header in MS Excel 2007?",opts:["ZZZ — the triple-letter column that marks the absolute maximum boundary of the Excel grid","IV — the last column in older versions of Excel, representing a total of 256 columns","XFD — the last column header in MS Excel 2007, which has a total of 16,384 columns","ZZ — the double-letter column that marks the end of the standard Excel working range"],ans:2,exp:"XFD is the last column header in MS Excel 2007. Excel 2007 and later supports 16,384 columns (A through XFD) and 1,048,576 rows."},
+{q:"What do you need to use in MS Excel to perform a calculation in a spreadsheet?",opts:["A macro — a recorded sequence of actions that automates repetitive calculation tasks","A pivot table — a summarisation tool that groups and aggregates data from a larger dataset","A formula — a mathematical expression entered into a cell to calculate a result","A data validation rule — a restriction placed on a cell to control what values can be entered"],ans:2,exp:"To perform a calculation in MS Excel you need to use a formula. Formulas begin with the = sign and can include cell references, operators, and built-in functions."},
+{q:"How many types of alignment are available in MS Excel?",opts:["Four types — Left, Right, Centre, and Justify — the same alignment options as MS Word","Two types — horizontal and vertical — each with only one default setting that cannot be changed","Six types — Left (Ctrl+L), Right (Ctrl+R), Centre (Ctrl+E), Top, Middle, and Bottom alignments","Three types — Left, Centre, and Right — covering all necessary horizontal alignment needs"],ans:2,exp:"MS Excel has 6 alignment types: 3 horizontal (Left Ctrl+L, Right Ctrl+R, Centre Ctrl+E) and 3 vertical (Top, Middle, Bottom). MS Word has only 4 (no vertical alignment)."},
+{q:"What is 'Sorting' in MS Excel?",opts:["The process of calculating totals and averages across a selected range of cells automatically","The process of filtering data to show only rows that meet a specific condition or criteria","The arranging of data in a logical sequence — either alphabetically, numerically, or by date","The process of grouping related worksheets together so changes apply to all sheets at once"],ans:2,exp:"Sorting in MS Excel is the arranging of data in a logical sequence — A to Z, Z to A, smallest to largest, largest to smallest, or by date. It organises data so it is easier to read and analyse."},
+{q:"Which chart types can MS Excel produce?",opts:["Only pie charts and bar charts — the two most common types for business data presentation","Only line graphs and scatter plots — the two chart types best suited for scientific data","Bar charts, line graphs, and pie charts — along with many other chart types for different data needs","Only 3D charts — MS Excel does not support flat 2D chart formats in any version"],ans:2,exp:"MS Excel can produce bar charts, line graphs, pie charts, scatter charts, area charts, and many more. The most common types for comparing data are bar, pie, line, and scatter charts."},
+{q:"How is a cell address identified in MS Excel?",opts:["By the cell's colour and border style — formatting properties that uniquely identify each cell","By the row number alone — each row has a unique number that identifies all cells within it","By the column name (like A, B, C) combined with the row number (like 1, 2, 3) — for example A1, B2, C3","By the worksheet name followed by a colon — for example Sheet1:A or Sheet2:B"],ans:2,exp:"A cell address is identified by its column letter combined with its row number. Examples: A1, B2, C3, D5. The column comes first, then the row number."},
+{q:"What does the cell range D5:D15 represent in MS Excel?",opts:["Only cells D5 and D15 — the two boundary cells at the start and end of the specified range","All cells in columns D through D15, covering an entire section of the worksheet horizontally","A group of cells from D5 through D15 — all cells in column D from row 5 to row 15 inclusive","The cells in row 5 from column D to the cell reference D15 spanning multiple columns"],ans:2,exp:"D5:D15 represents a cell range from D5 through D15 — all cells in column D from row 5 down to row 15, a total of 11 cells."},
+{q:"What does the Name Box display in MS Excel, and where is it located?",opts:["The worksheet name and total number of sheets — located at the bottom left in the sheet tab area","The current date and time — located at the bottom right of the screen in the status bar area","The active cell name or reference — located at the left side of the formula bar above the grid","The file name and save location — located at the top centre of the screen in the title bar"],ans:2,exp:"The Name Box displays the active cell name or reference (e.g. A1, B3, D5). It appears at the left end of the formula bar, above the column headers."},
+{q:"What does an Active Cell look like in MS Excel?",opts:["It is highlighted in yellow to make it clearly visible against the white background of the worksheet","It is shown with a blue fill colour that distinguishes it from all other unselected cells","It is represented by a thick black border around it, making it clearly distinguishable from other cells","It is shown with a green outline that changes to red when data is being actively entered"],ans:2,exp:"The active cell in MS Excel is represented by a thick black border (outline) around it. It is the cell currently selected and ready to receive data input."},
+{q:"How do you auto-fit a column width in MS Excel to match its contents?",opts:["Right-click the column heading and select 'Set Column Width' from the context menu options","Press Ctrl+W to trigger the auto-width calculation for the currently selected column","Double-click the boundary to the right of the column heading to auto-fit the column to its content","Select the column and press F4 to repeat the last formatting action applied to the spreadsheet"],ans:2,exp:"Double-clicking the boundary (divider line) to the right of a column heading automatically adjusts the column width to fit the widest content in that column — this is called AutoFit."},
+{q:"What are the default worksheet names in a new MS Excel workbook?",opts:["Worksheet1, Worksheet2, Worksheet3 — the full descriptive names assigned to new worksheets","Tab1, Tab2, Tab3 — the abbreviated tab names shown at the bottom of the workbook","Sheet1, Sheet2, Sheet3 — the default names assigned automatically to worksheets in a new workbook","Page1, Page2, Page3 — the page-based names that reflect the print layout of each worksheet"],ans:2,exp:"By default, Excel names worksheets Sheet1, Sheet2, Sheet3. These can be renamed by double-clicking the sheet tab and typing a new name."},
+{q:"What is the maximum number of sheets that can be set as default when creating a new workbook in MS Excel?",opts:["100 sheets — the maximum set by Microsoft to prevent performance issues in large workbooks","10 sheets — the practical maximum that Excel allows to be created simultaneously in a new file","255 sheets — the maximum number that can be set as default when creating a new workbook","1,048,576 sheets — the same as the maximum number of rows in a single Excel worksheet"],ans:2,exp:"255 is the maximum number of sheets that can be set as default when creating a new workbook in MS Excel. In practice, most workbooks use far fewer sheets."},
+{q:"What does an MS Excel Workbook contain?",opts:["Only a single worksheet — workbooks are limited to one sheet to keep data organised","A collection of charts and graphs only — worksheets containing raw data are stored separately","Multiple worksheets — a workbook is the file that contains one or more individual worksheets","Only pivot tables and data validation rules — regular data entry is done in a separate grid view"],ans:2,exp:"An MS Excel Workbook file contains worksheets. One workbook can contain multiple worksheets (Sheet1, Sheet2, etc.), all saved together in a single .xlsx file."},
+{q:"Which of the following are examples of Functions in MS Excel?",opts:["Bold, Italic, Underline, and Strikethrough — formatting functions applied to cell content","Sort, Filter, Freeze, and Split — data management functions from the View and Data tabs","SUM, AVERAGE, MIN, and MAX — built-in calculation functions that operate on ranges of cells","Cut, Copy, Paste, and Format Painter — editing functions from the Home tab ribbon"],ans:2,exp:"SUM, AVERAGE, MIN, and MAX are examples of built-in Excel functions. Functions are pre-built formulas that perform specific calculations on a range of cells."},
+{q:"What chart type is best suited for comparing values across different categories in MS Excel?",opts:["A radar chart — which shows data values radiating outward from a central point for multi-variable comparison","A stock chart — which displays high, low, open, and close values specifically for financial data","Bar, Pie, Line, or Scatter chart — the chart types best suited for comparing values across categories","A surface chart — which shows data across two dimensions to identify optimal combinations of values"],ans:2,exp:"Bar, Pie, Line, and Scatter charts are all well-suited for comparing values across different categories in MS Excel. Bar charts are especially effective for direct category-by-category comparison."},
+{q:"What key do you press in MS Excel to cancel a cell entry before confirming it?",opts:["Delete key — which clears the cell content after it has already been entered and confirmed","Backspace key — which removes the last character typed but does not cancel the whole entry","Enter key — which confirms the entry and moves the cursor to the next cell below","Esc key — which cancels the current cell entry before it is confirmed into the cell"],ans:3,exp:"Press the Esc key to cancel a cell entry before it is entered. This discards what you have typed and restores the previous cell content, if any."},
+{q:"What result does a formula with a logical function (other than IF) show in MS Excel?",opts:["A number between 0 and 1 representing the probability calculated by the logical expression","An error message such as #VALUE! or #REF! indicating the formula could not be evaluated","The word TRUE or FALSE — the result of the logical test performed by the function","A blank cell — logical functions suppress their output unless the condition is fully met"],ans:2,exp:"Except for the IF function, formulas using logical functions display the word TRUE or FALSE as their result — for example, =AND(A1>0, B1>0) returns TRUE or FALSE."},
+{q:"What is the MAX function used for in MS Excel?",opts:["Finding the total sum of all numerical values in a specified range of cells","Finding the middle value (median) of all numbers in a specified range of cells","Finding the arithmetic average of all numerical values in a specified range of cells","Finding the highest (largest) value in a specified range of cells"],ans:3,exp:"The MAX function returns the highest value in a range of cells. For example, =MAX(A1:A10) returns the largest number in cells A1 through A10."},
+{q:"How do you edit the content of an existing cell in MS Excel?",opts:["Click the cell once and start typing — this replaces the entire content with the new entry","Double-click the cell to open a formatting dialog where content can be modified","Press the F2 key while the cell is selected to enter edit mode for that cell","Right-click the cell and select 'Edit Cell' from the context menu that appears"],ans:2,exp:"Press the F2 key to enter edit mode for the selected cell in MS Excel. This places the cursor inside the cell so you can modify existing content rather than replacing it entirely."},
+{q:"What are Comments in MS Excel?",opts:["Small pop-up windows that display the formula inside a cell when the cell is selected","Colour-coded highlights applied to cells to draw attention to important data values","Explanatory text boxes attached to a cell that appear when the user hovers over the cell","Automatic footnotes added to the bottom of a printed worksheet for data source references"],ans:2,exp:"Comments in MS Excel are explanatory notes attached to a cell. They appear as a small red triangle in the corner of the cell and display as a pop-up when hovered over."},
+{q:"What is a Range in MS Excel?",opts:["A named formula that can be reused across multiple worksheets within the same workbook","A single cell that has been assigned a specific colour for visual organisation purposes","A group of cells that form a rectangle — identified using a start cell and end cell reference","A collection of worksheets grouped together so formatting changes apply to all at once"],ans:2,exp:"A Range in MS Excel is a group of cells that form a rectangular block. It is identified by the top-left cell reference and the bottom-right cell reference separated by a colon — for example, A1:C5."},
+{q:"Can you create a hyperlink from an MS Excel workbook to a web page?",opts:["No — hyperlinks in MS Excel only work between cells within the same worksheet","No — MS Excel does not support any form of hyperlink or external link functionality","Yes — you can create hyperlinks from an Excel workbook to a web page on the internet","Yes — but only if the workbook is saved in the older .xls format, not the newer .xlsx format"],ans:2,exp:"Yes, you can create hyperlinks from an MS Excel workbook to a web page on the internet. Use Insert → Hyperlink to add a clickable link to a cell."},
+{q:"Which symbol CANNOT be used in an MS Excel spreadsheet formula?",opts:["* (asterisk) — which is used as the multiplication operator in all Excel formulas","/ (forward slash) — which is used as the division operator in all Excel formulas","+ (plus sign) — which is used as the addition operator in all Excel formulas","& (ampersand) — which cannot be used as a mathematical operator in an Excel formula"],ans:3,exp:"The & (ampersand) symbol cannot be used as a mathematical operator in an Excel formula. In Excel, & is used for text concatenation (joining text strings), not arithmetic calculation."},
+{q:"What category does the NOW function belong to in MS Excel, and what does it return?",opts:["Statistical category — it returns the count of numerical values in a selected range of cells","Text category — it returns the current user name and file name as a combined text string","Mathematical category — it returns a randomly generated number that updates with each recalculation","Date/Time category — it returns the current date and time, updating automatically when the file recalculates"],ans:3,exp:"The NOW function belongs to the Date/Time category. It returns the current date and time, and updates automatically whenever the worksheet recalculates."},
+{q:"What formula would you use to add all cells from A1 to A12 in MS Excel?",opts:["=ADD(A1,A12) — specifying only the first and last cells of the range to be totalled","=TOTAL(A1:A12) — using the TOTAL function to sum all values in the specified range","=SUM(A1:A12) — using the SUM function with a colon to specify the full range","=PLUS(A1+A2+A3+A4+A5+A6+A7+A8+A9+A10+A11+A12) — adding each cell individually"],ans:2,exp:"=SUM(A1:A12) adds all cells from A1 to A12. The colon (:) means 'through' — so A1:A12 means all cells from A1 through A12 inclusive."},
+{q:"How do you rename a worksheet in MS Excel?",opts:["Right-click the sheet tab and select 'Rename Sheet' from the File menu at the top","Press Ctrl+R while the worksheet is active to open the rename dialog for the sheet","Single-click the worksheet tab to select it, then press F2 to activate the rename mode","Double-click the worksheet tab at the bottom of the screen and type the new name"],ans:3,exp:"To rename a worksheet: double-click the worksheet tab at the bottom of the Excel window, which makes the name editable, then type the new name and press Enter."},
+{q:"What is the easiest method to select an entire column in MS Excel?",opts:["Press Ctrl+Space to select all cells in the column where the active cell is located","Click the first cell in the column, hold Shift, and click the last cell in the column","Click the column heading (the letter at the top of the column) to select the entire column","Right-click any cell in the column and choose 'Select Column' from the context menu"],ans:2,exp:"The easiest method to select an entire column is to click the column heading (the letter label at the top — A, B, C, etc.). This selects every cell in that column with a single click."},
+{q:"For which of the following tasks can MS Excel be used?",opts:["Creating slide presentations, adding transitions, and embedding multimedia content for audiences","Writing and formatting long documents, managing page layouts, and generating mail-merge letters","Financial statements and business forecasting, transaction registers and inventory control, and accounts receivable and payable","Designing websites, writing HTML code, and managing content for online publication platforms"],ans:2,exp:"MS Excel can be used for: financial statements and business forecasting, transaction registers and inventory control, and accounts receivable and accounts payable — among many other data-driven business tasks."},
+{q:"Which symbol CANNOT be used as a mathematical operator in an MS Excel formula?",opts:["+ (plus) — the standard addition operator used to add two or more values in a formula","- (minus/hyphen) — the standard subtraction operator used to subtract one value from another","* (asterisk) — the standard multiplication operator used to multiply two or more values","& (ampersand) — used for text concatenation and cannot perform mathematical calculations"],ans:3,exp:"The & (ampersand) cannot be used as a mathematical operator in an Excel formula. It joins text strings (concatenation) — for example, =A1&\" \"&B1 joins two text values with a space."}
+];
+let order=[],cur=0,picks={},playerName='',score=0;
+function shuffle(arr){const a=[...arr];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');window.scrollTo(0,0);}
+function goBack(){if(confirm('Quit quiz and return to subjects?'))window.location.href='index.html';}
+function startQuiz(){const inp=document.getElementById('name-input').value.trim();playerName=inp||'Anonymous';order=shuffle(BANK.map((_,i)=>i));cur=0;picks={};score=0;document.getElementById('q-total').textContent=BANK.length;show('quiz-screen');render();}
+function render(){const idx=order[cur],q=BANK[idx],total=BANK.length;document.getElementById('q-num').textContent=cur+1;document.getElementById('q-score').textContent=score;document.getElementById('q-label').textContent=`Question ${cur+1} of ${total}`;document.getElementById('q-text').textContent=q.q;document.getElementById('progress-fill').style.width=((cur/total)*100)+'%';document.getElementById('explanation').className='explanation';document.getElementById('explanation').textContent='';document.getElementById('next-btn').className='next-btn';document.getElementById('quit-btn').className='quit-btn';const letters=['A','B','C','D'],optEl=document.getElementById('options');optEl.innerHTML='';shuffle([0,1,2,3]).forEach((oi,li)=>{const btn=document.createElement('button');btn.className='opt-btn';btn.dataset.opt=oi;btn.innerHTML=`<span class="opt-letter">${letters[li]}</span><span>${q.opts[oi]}</span>`;btn.onclick=()=>selectAnswer(oi,idx);optEl.appendChild(btn);});}
+function selectAnswer(chosen,idx){const q=BANK[idx],correct=chosen===q.ans;picks[idx]=chosen;if(correct)score++;document.getElementById('q-score').textContent=score;document.querySelectorAll('.opt-btn').forEach(btn=>{btn.disabled=true;const oi=parseInt(btn.dataset.opt);if(oi===q.ans)btn.classList.add('correct');else if(oi===chosen&&!correct)btn.classList.add('wrong');});if(!correct){const e=document.getElementById('explanation');e.textContent='✗ '+q.exp;e.classList.add('show');}const nb=document.getElementById('next-btn');nb.classList.add('show');nb.textContent=cur+1<BANK.length?'Next Question →':'See Results →';document.getElementById('quit-btn').classList.add('show');}
+function nextQuestion(){cur++;if(cur>=BANK.length)showResults();else{render();window.scrollTo(0,0);}}
+function showResults(){show('results-screen');const total=BANK.length,pct=Math.round((score/total)*100),passed=pct>=70;document.getElementById('result-name').textContent=playerName;document.getElementById('ring-pct').textContent=pct+'%';document.getElementById('ring-pct').style.color=passed?'var(--green)':'var(--red)';document.getElementById('ring-fill').style.stroke=passed?'var(--green)':'var(--red)';setTimeout(()=>{document.getElementById('ring-fill').style.strokeDashoffset=439.82-(439.82*pct/100);},100);document.getElementById('res-title').textContent=pct>=90?'Excellent!':pct>=70?'Passed!':'Needs Work';document.getElementById('res-sub').textContent=`${score} correct out of ${total} questions`;const v=document.getElementById('res-verdict');if(passed){v.textContent='✓ You passed — score above 70%';v.className='result-verdict pass';}else{v.textContent='✗ Below 70% — please retake the quiz';v.className='result-verdict fail';}const rv=document.getElementById('review');rv.innerHTML='<h3>Review</h3>';order.forEach(idx=>{const q=BANK[idx],ua=picks[idx],ok=ua===q.ans;const d=document.createElement('div');d.className='rv-item '+(ok?'ok':'miss');d.innerHTML=`<div class="rv-q">${q.q}</div><div class="rv-a">${ok?`<span class="c">✓ Correct: ${q.opts[q.ans]}</span>`:`<span class="w">✗ You chose: ${ua!==undefined?q.opts[ua]:'Skipped'}</span><br><span class="c">✓ Correct: ${q.opts[q.ans]}</span><br><span style="color:var(--muted)">${q.exp}</span>`}</div>`;rv.appendChild(d);});}
+function retryQuiz(){order=shuffle(order);cur=0;picks={};score=0;document.getElementById('q-score').textContent=0;show('quiz-screen');render();}
+document.getElementById('name-input').addEventListener('keydown',e=>{if(e.key==='Enter')startQuiz();});
+</script>
+</body>
+</html>
