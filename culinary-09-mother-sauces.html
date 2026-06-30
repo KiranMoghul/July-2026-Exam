@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>5 Mother Sauces — July 2026 Exam</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍳</text></svg>">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@400;500&display=swap');
+  :root{--bg:#080810;--surface:#11111f;--border:#1e1e35;--purple:#7c3aed;--purple-l:#9d5bf0;--green:#22c55e;--red:#ef4444;--text:#e8e8f0;--muted:#7070a0;}
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Syne',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;align-items:center;justify-content:center;}
+  body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px);background-size:40px 40px;opacity:.4;pointer-events:none;z-index:0;}
+  .screen{position:relative;z-index:1;width:100%;max-width:660px;margin:0 auto;padding:24px 20px 48px;display:none;}
+  .screen.active{display:block;}
+  #name-screen{text-align:center;padding-top:80px;}
+  .back-link{display:inline-flex;align-items:center;gap:6px;font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);text-decoration:none;letter-spacing:1px;margin-bottom:48px;transition:color .2s;}
+  .back-link:hover{color:var(--purple-l);}
+  .subject-tag{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--purple-l);margin-bottom:12px;}
+  #name-screen h1{font-size:clamp(22px,5vw,36px);font-weight:800;line-height:1.15;margin-bottom:8px;background:linear-gradient(135deg,#fff 30%,var(--purple-l));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+  #name-screen p{color:var(--muted);font-family:'DM Mono',monospace;font-size:12px;margin-bottom:40px;}
+  .name-box{display:flex;flex-direction:column;align-items:center;gap:12px;}
+  .name-box input{width:100%;max-width:320px;padding:12px 16px;background:var(--surface);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:'Syne',sans-serif;font-size:15px;outline:none;text-align:center;transition:border-color .2s;}
+  .name-box input:focus{border-color:var(--purple);}
+  .name-box input::placeholder{color:var(--muted);}
+  .btn-primary{padding:12px 32px;background:var(--purple);color:#fff;border:none;border-radius:8px;font-family:'Syne',sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:background .2s,transform .1s;letter-spacing:.5px;}
+  .btn-primary:hover{background:var(--purple-l);transform:translateY(-1px);}
+  .quiz-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;}
+  .quiz-meta{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);}
+  .quiz-meta span{color:var(--purple-l);font-weight:500;}
+  .progress-bar{width:100%;height:3px;background:var(--border);border-radius:2px;margin-bottom:32px;overflow:hidden;}
+  .progress-fill{height:100%;background:linear-gradient(90deg,var(--purple),var(--purple-l));border-radius:2px;transition:width .3s ease;}
+  .question-num{font-family:'DM Mono',monospace;font-size:10px;color:var(--purple-l);letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;}
+  .question-text{font-size:clamp(15px,3vw,18px);font-weight:600;line-height:1.5;margin-bottom:28px;color:var(--text);}
+  .options{display:flex;flex-direction:column;gap:10px;}
+  .opt-btn{display:flex;align-items:center;gap:12px;padding:13px 16px;background:var(--surface);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:'Syne',sans-serif;font-size:14px;font-weight:400;cursor:pointer;text-align:left;transition:border-color .15s,background .15s;width:100%;}
+  .opt-btn:hover:not(:disabled){border-color:var(--purple);background:#16162a;}
+  .opt-btn .opt-letter{flex-shrink:0;width:26px;height:26px;border-radius:6px;background:var(--border);display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);transition:background .15s,color .15s;}
+  .opt-btn:hover:not(:disabled) .opt-letter{background:var(--purple);color:#fff;}
+  .opt-btn.correct{border-color:var(--green);background:rgba(34,197,94,.1);}
+  .opt-btn.correct .opt-letter{background:var(--green);color:#fff;}
+  .opt-btn.wrong{border-color:var(--red);background:rgba(239,68,68,.1);}
+  .opt-btn.wrong .opt-letter{background:var(--red);color:#fff;}
+  .opt-btn:disabled{cursor:default;}
+  .explanation{display:none;margin-top:16px;padding:14px 16px;background:rgba(124,58,237,.1);border:1px solid rgba(124,58,237,.25);border-left:3px solid var(--purple);border-radius:8px;font-size:13px;line-height:1.6;color:#c4b5fd;font-family:'DM Mono',monospace;}
+  .explanation.show{display:block;}
+  .next-btn{margin-top:24px;width:100%;padding:13px;background:var(--purple);color:#fff;border:none;border-radius:8px;font-family:'Syne',sans-serif;font-size:14px;font-weight:700;cursor:pointer;display:none;transition:background .2s;letter-spacing:.5px;}
+  .next-btn:hover{background:var(--purple-l);}
+  .next-btn.show{display:block;}
+  #results-screen{text-align:center;padding-top:40px;}
+  .result-name{font-family:'DM Mono',monospace;font-size:12px;color:var(--muted);margin-bottom:32px;}
+  .score-ring{position:relative;width:160px;height:160px;margin:0 auto 28px;}
+  .score-ring svg{transform:rotate(-90deg);}
+  .score-ring .ring-bg{fill:none;stroke:var(--border);stroke-width:10;}
+  .score-ring .ring-fill{fill:none;stroke-width:10;stroke-linecap:round;transition:stroke-dashoffset 1s ease,stroke .5s;}
+  .score-ring .ring-text{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+  .ring-pct{font-size:34px;font-weight:800;line-height:1;}
+  .ring-label{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);margin-top:4px;letter-spacing:1px;}
+  .result-title{font-size:24px;font-weight:800;margin-bottom:8px;}
+  .result-sub{font-family:'DM Mono',monospace;font-size:12px;color:var(--muted);margin-bottom:8px;}
+  .result-verdict{font-family:'DM Mono',monospace;font-size:12px;padding:8px 20px;border-radius:20px;display:inline-block;margin-bottom:32px;}
+  .result-verdict.pass{background:rgba(34,197,94,.12);color:var(--green);border:1px solid rgba(34,197,94,.3);}
+  .result-verdict.fail{background:rgba(239,68,68,.12);color:var(--red);border:1px solid rgba(239,68,68,.3);}
+  .result-actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:40px;}
+  .btn-outline{padding:11px 24px;background:none;border:1px solid var(--border);border-radius:8px;color:var(--muted);font-family:'Syne',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:border-color .2s,color .2s;}
+  .btn-outline:hover{border-color:var(--purple);color:var(--text);}
+  .review{text-align:left;}
+  .review h3{font-size:13px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:2px;margin-bottom:16px;font-family:'DM Mono',monospace;}
+  .rv-item{padding:14px 16px;border-radius:8px;margin-bottom:10px;border:1px solid var(--border);}
+  .rv-item.ok{border-color:rgba(34,197,94,.25);background:rgba(34,197,94,.05);}
+  .rv-item.miss{border-color:rgba(239,68,68,.25);background:rgba(239,68,68,.05);}
+  .rv-q{font-size:13px;font-weight:600;margin-bottom:8px;line-height:1.4;}
+  .rv-a{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);line-height:1.6;}
+  .rv-a .c{color:var(--green);}
+  .rv-a .w{color:var(--red);}
+</style>
+</head>
+<body>
+
+<div class="screen active" id="name-screen">
+  <a class="back-link" href="index.html">← Back to subjects</a>
+  <div class="subject-tag">Culinary Arts · Topic 09</div>
+  <h1>5 Mother Sauces</h1>
+  <p>30 questions · Origins, components, derivatives & applications</p>
+  <div class="name-box">
+    <input type="text" id="name-input" placeholder="Enter your name" maxlength="30" autocomplete="off">
+    <button class="btn-primary" onclick="startQuiz()">Start Quiz</button>
+  </div>
+</div>
+
+<div class="screen" id="quiz-screen">
+  <div class="quiz-header">
+    <div class="quiz-meta">Question <span id="q-num">1</span> of <span id="q-total">30</span></div>
+    <div class="quiz-meta">Score <span id="q-score">0</span></div>
+  </div>
+  <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+  <div class="question-num" id="q-label"></div>
+  <div class="question-text" id="q-text"></div>
+  <div class="options" id="options"></div>
+  <div class="explanation" id="explanation"></div>
+  <button class="next-btn" id="next-btn" onclick="nextQuestion()">Next Question →</button>
+</div>
+
+<div class="screen" id="results-screen">
+  <div class="result-name" id="result-name"></div>
+  <div class="score-ring">
+    <svg viewBox="0 0 160 160" width="160" height="160">
+      <circle class="ring-bg" cx="80" cy="80" r="70"/>
+      <circle class="ring-fill" id="ring-fill" cx="80" cy="80" r="70" stroke-dasharray="439.82" stroke-dashoffset="439.82" stroke="var(--green)"/>
+    </svg>
+    <div class="ring-text">
+      <div class="ring-pct" id="ring-pct">0%</div>
+      <div class="ring-label">SCORE</div>
+    </div>
+  </div>
+  <div class="result-title" id="res-title"></div>
+  <div class="result-sub" id="res-sub"></div>
+  <div class="result-verdict" id="res-verdict"></div>
+  <div class="result-actions">
+    <button class="btn-primary" onclick="retryQuiz()">Retry →</button>
+    <button class="btn-outline" onclick="window.location.href='index.html'">All Subjects</button>
+  </div>
+  <div class="review" id="review"></div>
+</div>
+
+<script>
+const BANK = [
+  {
+    q: "Who is credited with codifying the five French mother sauces into the classical system used in professional kitchens today?",
+    opts: [
+      "Marie-Antoine Carême, who originally classified sauces into four grandes sauces in the early 19th century during the French Empire period",
+      "Auguste Escoffier, who reorganised and expanded Carême's sauce system into the definitive five mother sauces in Le Guide Culinaire published in 1903",
+      "Paul Bocuse, who modernised classical French sauce-making in the 1970s by reducing the number of mother sauces from seven down to five",
+      "Fernand Point, who developed the mother sauce classification at his restaurant La Pyramide as a training framework for his apprentice chefs"
+    ],
+    ans: 1,
+    exp: "Auguste Escoffier codified the five mother sauces in Le Guide Culinaire (1903). Carême had earlier classified four grandes sauces — Escoffier refined and reorganised the system into Béchamel, Velouté, Espagnole, Hollandaise, and Sauce Tomat, which remains the standard taught in professional kitchens."
+  },
+  {
+    q: "What are the five classical French mother sauces?",
+    opts: [
+      "Béchamel, Velouté, Demi-glace, Hollandaise, and Sauce Tomat — the five foundational sauces from which all classical derivatives are made",
+      "Béchamel, Velouté, Espagnole, Hollandaise, and Sauce Tomat — the five grandes sauces that serve as the base for hundreds of derivative sauces",
+      "Béchamel, Velouté, Espagnole, Mayonnaise, and Sauce Tomat — the five mother sauces covering cold and hot preparations equally",
+      "Béchamel, Velouté, Espagnole, Hollandaise, and Jus de veau — the five mother sauces used in both classical and contemporary French kitchens"
+    ],
+    ans: 1,
+    exp: "The five mother sauces are: Béchamel (milk + white roux), Velouté (white stock + white/blonde roux), Espagnole (brown stock + brown roux + tomato), Hollandaise (butter + egg yolk emulsion), and Sauce Tomat (tomatoes + pork stock or white stock). All derivative sauces are built from these five."
+  },
+  {
+    q: "What are the two components that form the base of a Béchamel sauce?",
+    opts: [
+      "White chicken stock and a blonde roux, simmered together until thickened and seasoned with nutmeg, salt, and white pepper",
+      "Whole milk and a white roux, cooked together until thickened into a smooth, creamy sauce seasoned with nutmeg and white pepper",
+      "Single cream and butter thickened with cornstarch, flavoured with onion, bay leaf, and white pepper for a classical white sauce",
+      "Veal stock and egg yolks enriched with heavy cream and butter, seasoned with nutmeg and finished with a squeeze of lemon juice"
+    ],
+    ans: 1,
+    exp: "Béchamel = milk + white roux (equal parts butter and flour cooked briefly without colour). The milk is infused with onion clouté (onion studded with cloves and bay leaf) for flavour. Seasoned with salt, white pepper, and nutmeg. It is the simplest and most commonly used mother sauce."
+  },
+  {
+    q: "What is an 'onion clouté' and which mother sauce uses it?",
+    opts: [
+      "A caramelised onion reduction used as the flavour base for Espagnole sauce, cooked until deeply golden before stock is added",
+      "A halved onion studded with whole cloves and a bay leaf, used to infuse milk with flavour when making Béchamel sauce",
+      "A fine brunoise of shallots and onions sweated in butter and used to build the flavour base for Velouté and its derivatives",
+      "A charred onion half that is added to brown stocks and Espagnole sauce to add colour and a deep, slightly bitter roasted flavour"
+    ],
+    ans: 1,
+    exp: "An onion clouté (studded onion) is a halved onion with a bay leaf attached by whole cloves. It is simmered in milk before making Béchamel to gently infuse flavour into the milk. The onion and cloves are discarded before the roux and milk are combined."
+  },
+  {
+    q: "Name three classical derivative sauces made from Béchamel.",
+    opts: [
+      "Mornay (Béchamel + Gruyère and Parmesan), Soubise (Béchamel + puréed onion), and Nantua (Béchamel + crayfish butter and cream)",
+      "Chasseur (Béchamel + mushrooms and tomatoes), Suprême (Béchamel + cream), and Périgueux (Béchamel + truffle and Madeira wine)",
+      "Bordelaise (Béchamel + red wine and bone marrow), Lyonnaise (Béchamel + onions), and Diable (Béchamel + white wine and cayenne)",
+      "Robert (Béchamel + white wine, mustard, and onion), Charcutière (Béchamel + gherkins), and Poulette (Béchamel + mushrooms and lemon)"
+    ],
+    ans: 0,
+    exp: "Key Béchamel derivatives: Mornay (+ grated Gruyère and Parmesan — used for gratins and croque monsieur), Soubise (+ puréed sweated onion — for lamb and veal), Nantua (+ crayfish butter and cream — for seafood dishes). Many other cheese and cream-enriched sauces derive from Béchamel."
+  },
+  {
+    q: "What is a Mornay sauce and what is it most commonly used for?",
+    opts: [
+      "A Béchamel enriched with grated Gruyère and Parmesan cheese — used for gratins, croque monsieur, cauliflower cheese, and fish dishes",
+      "A Velouté enriched with egg yolk and cream liaison, finished with grated cheese and used exclusively for poached fish preparations",
+      "An Espagnole derivative enriched with melted Gruyère and reduced white wine, used for braised veal and poultry dishes",
+      "A Hollandaise derivative made by adding grated Parmesan and cream to stabilise it for use in hot oven-baked gratin dishes"
+    ],
+    ans: 0,
+    exp: "Mornay = Béchamel + grated Gruyère + Parmesan. It is used for croque monsieur, cauliflower cheese (chou-fleur Mornay), macaroni gratin, and fish gratin. It is one of the most practically useful Béchamel derivatives in everyday kitchen use."
+  },
+  {
+    q: "What is Velouté sauce and how does it differ from Béchamel?",
+    opts: [
+      "Velouté is made with milk and a white roux like Béchamel, but uses double cream instead of whole milk to produce a richer, smoother texture",
+      "Velouté is made with white stock (chicken, fish, or veal) and a white or blonde roux — it uses stock not milk, giving it a more savoury, light body",
+      "Velouté is a thinner, less structured version of Béchamel made with skimmed milk and a lighter roux for use in low-fat dietary preparations",
+      "Velouté is made with brown stock and a dark roux, giving it a richer, deeper colour and flavour compared to the pale Béchamel sauce"
+    ],
+    ans: 1,
+    exp: "The key difference: Béchamel uses milk; Velouté uses white stock (chicken velouté = chicken stock, fish velouté = fish stock, veal velouté = veal stock). Both use a white or blonde roux. Velouté has a more pronounced savoury flavour and a lighter, silkier body."
+  },
+  {
+    q: "What are the three types of Velouté sauce, categorised by the stock used?",
+    opts: [
+      "Beef velouté (from brown beef stock), chicken velouté (from white chicken stock), and lamb velouté (from lamb stock reduced to nappe consistency)",
+      "Chicken velouté (from white chicken stock), fish velouté (from fish stock/fumet), and veal velouté (from white veal stock)",
+      "White velouté (from chicken stock), dark velouté (from game stock), and neutral velouté (from vegetable stock for vegetarian menus)",
+      "Classical velouté (from veal stock), modern velouté (from reduced cream and wine), and bisque velouté (from shellfish stock)"
+    ],
+    ans: 1,
+    exp: "The three standard veloutés: Chicken velouté (volaille) from white chicken stock, Fish velouté from fish stock/fumet, and Veal velouté (veau) from white veal stock. Each has its own family of derivatives matched to the protein of the same type."
+  },
+  {
+    q: "Name two classical derivatives of chicken Velouté.",
+    opts: [
+      "Suprême sauce (chicken velouté + cream + butter) and Allemande sauce (chicken velouté + egg yolk liaison + cream + lemon juice)",
+      "Bordelaise sauce (chicken velouté + red wine + bone marrow) and Périgueux sauce (chicken velouté + truffle and Madeira reduction)",
+      "Chasseur sauce (chicken velouté + tomatoes + white wine + shallots) and Béarnaise sauce (chicken velouté + tarragon butter emulsion)",
+      "Robert sauce (chicken velouté + white wine + onion + mustard) and Lyonnaise sauce (chicken velouté + caramelised onion reduction)"
+    ],
+    ans: 0,
+    exp: "Key chicken velouté derivatives: Suprême (+ cream + butter — the richest derivative, used for poultry and poached chicken) and Allemande (+ egg yolk and cream liaison + lemon — used for poached poultry and vegetables). Both are pale, elegant sauces with deep chicken flavour."
+  },
+  {
+    q: "What is Espagnole sauce and what are its key components?",
+    opts: [
+      "A pale, ivory-coloured sauce made from brown veal stock, a white roux, and cream, finished with a reduction of white wine and tarragon",
+      "A rich, dark brown sauce made from brown stock, a brown roux, mirepoix, tomato purée, and a bouquet garni — simmered for several hours",
+      "A medium-bodied sauce made from chicken stock, a blonde roux, and roasted tomatoes, thickened with egg yolks and finished with butter",
+      "A red sauce made from reduced red wine, caramelised onions, and beef bones, thickened with cornstarch and finished with bone marrow"
+    ],
+    ans: 1,
+    exp: "Espagnole is the most complex mother sauce: brown stock + brown roux + mirepoix (browned) + tomato purée + bouquet garni, simmered for 3–4 hours and strained. The deep colour comes from the brown roux, caramelised mirepoix, and tomato. It is the foundation of demi-glace and most classical brown sauces."
+  },
+  {
+    q: "What is 'demi-glace' and what is its relationship to Espagnole?",
+    opts: [
+      "Demi-glace is a lighter version of Espagnole made with half the quantity of roux, producing a thinner sauce for modern cuisine applications",
+      "Demi-glace is Espagnole combined with an equal volume of brown stock, reduced by half — producing a rich, glossy, intensely flavoured sauce",
+      "Demi-glace is a full reduction of brown stock to a syrupy glaze (glace de viande) that is whisked into Espagnole at the last moment",
+      "Demi-glace is the name for Espagnole after it has been passed through a fine chinois and chilled to set into a firm, gelatin-rich jelly"
+    ],
+    ans: 1,
+    exp: "Demi-glace = equal parts Espagnole + brown stock, reduced by half. The result is a rich, deeply flavoured, glossy brown sauce that coats the spoon perfectly. It is the base for most classical French brown sauces including Bordelaise, Périgueux, and Chasseur."
+  },
+  {
+    q: "Name two classical derivatives of Espagnole or demi-glace.",
+    opts: [
+      "Bordelaise (demi-glace + red wine + shallots + bone marrow) and Périgueux (demi-glace + Madeira + black truffle)",
+      "Mornay (Espagnole + grated Gruyère) and Soubise (Espagnole + puréed onion reduction and cream for poultry dishes)",
+      "Suprême (Espagnole + cream and butter) and Allemande (Espagnole + egg yolk liaison and lemon juice for veal dishes)",
+      "Nantua (Espagnole + crayfish butter) and Aurore (Espagnole + tomato purée reduced with cream and white wine)"
+    ],
+    ans: 0,
+    exp: "Key Espagnole/demi-glace derivatives: Bordelaise (demi-glace + red Bordeaux wine + shallots + thyme + bone marrow — classic with steak), Périgueux (demi-glace + Madeira + black truffle — for game and fine dining beef). Both are rich, deeply flavoured brown sauces."
+  },
+  {
+    q: "What is Sauce Tomat (Tomato Sauce) in the classical mother sauce system?",
+    opts: [
+      "A quick Italian-style pasta sauce made from canned tomatoes, garlic, olive oil, and fresh basil — simmered for 20 minutes and left chunky",
+      "A classical French tomato sauce made from tomatoes, pork fat or stock, mirepoix, and aromatics — thickened with a light roux and simmered until rich",
+      "A Spanish-origin tomato sauce thickened with bread and almonds, used as the base for paella and other rice and seafood dishes",
+      "A refined tomato sauce made exclusively from fresh tomatoes reduced with white wine and cream, used only for fish and shellfish dishes"
+    ],
+    ans: 1,
+    exp: "The classical Sauce Tomat uses tomatoes, pork (lard or salt pork), mirepoix, a light roux, veal or pork stock, garlic, and aromatics — simmered until thick and flavourful. It is significantly more complex than a simple pasta sauce and forms the base for Creole, Portuguese, and Spanish derivative sauces."
+  },
+  {
+    q: "Name two classical derivatives of Sauce Tomat.",
+    opts: [
+      "Creole sauce (Sauce Tomat + capsicum + onion + celery + Cajun spices) and Portuguese sauce (Sauce Tomat + onion + garlic + white wine + herbs)",
+      "Chasseur sauce (Sauce Tomat + mushrooms + tarragon) and Nantua sauce (Sauce Tomat + crayfish butter + cream + brandy)",
+      "Bordelaise sauce (Sauce Tomat + red wine + bone marrow) and Lyonnaise sauce (Sauce Tomat + caramelised onion + white wine reduction)",
+      "Robert sauce (Sauce Tomat + white wine + Dijon mustard) and Charcutière sauce (Sauce Tomat + cornichons + onion + vinegar)"
+    ],
+    ans: 0,
+    exp: "Key Sauce Tomat derivatives: Creole (+ capsicum, onion, celery, spices — used for rice and seafood dishes), Portuguese (+ onion, garlic, white wine, herbs — used for fish and poultry). Other derivatives include Spanish sauce and Milanaise sauce."
+  },
+  {
+    q: "What is Hollandaise sauce and what cooking technique is used to make it?",
+    opts: [
+      "A cold emulsified sauce made from oil and egg yolks whisked together from room temperature to produce a thick, stable emulsion",
+      "A warm emulsified butter sauce made by whisking clarified butter into egg yolks over a bain-marie — relying on egg lecithin to hold the emulsion",
+      "A warm cream sauce made by reducing double cream with lemon juice and then whisking in cold butter pieces to create a silky texture",
+      "A stable butter sauce made by melting butter directly into a hot reduction of white wine and cream, thickened with egg yolks off the heat"
+    ],
+    ans: 1,
+    exp: "Hollandaise is a warm emulsified butter sauce. Egg yolks are whisked with a reduction (white wine or water + lemon juice) over a bain-marie until pale and thick (sabayon), then clarified butter is whisked in slowly. The lecithin in the egg yolk acts as the emulsifier holding the fat and liquid together."
+  },
+  {
+    q: "What is the key risk when making Hollandaise and how is it prevented?",
+    opts: [
+      "The sauce can become too thin if the butter is added too quickly — prevented by adding the butter in a very slow, continuous stream while whisking constantly",
+      "The egg yolks can scramble if the bain-marie temperature is too high — prevented by keeping the water below simmering and removing from heat if it gets too hot",
+      "The sauce can turn grey if stainless steel equipment is used — prevented by using only copper bowls and wooden spoons during the entire preparation",
+      "The butter can solidify when added cold — prevented by bringing the clarified butter to exactly 60°C before beginning to whisk it into the yolks"
+    ],
+    ans: 1,
+    exp: "The primary risk with Hollandaise is scrambling the egg yolks — if the bain-marie water boils, the bowl overheats and the yolks cook into scrambled eggs. Keep water at a gentle simmer, not boiling. The bowl should be warm but never too hot to touch on the bottom."
+  },
+  {
+    q: "What is 'Béarnaise' sauce and how does it differ from Hollandaise?",
+    opts: [
+      "Béarnaise is a cold derivative of Hollandaise made by folding in whipped cream and chervil, served alongside poached fish and egg dishes",
+      "Béarnaise uses the same warm butter emulsion technique as Hollandaise but uses a tarragon and shallot reduction instead of a lemon reduction",
+      "Béarnaise is a Hollandaise derivative made by adding Dijon mustard and capers to the finished sauce just before service for grilled meats",
+      "Béarnaise is a derivative of Hollandaise where clarified butter is replaced with whole cold butter and a reduction of red wine and thyme"
+    ],
+    ans: 1,
+    exp: "Béarnaise = same warm emulsified butter technique as Hollandaise, but the reduction uses white wine vinegar, white wine, shallots, tarragon, and chervil. Finished with chopped fresh tarragon. It is the classic accompaniment to grilled steak and is one of the most well-known Hollandaise derivatives."
+  },
+  {
+    q: "Name three derivatives of Hollandaise sauce.",
+    opts: [
+      "Béarnaise (+ tarragon/shallot reduction), Mousseline (+ whipped cream folded in), and Maltaise (+ blood orange juice and zest)",
+      "Mornay (+ cheese), Soubise (+ onion purée), and Aurore (+ tomato purée) — all enriched versions of Hollandaise for baked dishes",
+      "Suprême (+ cream reduction), Allemande (+ egg yolk liaison), and Nantua (+ crayfish butter and cream for seafood preparations)",
+      "Diable (+ cayenne and white wine), Bordelaise (+ Bordeaux wine reduction), and Lyonnaise (+ caramelised onion and white wine)"
+    ],
+    ans: 0,
+    exp: "Key Hollandaise derivatives: Béarnaise (tarragon/shallot reduction — for steak), Mousseline/Chantilly (+ whipped cream folded in at the end — lighter texture for asparagus and fish), Maltaise (+ blood orange juice and zest — for asparagus in season). All share the same warm butter emulsion base."
+  },
+  {
+    q: "What is a 'roux' and what are its three types used in the mother sauces?",
+    opts: [
+      "A mixture of cold butter and flour kneaded together into a paste (beurre manié), available as white, golden, and dark varieties",
+      "A cooked mixture of equal parts fat and flour — white roux (barely cooked), blonde roux (lightly golden), and brown roux (deeply coloured)",
+      "A starch slurry made from flour and cold water or stock, available in light, medium, and heavy concentrations for different sauce consistencies",
+      "A reduction of wine and stock used as the thickening base for sauces — light reduction for fish sauces, heavy reduction for meat sauces"
+    ],
+    ans: 1,
+    exp: "A roux is equal parts fat and flour cooked together. White roux: cooked 1–2 minutes, no colour — used for Béchamel. Blonde roux: cooked 3–5 minutes, pale golden — used for Velouté. Brown roux: cooked 8–15 minutes, deep brown — used for Espagnole. The longer it cooks, the less thickening power it has but the more flavour it develops."
+  },
+  {
+    q: "What happens to the thickening power of a roux the longer it is cooked?",
+    opts: [
+      "The longer a roux is cooked, the stronger its thickening power becomes — brown roux thickens a sauce more effectively than white roux",
+      "The longer a roux is cooked, the less thickening power it has — starch granules break down with heat, reducing their ability to absorb liquid",
+      "Cooking time has no effect on thickening power — the ratio of fat to flour is the only variable that determines how thick a sauce will be",
+      "A roux reaches maximum thickening power at the blonde stage — cooking further to brown roux reduces and then completely eliminates thickening"
+    ],
+    ans: 1,
+    exp: "As a roux cooks, heat breaks down starch granules — reducing their capacity to absorb liquid and thicken. A white roux has the highest thickening power; a brown roux has significantly less. This means Espagnole requires more roux than Béchamel to achieve the same consistency."
+  },
+  {
+    q: "What is 'clarified butter' and why is it used in making Hollandaise?",
+    opts: [
+      "Butter that has been strained through a fine cloth to remove all salt and preserve flavour, used in Hollandaise to control the salt level of the finished sauce",
+      "Butter from which the milk solids and water have been removed by gentle melting and skimming — leaving pure butterfat that emulsifies smoothly without curdling",
+      "Butter that has been left at room temperature until soft and then whipped to incorporate air, used to create a lighter Hollandaise texture",
+      "Butter that has been browned in a pan until the milk solids caramelise to a golden hazelnut colour, used for a nutty Hollandaise variant"
+    ],
+    ans: 1,
+    exp: "Clarified butter has had its water (about 15–17%) and milk solids removed by slow melting and skimming. Pure butterfat is more stable in an emulsion — the milk solids and water in whole butter can interfere with emulsification and cause the sauce to break. It also has a higher smoke point."
+  },
+  {
+    q: "What is 'Sauce Suprême' and from which mother sauce is it derived?",
+    opts: [
+      "A rich brown sauce derived from Espagnole by adding cream and butter at the end of cooking, used for beef and game dishes at formal dinners",
+      "A pale, velvety sauce derived from chicken Velouté by enriching it with cream and finishing with butter — used for poached poultry and eggs",
+      "A white sauce derived from Béchamel by adding Gruyère cheese and mustard, used for gratin dishes and croque monsieur sandwiches",
+      "A warm emulsified sauce derived from Hollandaise by folding in whipped cream at the last moment for a lighter, airier texture and consistency"
+    ],
+    ans: 1,
+    exp: "Sauce Suprême = chicken Velouté + heavy cream, reduced until slightly thickened, finished with butter. It is pale, rich, and silky — one of the most elegant of all derivative sauces. Used for poached chicken, vol-au-vents, and classical egg dishes. It is a Velouté derivative, not Béchamel."
+  },
+  {
+    q: "What is 'Sauce Allemande' and how is it thickened differently from Velouté?",
+    opts: [
+      "Sauce Allemande is chicken Velouté enriched with a liaison of egg yolks and cream, finished with lemon juice — thicker and richer than plain Velouté",
+      "Sauce Allemande is a Béchamel derivative enriched with double cream and German mustard, thickened further with a secondary blonde roux addition",
+      "Sauce Allemande is a brown Espagnole derivative enriched with cream and butter, named after its use in German-style braised beef dishes",
+      "Sauce Allemande is made from fish Velouté enriched with cream and egg yolks, finished with capers and dill for classic German fish preparations"
+    ],
+    ans: 0,
+    exp: "Sauce Allemande (parisienne) = Velouté (usually veal or chicken) enriched with a liaison of egg yolks and cream, finished with lemon juice and butter. The liaison thickens it further and gives it a richer, more velvety body than plain Velouté. It was once considered a mother sauce in its own right."
+  },
+  {
+    q: "What is 'Sauce Chasseur' (Hunter's Sauce) and from which mother sauce is it derived?",
+    opts: [
+      "A white sauce derived from Béchamel by adding sautéed mushrooms, cream, and white wine, used for poached chicken and fish dishes",
+      "A brown sauce derived from Espagnole or demi-glace with sautéed mushrooms, shallots, white wine, tomato, and tarragon — used for game and poultry",
+      "A tomato-based sauce derived from Sauce Tomat with the addition of capsicum, celery, and spices, used for grilled chicken and fish dishes",
+      "A yellow sauce derived from fish Velouté with sautéed mushrooms and white wine, used exclusively for poached flat fish preparations"
+    ],
+    ans: 1,
+    exp: "Sauce Chasseur (Hunter's Sauce) = demi-glace + sautéed mushrooms + shallots + white wine + tomato + tarragon. It is a classical brown derivative used for sautéed or roasted chicken (poulet Chasseur), rabbit, and game. The name references hunters who would cook with mushrooms from the field."
+  },
+  {
+    q: "What is the purpose of straining a mother sauce through a 'chinois' (conical strainer)?",
+    opts: [
+      "To remove excess fat from the surface of the sauce by pouring it through the fine mesh of the conical strainer at the end of cooking",
+      "To produce a smooth, refined, lump-free sauce by removing any cooked solids — mirepoix, bones, bouquet garni, or roux lumps — after simmering",
+      "To cool the sauce rapidly by spreading it thinly through the fine mesh of the strainer into a shallow ice bath container",
+      "To aerate the sauce by forcing it through the fine mesh to incorporate air bubbles that lighten the texture before serving"
+    ],
+    ans: 1,
+    exp: "A chinois (fine conical strainer) removes all cooked solids from a sauce — mirepoix, herbs, bones, and any lumps. Pressing the solids extracts maximum flavour before discarding. A fine chinois can also clarify a sauce. The result is a smooth, refined, professional-quality sauce."
+  },
+  {
+    q: "What is 'monter au beurre' and which sauces benefit from this technique?",
+    opts: [
+      "Whisking cold whole butter into a warm sauce off the heat to add richness, gloss, and body — used as a finishing technique for most savoury sauces",
+      "Melting clarified butter into a sauce over high heat to increase its fat content and stabilise its emulsion before service in a bain-marie",
+      "Adding softened compound butter to a cold sauce and blending until smooth, producing a thick, spreadable sauce for cold buffet presentations",
+      "Incorporating brown butter (beurre noisette) into a sauce while hot to add a nutty caramelised flavour to pale derivative sauces"
+    ],
+    ans: 0,
+    exp: "'Monter au beurre' means 'to mount with butter' — whisking cold unsalted butter into a warm sauce off the heat in small pieces. It adds richness, gloss, and velvety body without making the sauce greasy. Used to finish Velouté, demi-glace, pan sauces, and many derivatives just before serving."
+  },
+  {
+    q: "What is the classical ratio for a standard roux used in mother sauce production?",
+    opts: [
+      "1 part fat to 2 parts flour by weight — the extra flour ensures the sauce thickens adequately without requiring a heavy reduction",
+      "Equal parts fat and flour by weight — this ratio provides consistent thickening power and is the standard across all three roux types",
+      "2 parts fat to 1 part flour by weight — the extra fat prevents the roux from becoming lumpy and makes it easier to incorporate liquid",
+      "1 part fat to 3 parts flour by weight — the higher flour ratio is needed to thicken large volumes of stock used in hotel kitchen production"
+    ],
+    ans: 1,
+    exp: "The standard roux ratio is 1:1 — equal parts fat and flour by weight. For example, 50g butter + 50g flour. This ratio produces consistent thickening power across white, blonde, and brown roux. Deviating from equal parts creates either an overly greasy or a lumpy, starchy result."
+  },
+  {
+    q: "Why must liquid be added to a roux gradually and why should the liquid be warm?",
+    opts: [
+      "Liquid must be added slowly because cold liquid causes the fat in the roux to solidify, preventing the flour from dispersing evenly into the sauce",
+      "Gradual addition and warm liquid prevent lumps — cold liquid shocks the roux causing starch to clump, while warm liquid disperses evenly and is whisked smooth",
+      "Liquid must be warm to prevent the sauce from thickening too quickly — if cold liquid is added the sauce sets immediately before it can be whisked",
+      "Gradual addition ensures the roux absorbs the liquid correctly — if all liquid is added at once the roux floats to the surface rather than incorporating"
+    ],
+    ans: 1,
+    exp: "Adding cold liquid to a hot roux shocks it — causing starch granules to seize and clump into lumps. Warm or hot liquid is added gradually while whisking vigorously, allowing the starch to disperse evenly. Starting with a small amount of warm liquid and whisking completely before adding more prevents lumps."
+  },
+  {
+    q: "What does it mean when a sauce is described as 'broken' and what causes it in Hollandaise?",
+    opts: [
+      "A broken sauce has developed an unpleasant bitter flavour from overcooked roux — it must be discarded and the roux remade from scratch",
+      "A broken sauce has separated — the emulsion has failed, leaving fat floating on top of a liquid — caused in Hollandaise by overheating or adding butter too quickly",
+      "A broken sauce has been reduced too far and become too thick to pour — it must be thinned with stock or water to restore the correct nappe consistency",
+      "A broken sauce has been contaminated by contact with an acidic ingredient that caused the proteins to curdle and separate from the liquid"
+    ],
+    ans: 1,
+    exp: "A broken sauce has lost its emulsion — the fat and liquid have separated. In Hollandaise this is caused by: adding butter too fast (overwhelming the yolks' emulsifying capacity), overheating the bain-marie (scrambling the yolks), or the sauce cooling too much (fat solidifies). It can sometimes be rescued by starting with fresh yolks and slowly whisking the broken sauce back in."
+  },
+  {
+    q: "What is the correct way to store and reheat Hollandaise sauce during service?",
+    opts: [
+      "Store Hollandaise in the refrigerator at 5°C between services and reheat vigorously in a hot bain-marie until it reaches 74°C before serving",
+      "Keep Hollandaise warm in a bain-marie at 60°C–65°C during service — it cannot be refrigerated and reheated without breaking the emulsion",
+          "Store Hollandaise in a sealed container on the bench at room temperature throughout service and discard any remaining sauce after four hours",
+      "Prepare Hollandaise in advance, refrigerate at 4°C, and re-emulsify in a blender with a fresh egg yolk before each service period"
+    ],
+    ans: 1,
+    exp: "Hollandaise must be held warm in a bain-marie at 60°C–65°C during service — warm enough to be safe but not so hot it scrambles. It cannot be refrigerated and reheated successfully as the emulsion breaks. It should be made fresh as close to service as possible and discarded after 2 hours in the danger zone."
+  }
+];
+
+let order=[],cur=0,picks={},playerName='',score=0;
+function shuffle(arr){const a=[...arr];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');window.scrollTo(0,0);}
+function startQuiz(){const inp=document.getElementById('name-input').value.trim();playerName=inp||'Anonymous';order=shuffle(BANK.map((_,i)=>i));cur=0;picks={};score=0;document.getElementById('q-total').textContent=BANK.length;show('quiz-screen');render();}
+function render(){
+  const idx=order[cur],q=BANK[idx],total=BANK.length;
+  document.getElementById('q-num').textContent=cur+1;
+  document.getElementById('q-score').textContent=score;
+  document.getElementById('q-label').textContent=`Question ${cur+1} of ${total}`;
+  document.getElementById('q-text').textContent=q.q;
+  document.getElementById('progress-fill').style.width=((cur/total)*100)+'%';
+  document.getElementById('explanation').className='explanation';
+  document.getElementById('explanation').textContent='';
+  document.getElementById('next-btn').className='next-btn';
+  const letters=['A','B','C','D'],optEl=document.getElementById('options');
+  optEl.innerHTML='';
+  shuffle([0,1,2,3]).forEach((oi,li)=>{
+    const btn=document.createElement('button');
+    btn.className='opt-btn';btn.dataset.opt=oi;
+    btn.innerHTML=`<span class="opt-letter">${letters[li]}</span><span>${q.opts[oi]}</span>`;
+    btn.onclick=()=>selectAnswer(oi,idx);
+    optEl.appendChild(btn);
+  });
+}
+function selectAnswer(chosen,idx){
+  const q=BANK[idx],correct=chosen===q.ans;
+  picks[idx]=chosen;if(correct)score++;
+  document.getElementById('q-score').textContent=score;
+  document.querySelectorAll('.opt-btn').forEach(btn=>{
+    btn.disabled=true;const oi=parseInt(btn.dataset.opt);
+    if(oi===q.ans)btn.classList.add('correct');
+    else if(oi===chosen&&!correct)btn.classList.add('wrong');
+  });
+  if(!correct){const e=document.getElementById('explanation');e.textContent='✗ '+q.exp;e.classList.add('show');}
+  const nb=document.getElementById('next-btn');nb.classList.add('show');
+  nb.textContent=cur+1<BANK.length?'Next Question →':'See Results →';
+}
+function nextQuestion(){cur++;if(cur>=BANK.length)showResults();else{render();window.scrollTo(0,0);}}
+function showResults(){
+  show('results-screen');
+  const total=BANK.length,pct=Math.round((score/total)*100),passed=pct>=70;
+  document.getElementById('result-name').textContent=playerName;
+  document.getElementById('ring-pct').textContent=pct+'%';
+  document.getElementById('ring-pct').style.color=passed?'var(--green)':'var(--red)';
+  document.getElementById('ring-fill').style.stroke=passed?'var(--green)':'var(--red)';
+  setTimeout(()=>{document.getElementById('ring-fill').style.strokeDashoffset=439.82-(439.82*pct/100);},100);
+  document.getElementById('res-title').textContent=pct>=90?'Excellent!':pct>=70?'Passed!':'Needs Work';
+  document.getElementById('res-sub').textContent=`${score} correct out of ${total} questions`;
+  const v=document.getElementById('res-verdict');
+  if(passed){v.textContent='✓ You passed — score above 70%';v.className='result-verdict pass';}
+  else{v.textContent='✗ Below 70% — please retake the quiz';v.className='result-verdict fail';}
+  const rv=document.getElementById('review');rv.innerHTML='<h3>Review</h3>';
+  order.forEach(idx=>{
+    const q=BANK[idx],ua=picks[idx],ok=ua===q.ans;
+    const d=document.createElement('div');d.className='rv-item '+(ok?'ok':'miss');
+    d.innerHTML=`<div class="rv-q">${q.q}</div><div class="rv-a">${ok
+      ?`<span class="c">✓ Correct: ${q.opts[q.ans]}</span>`
+      :`<span class="w">✗ You chose: ${ua!==undefined?q.opts[ua]:'Skipped'}</span><br><span class="c">✓ Correct: ${q.opts[q.ans]}</span><br><span style="color:var(--muted)">${q.exp}</span>`
+    }</div>`;
+    rv.appendChild(d);
+  });
+}
+function retryQuiz(){order=shuffle(order);cur=0;picks={};score=0;document.getElementById('q-score').textContent=0;show('quiz-screen');render();}
+document.getElementById('name-input').addEventListener('keydown',e=>{if(e.key==='Enter')startQuiz();});
+</script>
+</body>
+</html>

@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cooking Methods — July 2026 Exam</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍳</text></svg>">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@400;500&display=swap');
+  :root{--bg:#080810;--surface:#11111f;--border:#1e1e35;--purple:#7c3aed;--purple-l:#9d5bf0;--green:#22c55e;--red:#ef4444;--text:#e8e8f0;--muted:#7070a0;}
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Syne',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;align-items:center;justify-content:center;}
+  body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px);background-size:40px 40px;opacity:.4;pointer-events:none;z-index:0;}
+  .screen{position:relative;z-index:1;width:100%;max-width:660px;margin:0 auto;padding:24px 20px 48px;display:none;}
+  .screen.active{display:block;}
+  #name-screen{text-align:center;padding-top:80px;}
+  .back-link{display:inline-flex;align-items:center;gap:6px;font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);text-decoration:none;letter-spacing:1px;margin-bottom:48px;transition:color .2s;}
+  .back-link:hover{color:var(--purple-l);}
+  .subject-tag{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--purple-l);margin-bottom:12px;}
+  #name-screen h1{font-size:clamp(22px,5vw,36px);font-weight:800;line-height:1.15;margin-bottom:8px;background:linear-gradient(135deg,#fff 30%,var(--purple-l));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+  #name-screen p{color:var(--muted);font-family:'DM Mono',monospace;font-size:12px;margin-bottom:40px;}
+  .name-box{display:flex;flex-direction:column;align-items:center;gap:12px;}
+  .name-box input{width:100%;max-width:320px;padding:12px 16px;background:var(--surface);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:'Syne',sans-serif;font-size:15px;outline:none;text-align:center;transition:border-color .2s;}
+  .name-box input:focus{border-color:var(--purple);}
+  .name-box input::placeholder{color:var(--muted);}
+  .btn-primary{padding:12px 32px;background:var(--purple);color:#fff;border:none;border-radius:8px;font-family:'Syne',sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:background .2s,transform .1s;letter-spacing:.5px;}
+  .btn-primary:hover{background:var(--purple-l);transform:translateY(-1px);}
+  .quiz-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;}
+  .quiz-meta{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);}
+  .quiz-meta span{color:var(--purple-l);font-weight:500;}
+  .progress-bar{width:100%;height:3px;background:var(--border);border-radius:2px;margin-bottom:32px;overflow:hidden;}
+  .progress-fill{height:100%;background:linear-gradient(90deg,var(--purple),var(--purple-l));border-radius:2px;transition:width .3s ease;}
+  .question-num{font-family:'DM Mono',monospace;font-size:10px;color:var(--purple-l);letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;}
+  .question-text{font-size:clamp(15px,3vw,18px);font-weight:600;line-height:1.5;margin-bottom:28px;color:var(--text);}
+  .options{display:flex;flex-direction:column;gap:10px;}
+  .opt-btn{display:flex;align-items:center;gap:12px;padding:13px 16px;background:var(--surface);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:'Syne',sans-serif;font-size:14px;font-weight:400;cursor:pointer;text-align:left;transition:border-color .15s,background .15s;width:100%;}
+  .opt-btn:hover:not(:disabled){border-color:var(--purple);background:#16162a;}
+  .opt-btn .opt-letter{flex-shrink:0;width:26px;height:26px;border-radius:6px;background:var(--border);display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);transition:background .15s,color .15s;}
+  .opt-btn:hover:not(:disabled) .opt-letter{background:var(--purple);color:#fff;}
+  .opt-btn.correct{border-color:var(--green);background:rgba(34,197,94,.1);}
+  .opt-btn.correct .opt-letter{background:var(--green);color:#fff;}
+  .opt-btn.wrong{border-color:var(--red);background:rgba(239,68,68,.1);}
+  .opt-btn.wrong .opt-letter{background:var(--red);color:#fff;}
+  .opt-btn:disabled{cursor:default;}
+  .explanation{display:none;margin-top:16px;padding:14px 16px;background:rgba(124,58,237,.1);border:1px solid rgba(124,58,237,.25);border-left:3px solid var(--purple);border-radius:8px;font-size:13px;line-height:1.6;color:#c4b5fd;font-family:'DM Mono',monospace;}
+  .explanation.show{display:block;}
+  .next-btn{margin-top:24px;width:100%;padding:13px;background:var(--purple);color:#fff;border:none;border-radius:8px;font-family:'Syne',sans-serif;font-size:14px;font-weight:700;cursor:pointer;display:none;transition:background .2s;letter-spacing:.5px;}
+  .next-btn:hover{background:var(--purple-l);}
+  .next-btn.show{display:block;}
+  #results-screen{text-align:center;padding-top:40px;}
+  .result-name{font-family:'DM Mono',monospace;font-size:12px;color:var(--muted);margin-bottom:32px;}
+  .score-ring{position:relative;width:160px;height:160px;margin:0 auto 28px;}
+  .score-ring svg{transform:rotate(-90deg);}
+  .score-ring .ring-bg{fill:none;stroke:var(--border);stroke-width:10;}
+  .score-ring .ring-fill{fill:none;stroke-width:10;stroke-linecap:round;transition:stroke-dashoffset 1s ease,stroke .5s;}
+  .score-ring .ring-text{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+  .ring-pct{font-size:34px;font-weight:800;line-height:1;}
+  .ring-label{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);margin-top:4px;letter-spacing:1px;}
+  .result-title{font-size:24px;font-weight:800;margin-bottom:8px;}
+  .result-sub{font-family:'DM Mono',monospace;font-size:12px;color:var(--muted);margin-bottom:8px;}
+  .result-verdict{font-family:'DM Mono',monospace;font-size:12px;padding:8px 20px;border-radius:20px;display:inline-block;margin-bottom:32px;}
+  .result-verdict.pass{background:rgba(34,197,94,.12);color:var(--green);border:1px solid rgba(34,197,94,.3);}
+  .result-verdict.fail{background:rgba(239,68,68,.12);color:var(--red);border:1px solid rgba(239,68,68,.3);}
+  .result-actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:40px;}
+  .btn-outline{padding:11px 24px;background:none;border:1px solid var(--border);border-radius:8px;color:var(--muted);font-family:'Syne',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:border-color .2s,color .2s;}
+  .btn-outline:hover{border-color:var(--purple);color:var(--text);}
+  .review{text-align:left;}
+  .review h3{font-size:13px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:2px;margin-bottom:16px;font-family:'DM Mono',monospace;}
+  .rv-item{padding:14px 16px;border-radius:8px;margin-bottom:10px;border:1px solid var(--border);}
+  .rv-item.ok{border-color:rgba(34,197,94,.25);background:rgba(34,197,94,.05);}
+  .rv-item.miss{border-color:rgba(239,68,68,.25);background:rgba(239,68,68,.05);}
+  .rv-q{font-size:13px;font-weight:600;margin-bottom:8px;line-height:1.4;}
+  .rv-a{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);line-height:1.6;}
+  .rv-a .c{color:var(--green);}
+  .rv-a .w{color:var(--red);}
+</style>
+</head>
+<body>
+
+<div class="screen active" id="name-screen">
+  <a class="back-link" href="index.html">← Back to subjects</a>
+  <div class="subject-tag">Culinary Arts · Topic 08</div>
+  <h1>Cooking Methods</h1>
+  <p>30 questions · 2 main categories, 14 methods, applications & principles</p>
+  <div class="name-box">
+    <input type="text" id="name-input" placeholder="Enter your name" maxlength="30" autocomplete="off">
+    <button class="btn-primary" onclick="startQuiz()">Start Quiz</button>
+  </div>
+</div>
+
+<div class="screen" id="quiz-screen">
+  <div class="quiz-header">
+    <div class="quiz-meta">Question <span id="q-num">1</span> of <span id="q-total">30</span></div>
+    <div class="quiz-meta">Score <span id="q-score">0</span></div>
+  </div>
+  <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+  <div class="question-num" id="q-label"></div>
+  <div class="question-text" id="q-text"></div>
+  <div class="options" id="options"></div>
+  <div class="explanation" id="explanation"></div>
+  <button class="next-btn" id="next-btn" onclick="nextQuestion()">Next Question →</button>
+</div>
+
+<div class="screen" id="results-screen">
+  <div class="result-name" id="result-name"></div>
+  <div class="score-ring">
+    <svg viewBox="0 0 160 160" width="160" height="160">
+      <circle class="ring-bg" cx="80" cy="80" r="70"/>
+      <circle class="ring-fill" id="ring-fill" cx="80" cy="80" r="70" stroke-dasharray="439.82" stroke-dashoffset="439.82" stroke="var(--green)"/>
+    </svg>
+    <div class="ring-text">
+      <div class="ring-pct" id="ring-pct">0%</div>
+      <div class="ring-label">SCORE</div>
+    </div>
+  </div>
+  <div class="result-title" id="res-title"></div>
+  <div class="result-sub" id="res-sub"></div>
+  <div class="result-verdict" id="res-verdict"></div>
+  <div class="result-actions">
+    <button class="btn-primary" onclick="retryQuiz()">Retry →</button>
+    <button class="btn-outline" onclick="window.location.href='index.html'">All Subjects</button>
+  </div>
+  <div class="review" id="review"></div>
+</div>
+
+<script>
+const BANK = [
+  {
+    q: "What are the two main categories of cooking methods used in a professional kitchen?",
+    opts: [
+      "Indoor cooking and outdoor cooking — distinguished by whether the heat source is enclosed within a building or open to the environment",
+      "Dry heat cooking and moist heat cooking — distinguished by whether heat is transferred to food without moisture or through liquid or steam",
+      "Direct heat cooking and indirect heat cooking — distinguished by whether the heat source is in contact with the food or separated from it",
+      "Fast cooking and slow cooking — distinguished by whether the total cooking time is under or over 30 minutes for a standard portion size"
+    ],
+    ans: 1,
+    exp: "The two main categories are Dry Heat (no moisture — roasting, grilling, baking, frying, sautéing) and Moist Heat (liquid or steam — boiling, poaching, steaming, braising, stewing). Each transfers heat differently and produces different textures and flavours."
+  },
+  {
+    q: "Which of the following cooking methods belongs to the dry heat category?",
+    opts: [
+      "Poaching — cooking food submerged in liquid kept just below simmering point at approximately 70°C to 80°C",
+      "Braising — cooking food partially submerged in liquid in a covered pot over low heat for an extended period",
+      "Roasting — cooking food uncovered in an oven using hot circulating dry air to brown the exterior and cook through",
+      "Steaming — cooking food suspended above boiling water so that rising steam transfers heat to the food without direct liquid contact"
+    ],
+    ans: 2,
+    exp: "Roasting is a dry heat method — food is cooked uncovered in an oven using hot dry air. The high heat promotes browning through the Maillard reaction and caramelisation. Poaching, braising, and steaming all involve moisture."
+  },
+  {
+    q: "What is 'roasting' and what effect does it have on the exterior of the food?",
+    opts: [
+      "Cooking food submerged in hot fat at temperatures between 160°C and 190°C, producing a crispy, golden exterior through fat conduction",
+      "Cooking food uncovered in a hot oven using dry circulating air, producing browning and flavour development through the Maillard reaction",
+      "Cooking food on a rack above a water pan in a covered oven, where rising steam prevents the exterior from drying or browning",
+      "Cooking food directly over glowing coals or an open flame, producing charred grill marks and a smoky flavour on the surface"
+    ],
+    ans: 1,
+    exp: "Roasting uses dry oven heat (typically 160°C–230°C) to cook food uncovered. The hot dry air browns the exterior through the Maillard reaction (proteins) and caramelisation (sugars), creating flavour and texture. Used for whole joints, poultry, vegetables, and root vegetables."
+  },
+  {
+    q: "What is 'baking' and how does it differ from roasting?",
+    opts: [
+      "Baking uses higher temperatures than roasting and is applied exclusively to meat proteins, while roasting is used only for bread and pastry",
+      "Baking and roasting use identical dry oven heat, but baking is typically applied to doughs, batters, and pastries, while roasting is applied to meats and vegetables",
+      "Baking uses moist oven heat from a water-filled tray in the oven, while roasting uses completely dry circulating air without any added moisture",
+      "Baking is done in a covered dish to trap steam inside, while roasting is done uncovered to allow the exterior to brown and crisp up"
+    ],
+    ans: 1,
+    exp: "Baking and roasting both use dry oven heat, but baking typically refers to cooking doughs, batters, pastries, bread, and cakes — products that transform structurally through heat. Roasting refers to meats, poultry, and vegetables. The boundary blurs in practice but the terminology is product-specific."
+  },
+  {
+    q: "What is 'grilling' as a cooking method, and what are its two main variants?",
+    opts: [
+      "Cooking food in a pan with a small amount of fat over high heat — variants are char-grilling over direct flame and pan-grilling on a ridged cast iron surface",
+      "Cooking food by direct radiant heat from above (salamander/broiler) or below (char-grill/barbecue) — both using high heat to sear and mark the surface",
+      "Cooking food on a flat metal surface with no fat using indirect heat from an oven element — variants are convection grilling and conduction grilling",
+      "Cooking food suspended in a wire basket over simmering liquid — variants are open grilling over steam and enclosed grilling in a steamer unit"
+    ],
+    ans: 1,
+    exp: "Grilling uses radiant heat — either from above (salamander/broiler, common in European kitchens) or from below (char-grill/barbecue, common in American kitchens). Both use high direct heat that sears the surface, creates grill marks, and develops flavour through the Maillard reaction."
+  },
+  {
+    q: "What is the difference between 'grilling' and 'griddling' in a professional kitchen?",
+    opts: [
+      "Grilling uses direct flame contact with food while griddling uses indirect heat from a water-filled tray beneath a solid metal surface",
+      "Grilling uses radiant heat from bars above or below the food, while griddling uses conduction heat from a flat solid metal plate with no bars",
+      "Grilling is a moist heat method used for fish and seafood, while griddling is a dry heat method used only for red meat and poultry",
+      "Grilling produces no colour on the surface of food, while griddling produces dark grill marks from the raised bars of the griddle plate"
+    ],
+    ans: 1,
+    exp: "Grilling uses radiant heat from a source above or below with bars that create grill marks. Griddling uses conduction heat from a flat solid hot plate — producing an even, all-over sear with no bars. Griddles are used for pancakes, burgers, sandwiches, and eggs."
+  },
+  {
+    q: "What is 'sautéing' and what are its key characteristics?",
+    opts: [
+      "Cooking food slowly in a covered pan with a small amount of fat and liquid over low heat until completely tender without any browning",
+      "Cooking food quickly in a small amount of fat over high heat, tossing or stirring frequently to achieve even browning and fast cooking",
+      "Cooking food submerged in a large volume of fat heated to between 160°C and 190°C to produce a uniformly crispy, golden exterior",
+      "Cooking food on a flat metal surface brushed with oil over medium heat, pressing the food flat to maximise contact with the surface"
+    ],
+    ans: 1,
+    exp: "Sautéing (from French 'sauter' — to jump) uses a small amount of fat in a wide pan over high heat. Food is cut small and cooked quickly with frequent tossing or stirring. It develops colour and flavour fast — ideal for tender vegetables, small cuts of meat, and seafood."
+  },
+  {
+    q: "What is 'shallow frying' and how does it differ from deep frying?",
+    opts: [
+      "Shallow frying cooks food submerged entirely in fat at 160°C–190°C, while deep frying uses only enough fat to cover the bottom of the pan",
+      "Shallow frying cooks food in enough fat to come halfway up the item, turning once for even cooking, while deep frying submerges food completely in hot fat",
+      "Shallow frying is a moist heat method using water and a small amount of oil in the pan, while deep frying uses only dry fat with no added liquid",
+      "Shallow frying is done in the oven using fat in a roasting tray, while deep frying is always done on the stovetop in a dedicated fryer"
+    ],
+    ans: 1,
+    exp: "Shallow frying uses enough fat to come halfway up the food — the item is turned once to cook both sides. Deep frying submerges the food completely in fat, cooking all surfaces simultaneously. Shallow frying: fish fillets, schnitzels, eggs. Deep frying: chips, doughnuts, breaded items."
+  },
+  {
+    q: "What is 'deep frying' and at what temperature range is it typically carried out?",
+    opts: [
+      "Cooking food completely submerged in hot fat at 160°C–190°C, producing a crispy exterior through rapid moisture evaporation and fat conduction",
+      "Cooking food in a sealed pressure vessel above boiling fat at temperatures exceeding 200°C to reduce cooking time significantly",
+      "Cooking food in a shallow pan of fat at 120°C–140°C over low heat to gently cook delicate items without darkening the exterior",
+      "Cooking food suspended above hot fat on a rack so the rising fat vapour cooks the exterior without direct fat contact"
+    ],
+    ans: 0,
+    exp: "Deep frying submerges food completely in fat heated to 160°C–190°C. The high heat rapidly evaporates surface moisture, creating steam that prevents fat absorption, while producing a golden, crispy exterior. Oil temperature must be maintained — too low and food becomes greasy; too high and it burns."
+  },
+  {
+    q: "What is 'stir-frying' and which cuisine tradition is it most associated with?",
+    opts: [
+      "A slow cooking technique where ingredients are stirred continuously in a covered pot with liquid over low heat to prevent sticking or burning",
+      "A high-heat dry method cooking small pieces of food very quickly in a wok or large pan with a small amount of oil, associated with Chinese and Asian cooking",
+      "A technique where ingredients are cooked slowly in their own juices in a covered pan over medium heat, associated with French country cooking",
+      "A method where ingredients are cooked in a large volume of boiling water with constant stirring to prevent them sticking together"
+    ],
+    ans: 1,
+    exp: "Stir-frying is a Chinese-origin technique using a seasoned wok over very high heat with a small amount of oil. Ingredients are cut uniformly small and cooked in seconds with constant tossing. The high heat and fast cooking preserve colour, texture, and nutrients."
+  },
+  {
+    q: "What is 'boiling' as a moist heat cooking method, and at what temperature does water boil at sea level?",
+    opts: [
+      "Cooking food in liquid held at 70°C–80°C — just below simmering — so the surface barely moves and delicate proteins are not toughened",
+      "Cooking food fully submerged in liquid at 100°C (at sea level) where vigorous bubbling agitates the food and transfers heat rapidly",
+      "Cooking food in liquid heated to 85°C–95°C where small bubbles rise steadily from the bottom but the surface does not break aggressively",
+      "Cooking food in a small amount of liquid in a covered pan at 63°C, allowing steam to cook the food through gentle heat transfer"
+    ],
+    ans: 1,
+    exp: "Boiling is cooking in liquid at 100°C (at sea level) — vigorous, rolling bubbles. Used for pasta, rice, potatoes, and vegetables. The rapid agitation can toughen delicate proteins, which is why stocks and sauces are simmered rather than boiled."
+  },
+  {
+    q: "What is 'simmering' and how does it differ from boiling?",
+    opts: [
+      "Simmering is cooking in liquid at exactly 100°C with a lid on the pot, while boiling is cooking in open liquid at the same temperature",
+      "Simmering is cooking in liquid at 85°C–95°C with gentle, lazy bubbles — lower and calmer than a full rolling boil at 100°C",
+      "Simmering is cooking in liquid below 70°C so the surface barely moves, while boiling refers to any liquid with visible surface movement",
+      "Simmering is cooking food in fat rather than water at low temperature, while boiling always refers specifically to cooking in water"
+    ],
+    ans: 1,
+    exp: "Simmering is 85°C–95°C — gentle bubbles rise from the bottom and occasionally break the surface, but the liquid does not roll. It is used for stocks, soups, sauces, and tougher cuts of meat. Boiling toughens proteins and clouds stocks; simmering extracts flavour gently."
+  },
+  {
+    q: "What is 'poaching' and what temperature range is used?",
+    opts: [
+      "Cooking food fully submerged in liquid at a vigorous boil of 100°C, used specifically for eggs and delicate white fish fillets",
+      "Cooking food gently submerged in liquid held at 70°C–82°C — below simmering — to keep delicate proteins tender and moist",
+      "Cooking food in liquid at exactly 63°C in a sealed bag, ensuring precise temperature control and no moisture loss during cooking",
+      "Cooking food suspended above liquid at 90°C–95°C so that rising steam cooks the food without direct liquid contact"
+    ],
+    ans: 1,
+    exp: "Poaching is 70°C–82°C — the liquid is hot but not bubbling. The gentle heat is ideal for fragile proteins: eggs, fish, chicken breast, and fruit. Poaching keeps food moist and tender without the agitation of simmering or boiling, which would break delicate items apart."
+  },
+  {
+    q: "What is 'steaming' and what is its primary advantage over boiling?",
+    opts: [
+      "Cooking food submerged in gently bubbling liquid at 85°C, which is gentler than boiling and better preserves water-soluble vitamins",
+      "Cooking food suspended above boiling water so that rising steam transfers heat without direct liquid contact, preserving nutrients and natural colour",
+      "Cooking food sealed in a pressure vessel above water at temperatures exceeding 100°C, dramatically reducing cooking times for dense vegetables",
+      "Cooking food in a covered pan with a small amount of water at the bottom, where the trapped steam and water together cook the food"
+    ],
+    ans: 1,
+    exp: "Steaming cooks food above — not in — boiling water. Steam (100°C) transfers heat without leaching water-soluble vitamins and minerals into the cooking liquid. Food retains colour, texture, and nutrients better than boiling. Common for fish, dumplings, vegetables, and dim sum."
+  },
+  {
+    q: "What is 'braising' and what type of ingredient is it best suited for?",
+    opts: [
+      "A quick, high-heat method cooking tender proteins in a covered pan with no liquid for a short time to develop surface colour and keep moisture inside",
+      "A long, slow moist-heat method cooking food — usually tougher cuts of meat — partially submerged in liquid in a covered pot until collagen breaks down",
+      "A method cooking food in a large volume of liquid at a gentle simmer for several hours until it falls apart from complete collagen breakdown",
+      "A dry-heat method cooking whole joints in an oven at low temperature for extended periods with no liquid added at any point during cooking"
+    ],
+    ans: 1,
+    exp: "Braising is a combination method — food is first seared (dry heat) then slow-cooked partially submerged in liquid in a covered pot (moist heat) at low temperature for hours. It converts collagen in tough cuts (beef cheek, lamb shoulder, oxtail) into gelatin, making the meat tender and the sauce rich."
+  },
+  {
+    q: "What is 'stewing' and how does it differ from braising?",
+    opts: [
+      "Stewing cooks whole large joints of meat partially covered in liquid, while braising cuts food into small pieces and fully submerges them in liquid",
+      "Stewing cuts food into smaller pieces and fully submerges them in liquid, while braising uses larger whole or portioned cuts partially submerged in liquid",
+      "Stewing is a dry heat method finished with liquid only in the last 30 minutes, while braising uses liquid from the start of the cooking process",
+      "Stewing and braising are identical techniques — the terms are interchangeable in both classical French and modern kitchen contexts"
+    ],
+    ans: 1,
+    exp: "In braising, large or whole cuts are partially submerged in liquid. In stewing, food is cut into smaller, bite-sized pieces and fully submerged in liquid. Both are long, slow, covered, moist-heat methods suited to tougher cuts — but the piece size and liquid volume differ."
+  },
+  {
+    q: "What is 'en papillote' cooking and what effect does it achieve?",
+    opts: [
+      "Cooking food directly on a paper-lined baking tray in a hot oven so the paper absorbs excess fat and keeps the food from sticking",
+      "Cooking food sealed in a folded parcel of parchment paper or foil in an oven so it steams in its own juices and aromatic vapours",
+      "Cooking food wrapped tightly in banana leaves over a charcoal fire, an Asian technique that imparts a subtle smoky flavour to the food",
+      "Cooking food encased in a thick salt crust in the oven so the crust seals in moisture and flavour before being cracked at the table"
+    ],
+    ans: 1,
+    exp: "En papillote (French for 'in paper') seals food in a folded parchment or foil parcel. In the oven, the parcel puffs with steam as the food cooks in its own juices, wine, herbs, and aromatics. The result is moist, delicately flavoured food — classic for fish and vegetables."
+  },
+  {
+    q: "What is 'sous vide' cooking and what are its key advantages?",
+    opts: [
+      "Cooking food in a sealed vacuum bag submerged in water at a precisely controlled temperature, delivering consistent doneness and moisture retention",
+      "Cooking food in a pressure cooker above boiling water at temperatures exceeding 120°C to dramatically reduce cooking times for tough proteins",
+      "Cooking food in a sealed clay pot in a low oven so the natural moisture in the clay transfers steadily into the food during cooking",
+      "Cooking food vacuum-sealed and then blast-frozen before being reheated to order in a commercial oven during service"
+    ],
+    ans: 0,
+    exp: "Sous vide (French for 'under vacuum') cooks vacuum-sealed food in a water bath held at a precise temperature — for example, 63°C for chicken breast for 2 hours. The controlled temperature delivers exact doneness throughout, retains moisture, and allows consistent replication at scale."
+  },
+  {
+    q: "What is 'smoking' as a cooking method, and name its two main types?",
+    opts: [
+      "Cooking food by submerging it in a heavily salted brine solution infused with smoked spices before roasting at high temperature in a conventional oven",
+      "Cooking and/or flavouring food with smoke from burning wood — hot smoking cooks the food fully, while cold smoking flavours without cooking",
+      "A preservation method applying chemical smoke extract as a liquid marinade to raw food before it is grilled or roasted to order during service",
+      "Cooking food in a tightly covered pan with wood chips and water at 100°C so steam infused with smoke flavour penetrates the food surface"
+    ],
+    ans: 1,
+    exp: "Hot smoking (60°C–80°C) simultaneously cooks and flavours food — smoked salmon fillet, smoked chicken. Cold smoking (below 30°C) imparts smoke flavour without cooking — cold-smoked salmon is raw but cured. Wood type (oak, cherry, applewood) significantly influences flavour."
+  },
+  {
+    q: "What is the 'Maillard reaction' and why is it important in dry heat cooking?",
+    opts: [
+      "The breakdown of collagen into gelatin that occurs when tougher cuts of meat are cooked slowly in moist heat for an extended period",
+      "A chemical reaction between amino acids and sugars that occurs above 140°C, producing the brown colour and complex savoury flavour on seared food",
+      "The process by which starch granules absorb water and swell when heated, thickening sauces and causing bread to develop its crumb structure",
+      "The emulsification of fat and water molecules that occurs when butter is vigorously whisked into a warm sauce at the end of cooking"
+    ],
+    ans: 1,
+    exp: "The Maillard reaction is a chemical reaction between amino acids and reducing sugars that begins around 140°C. It produces hundreds of new flavour compounds and the brown colour on seared meat, toast, roasted vegetables, and baked bread. It does not occur in moist heat — food must be dry on its surface."
+  },
+  {
+    q: "What is 'caramelisation' and how does it differ from the Maillard reaction?",
+    opts: [
+      "Caramelisation is the browning of proteins above 140°C, while the Maillard reaction is the browning of sugars above 160°C in dry heat cooking",
+      "Caramelisation is the thermal decomposition of sugars above 160°C producing brown colour and sweet, nutty flavour — distinct from the Maillard reaction which requires proteins",
+      "Caramelisation and the Maillard reaction are identical processes — both describe the browning of food surfaces when exposed to dry heat above 140°C",
+      "Caramelisation is a moist heat reaction occurring when sugar dissolves in liquid and then reduces, while the Maillard reaction requires completely dry conditions"
+    ],
+    ans: 1,
+    exp: "Caramelisation is the thermal decomposition of sugars alone — it begins around 160°C and produces golden-brown colour and sweet, nutty, butterscotch flavours. The Maillard reaction requires both sugars AND amino acids (proteins). Both occur in dry heat cooking, often simultaneously."
+  },
+  {
+    q: "Which cooking method is most appropriate for a tough cut such as beef shin or lamb shank?",
+    opts: [
+      "Grilling at high heat for a short time — the radiant heat quickly sears the exterior while keeping the centre rare and juicy",
+      "Sautéing quickly in a very hot pan with a small amount of fat — the speed preserves moisture and prevents the tough connective tissue from tightening",
+      "Braising slowly in liquid at low temperature for several hours — the extended moist heat breaks down collagen into gelatin, tenderising the meat",
+      "Deep frying at 180°C for a short time — the rapid heat cooks the outside quickly while leaving the centre tender and succulent"
+    ],
+    ans: 2,
+    exp: "Tough cuts are high in collagen. Collagen only converts to tender gelatin above 70°C over a long time — 3 to 8 hours of slow, moist braising or stewing. Fast dry heat methods tighten the muscle fibres further, making tough cuts even tougher."
+  },
+  {
+    q: "Which cooking method is most appropriate for a delicate sole fillet?",
+    opts: [
+      "Braising in a rich meat stock for two hours so the long, slow cooking breaks down the delicate flesh into a soft, easily flaked texture",
+      "Poaching gently in a court-bouillon or wine-based liquid at 75°C–80°C to preserve the delicate texture and keep the fillet moist",
+      "Deep frying at 190°C in batter until the exterior is very dark and crispy to ensure the thin fillet is fully cooked through the centre",
+      "Roasting uncovered at 220°C for 25 minutes to develop a golden crust and drive off excess moisture from the fillet's surface"
+    ],
+    ans: 1,
+    exp: "Delicate fish such as sole breaks apart easily and cooks in minutes. Poaching in a gently flavoured liquid at 75°C–80°C preserves structure, moisture, and delicate flavour. Aggressive heat (deep frying at high temp, high oven roasting) would overcook it almost instantly."
+  },
+  {
+    q: "What is 'conduction' as a heat transfer method in cooking?",
+    opts: [
+      "Heat transferred through electromagnetic waves from the heat source directly to the food without requiring any medium in between",
+      "Heat transferred through direct contact between two surfaces — such as food touching a hot pan — where energy passes from molecule to molecule",
+      "Heat transferred through the movement of liquid or gas — hot liquid rising, cool liquid falling — creating circulation that cooks food evenly",
+      "Heat transferred through radiant energy waves emitted by an open flame, glowing coals, or an electric grill element above or below the food"
+    ],
+    ans: 1,
+    exp: "Conduction is heat transfer through direct physical contact. A steak touching a hot pan transfers heat by conduction. It is the primary mechanism in sautéing, griddling, and shallow frying. Dense, solid materials conduct heat faster than air."
+  },
+  {
+    q: "What is 'convection' as a heat transfer method in cooking?",
+    opts: [
+      "Heat transferred by direct contact between the food and the hot surface of the cooking vessel during sautéing or griddling",
+      "Heat transferred through the circulation of a fluid — air, water, or fat — where hot molecules rise and cool molecules fall, creating movement that heats food evenly",
+      "Heat transferred by electromagnetic radiation from an infrared heat source directly to the food surface without any medium required",
+      "Heat transferred by vibrating water molecules within the food using microwave radiation to generate internal heat from the inside out"
+    ],
+    ans: 1,
+    exp: "Convection is heat transfer through fluid movement — hot air rises, cool air falls, creating circulation. Convection ovens use a fan to force this circulation, cooking more evenly and faster than static ovens. Boiling and deep frying also use convective heat transfer through water and fat."
+  },
+  {
+    q: "What is 'radiation' as a heat transfer method in cooking, and name two examples?",
+    opts: [
+      "Heat transfer by direct physical contact between food and a hot surface — examples are a frying pan and a griddle plate during service",
+      "Heat transfer by electromagnetic waves that travel from the source to the food without needing a medium — examples are grilling under a salamander and cooking over charcoal",
+      "Heat transfer by circulating hot air or liquid around the food — examples are convection ovens and poaching food in a liquid bath",
+      "Heat transfer through vibrating molecules inside the food — examples are microwave cooking and induction heating on a modern cooktop"
+    ],
+    ans: 1,
+    exp: "Radiation transfers heat through electromagnetic waves without needing a medium to travel through. Examples: a salamander (overhead grill) radiates infrared heat down onto food; charcoal or wood embers radiate heat upward onto food. Radiation is also how toasters and infrared ovens work."
+  },
+  {
+    q: "What is 'combination cooking' and give an example of a dish that uses it?",
+    opts: [
+      "Using two separate ovens simultaneously — one for dry heat browning and one for moist heat finishing — to cook a dish in two stages",
+      "A method that uses both dry and moist heat in sequence — typically searing first to develop colour, then slow-cooking in liquid to tenderise",
+      "Cooking food using both stovetop and microwave simultaneously to speed up the production of a dish during high-volume service",
+      "Combining two different proteins in the same cooking vessel using the same method to create a single unified dish for the guest"
+    ],
+    ans: 1,
+    exp: "Combination cooking uses dry heat (searing) followed by moist heat (braising or stewing). Example: beef bourguignon — the beef is seared in a hot pan (Maillard reaction, colour, flavour), then slow-braised in red wine and stock (collagen conversion, tenderness). Braising and stewing are both combination methods."
+  },
+  {
+    q: "What is 'blanching and refreshing' as a cooking technique and what are its two key uses?",
+    opts: [
+      "Boiling food until completely cooked, then dipping briefly in cold water to remove surface heat before plating and serving immediately",
+      "Briefly boiling food then plunging into ice water — used to set the green colour of vegetables and to partially cook food for fast finishing during service",
+      "Cooling cooked food rapidly in an ice bath to bring it below 5°C before vacuum sealing it for cook-chill storage and later service",
+      "Heating food in boiling water to remove excess salt from cured or preserved products before incorporating them into the final dish"
+    ],
+    ans: 1,
+    exp: "Blanching and refreshing: plunge briefly into boiling water, then immediately into ice water. Purpose 1: sets the bright green colour of vegetables by destroying enzymes that cause discolouration. Purpose 2: partially cooks vegetables so they need only seconds to finish during service — critical for speed and consistency."
+  },
+  {
+    q: "What is 'pressure cooking' and what is its main advantage?",
+    opts: [
+      "Cooking food in a sealed vessel above boiling water where the pressure forces steam into the food to speed up moist heat penetration",
+      "Cooking food in a sealed vessel where pressure raises the boiling point of water above 100°C — significantly reducing cooking times for dense foods",
+      "Cooking food in a vacuum-sealed bag in water at precisely controlled temperatures below 100°C for consistent and reproducible results",
+      "Cooking food in a covered heavy pot at very low pressure using reduced heat to slow the cooking process and develop deeper flavours"
+    ],
+    ans: 1,
+    exp: "A pressure cooker raises the boiling point of water from 100°C to approximately 121°C by increasing pressure inside the sealed vessel. This dramatically cuts cooking times — tough braising cuts in 45 minutes instead of 3 hours, stocks in 45 minutes instead of 6 hours."
+  },
+  {
+    q: "What is 'basting' and why is it done during roasting?",
+    opts: [
+      "Coating food with a salt and sugar rub before placing it in the oven to help the exterior caramelise and develop a deep, flavourful crust",
+      "Spooning the cooking juices or fat from the bottom of the roasting pan back over the food during cooking to keep the surface moist and enhance colour",
+      "Brushing the surface of food with egg wash or milk before baking to produce a golden, shiny glaze on the finished crust",
+      "Injecting liquid marinade directly into the thickest parts of a large joint before roasting to flavour and moisten the interior throughout cooking"
+    ],
+    ans: 1,
+    exp: "Basting is spooning or brushing the pan juices, fat, or a glaze over the food periodically during roasting. It keeps the surface moist, promotes even browning, adds flavour layers, and helps develop a glossy finish — particularly important for poultry and large joints."
+  },
+  {
+    q: "What is 'resting' meat after cooking and why is it essential before carving?",
+    opts: [
+      "Placing cooked meat in the refrigerator for 10 minutes before carving so it firms up and can be sliced into thinner, more even portions",
+      "Allowing cooked meat to stand in a warm place after cooking so muscle fibres relax, the internal temperature equalises, and juices redistribute through the meat",
+      "Covering cooked meat tightly in cling film immediately after cooking to trap steam and raise the internal temperature by 5°C before serving",
+      "Placing cooked meat under a heat lamp at 63°C for up to one hour before service to maintain food safety while allowing flavour to develop"
+    ],
+    ans: 1,
+    exp: "During cooking, heat drives juices to the centre of the meat. Resting allows the muscle fibres to relax and the temperature to equalise, letting the juices redistribute throughout. A rested steak loses far less juice when cut. Large joints: 20–30 minutes. Steaks: 5 minutes."
+  }
+];
+
+let order=[],cur=0,picks={},playerName='',score=0;
+function shuffle(arr){const a=[...arr];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');window.scrollTo(0,0);}
+function startQuiz(){const inp=document.getElementById('name-input').value.trim();playerName=inp||'Anonymous';order=shuffle(BANK.map((_,i)=>i));cur=0;picks={};score=0;document.getElementById('q-total').textContent=BANK.length;show('quiz-screen');render();}
+function render(){
+  const idx=order[cur],q=BANK[idx],total=BANK.length;
+  document.getElementById('q-num').textContent=cur+1;
+  document.getElementById('q-score').textContent=score;
+  document.getElementById('q-label').textContent=`Question ${cur+1} of ${total}`;
+  document.getElementById('q-text').textContent=q.q;
+  document.getElementById('progress-fill').style.width=((cur/total)*100)+'%';
+  document.getElementById('explanation').className='explanation';
+  document.getElementById('explanation').textContent='';
+  document.getElementById('next-btn').className='next-btn';
+  const letters=['A','B','C','D'],optEl=document.getElementById('options');
+  optEl.innerHTML='';
+  shuffle([0,1,2,3]).forEach((oi,li)=>{
+    const btn=document.createElement('button');
+    btn.className='opt-btn';btn.dataset.opt=oi;
+    btn.innerHTML=`<span class="opt-letter">${letters[li]}</span><span>${q.opts[oi]}</span>`;
+    btn.onclick=()=>selectAnswer(oi,idx);
+    optEl.appendChild(btn);
+  });
+}
+function selectAnswer(chosen,idx){
+  const q=BANK[idx],correct=chosen===q.ans;
+  picks[idx]=chosen;if(correct)score++;
+  document.getElementById('q-score').textContent=score;
+  document.querySelectorAll('.opt-btn').forEach(btn=>{
+    btn.disabled=true;const oi=parseInt(btn.dataset.opt);
+    if(oi===q.ans)btn.classList.add('correct');
+    else if(oi===chosen&&!correct)btn.classList.add('wrong');
+  });
+  if(!correct){const e=document.getElementById('explanation');e.textContent='✗ '+q.exp;e.classList.add('show');}
+  const nb=document.getElementById('next-btn');nb.classList.add('show');
+  nb.textContent=cur+1<BANK.length?'Next Question →':'See Results →';
+}
+function nextQuestion(){cur++;if(cur>=BANK.length)showResults();else{render();window.scrollTo(0,0);}}
+function showResults(){
+  show('results-screen');
+  const total=BANK.length,pct=Math.round((score/total)*100),passed=pct>=70;
+  document.getElementById('result-name').textContent=playerName;
+  document.getElementById('ring-pct').textContent=pct+'%';
+  document.getElementById('ring-pct').style.color=passed?'var(--green)':'var(--red)';
+  document.getElementById('ring-fill').style.stroke=passed?'var(--green)':'var(--red)';
+  setTimeout(()=>{document.getElementById('ring-fill').style.strokeDashoffset=439.82-(439.82*pct/100);},100);
+  document.getElementById('res-title').textContent=pct>=90?'Excellent!':pct>=70?'Passed!':'Needs Work';
+  document.getElementById('res-sub').textContent=`${score} correct out of ${total} questions`;
+  const v=document.getElementById('res-verdict');
+  if(passed){v.textContent='✓ You passed — score above 70%';v.className='result-verdict pass';}
+  else{v.textContent='✗ Below 70% — please retake the quiz';v.className='result-verdict fail';}
+  const rv=document.getElementById('review');rv.innerHTML='<h3>Review</h3>';
+  order.forEach(idx=>{
+    const q=BANK[idx],ua=picks[idx],ok=ua===q.ans;
+    const d=document.createElement('div');d.className='rv-item '+(ok?'ok':'miss');
+    d.innerHTML=`<div class="rv-q">${q.q}</div><div class="rv-a">${ok
+      ?`<span class="c">✓ Correct: ${q.opts[q.ans]}</span>`
+      :`<span class="w">✗ You chose: ${ua!==undefined?q.opts[ua]:'Skipped'}</span><br><span class="c">✓ Correct: ${q.opts[q.ans]}</span><br><span style="color:var(--muted)">${q.exp}</span>`
+    }</div>`;
+    rv.appendChild(d);
+  });
+}
+function retryQuiz(){order=shuffle(order);cur=0;picks={};score=0;document.getElementById('q-score').textContent=0;show('quiz-screen');render();}
+document.getElementById('name-input').addEventListener('keydown',e=>{if(e.key==='Enter')startQuiz();});
+</script>
+</body>
+</html>

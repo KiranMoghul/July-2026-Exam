@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HACCP, Bacteria & Food Safety — July 2026 Exam</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍳</text></svg>">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@400;500&display=swap');
+  :root{--bg:#080810;--surface:#11111f;--border:#1e1e35;--purple:#7c3aed;--purple-l:#9d5bf0;--green:#22c55e;--red:#ef4444;--text:#e8e8f0;--muted:#7070a0;}
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Syne',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;align-items:center;justify-content:center;}
+  body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px);background-size:40px 40px;opacity:.4;pointer-events:none;z-index:0;}
+  .screen{position:relative;z-index:1;width:100%;max-width:660px;margin:0 auto;padding:24px 20px 48px;display:none;}
+  .screen.active{display:block;}
+  #name-screen{text-align:center;padding-top:80px;}
+  .back-link{display:inline-flex;align-items:center;gap:6px;font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);text-decoration:none;letter-spacing:1px;margin-bottom:48px;transition:color .2s;}
+  .back-link:hover{color:var(--purple-l);}
+  .subject-tag{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--purple-l);margin-bottom:12px;}
+  #name-screen h1{font-size:clamp(22px,5vw,36px);font-weight:800;line-height:1.15;margin-bottom:8px;background:linear-gradient(135deg,#fff 30%,var(--purple-l));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+  #name-screen p{color:var(--muted);font-family:'DM Mono',monospace;font-size:12px;margin-bottom:40px;}
+  .name-box{display:flex;flex-direction:column;align-items:center;gap:12px;}
+  .name-box input{width:100%;max-width:320px;padding:12px 16px;background:var(--surface);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:'Syne',sans-serif;font-size:15px;outline:none;text-align:center;transition:border-color .2s;}
+  .name-box input:focus{border-color:var(--purple);}
+  .name-box input::placeholder{color:var(--muted);}
+  .btn-primary{padding:12px 32px;background:var(--purple);color:#fff;border:none;border-radius:8px;font-family:'Syne',sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:background .2s,transform .1s;letter-spacing:.5px;}
+  .btn-primary:hover{background:var(--purple-l);transform:translateY(-1px);}
+  .quiz-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;}
+  .quiz-meta{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);}
+  .quiz-meta span{color:var(--purple-l);font-weight:500;}
+  .progress-bar{width:100%;height:3px;background:var(--border);border-radius:2px;margin-bottom:32px;overflow:hidden;}
+  .progress-fill{height:100%;background:linear-gradient(90deg,var(--purple),var(--purple-l));border-radius:2px;transition:width .3s ease;}
+  .question-num{font-family:'DM Mono',monospace;font-size:10px;color:var(--purple-l);letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;}
+  .question-text{font-size:clamp(15px,3vw,18px);font-weight:600;line-height:1.5;margin-bottom:28px;color:var(--text);}
+  .options{display:flex;flex-direction:column;gap:10px;}
+  .opt-btn{display:flex;align-items:center;gap:12px;padding:13px 16px;background:var(--surface);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:'Syne',sans-serif;font-size:14px;font-weight:400;cursor:pointer;text-align:left;transition:border-color .15s,background .15s;width:100%;}
+  .opt-btn:hover:not(:disabled){border-color:var(--purple);background:#16162a;}
+  .opt-btn .opt-letter{flex-shrink:0;width:26px;height:26px;border-radius:6px;background:var(--border);display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);transition:background .15s,color .15s;}
+  .opt-btn:hover:not(:disabled) .opt-letter{background:var(--purple);color:#fff;}
+  .opt-btn.correct{border-color:var(--green);background:rgba(34,197,94,.1);}
+  .opt-btn.correct .opt-letter{background:var(--green);color:#fff;}
+  .opt-btn.wrong{border-color:var(--red);background:rgba(239,68,68,.1);}
+  .opt-btn.wrong .opt-letter{background:var(--red);color:#fff;}
+  .opt-btn:disabled{cursor:default;}
+  .explanation{display:none;margin-top:16px;padding:14px 16px;background:rgba(124,58,237,.1);border:1px solid rgba(124,58,237,.25);border-left:3px solid var(--purple);border-radius:8px;font-size:13px;line-height:1.6;color:#c4b5fd;font-family:'DM Mono',monospace;}
+  .explanation.show{display:block;}
+  .next-btn{margin-top:24px;width:100%;padding:13px;background:var(--purple);color:#fff;border:none;border-radius:8px;font-family:'Syne',sans-serif;font-size:14px;font-weight:700;cursor:pointer;display:none;transition:background .2s;letter-spacing:.5px;}
+  .next-btn:hover{background:var(--purple-l);}
+  .next-btn.show{display:block;}
+  #results-screen{text-align:center;padding-top:40px;}
+  .result-name{font-family:'DM Mono',monospace;font-size:12px;color:var(--muted);margin-bottom:32px;}
+  .score-ring{position:relative;width:160px;height:160px;margin:0 auto 28px;}
+  .score-ring svg{transform:rotate(-90deg);}
+  .score-ring .ring-bg{fill:none;stroke:var(--border);stroke-width:10;}
+  .score-ring .ring-fill{fill:none;stroke-width:10;stroke-linecap:round;transition:stroke-dashoffset 1s ease,stroke .5s;}
+  .score-ring .ring-text{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+  .ring-pct{font-size:34px;font-weight:800;line-height:1;}
+  .ring-label{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);margin-top:4px;letter-spacing:1px;}
+  .result-title{font-size:24px;font-weight:800;margin-bottom:8px;}
+  .result-sub{font-family:'DM Mono',monospace;font-size:12px;color:var(--muted);margin-bottom:8px;}
+  .result-verdict{font-family:'DM Mono',monospace;font-size:12px;padding:8px 20px;border-radius:20px;display:inline-block;margin-bottom:32px;}
+  .result-verdict.pass{background:rgba(34,197,94,.12);color:var(--green);border:1px solid rgba(34,197,94,.3);}
+  .result-verdict.fail{background:rgba(239,68,68,.12);color:var(--red);border:1px solid rgba(239,68,68,.3);}
+  .result-actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:40px;}
+  .btn-outline{padding:11px 24px;background:none;border:1px solid var(--border);border-radius:8px;color:var(--muted);font-family:'Syne',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:border-color .2s,color .2s;}
+  .btn-outline:hover{border-color:var(--purple);color:var(--text);}
+  .review{text-align:left;}
+  .review h3{font-size:13px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:2px;margin-bottom:16px;font-family:'DM Mono',monospace;}
+  .rv-item{padding:14px 16px;border-radius:8px;margin-bottom:10px;border:1px solid var(--border);}
+  .rv-item.ok{border-color:rgba(34,197,94,.25);background:rgba(34,197,94,.05);}
+  .rv-item.miss{border-color:rgba(239,68,68,.25);background:rgba(239,68,68,.05);}
+  .rv-q{font-size:13px;font-weight:600;margin-bottom:8px;line-height:1.4;}
+  .rv-a{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);line-height:1.6;}
+  .rv-a .c{color:var(--green);}
+  .rv-a .w{color:var(--red);}
+</style>
+</head>
+<body>
+
+<div class="screen active" id="name-screen">
+  <a class="back-link" href="index.html">← Back to subjects</a>
+  <div class="subject-tag">Culinary Arts · Topic 07</div>
+  <h1>HACCP, Bacteria & Food Safety</h1>
+  <p>30 questions · HACCP principles, bacteria, temperatures, handling, waste & viruses</p>
+  <div class="name-box">
+    <input type="text" id="name-input" placeholder="Enter your name" maxlength="30" autocomplete="off">
+    <button class="btn-primary" onclick="startQuiz()">Start Quiz</button>
+  </div>
+</div>
+
+<div class="screen" id="quiz-screen">
+  <div class="quiz-header">
+    <div class="quiz-meta">Question <span id="q-num">1</span> of <span id="q-total">30</span></div>
+    <div class="quiz-meta">Score <span id="q-score">0</span></div>
+  </div>
+  <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+  <div class="question-num" id="q-label"></div>
+  <div class="question-text" id="q-text"></div>
+  <div class="options" id="options"></div>
+  <div class="explanation" id="explanation"></div>
+  <button class="next-btn" id="next-btn" onclick="nextQuestion()">Next Question →</button>
+</div>
+
+<div class="screen" id="results-screen">
+  <div class="result-name" id="result-name"></div>
+  <div class="score-ring">
+    <svg viewBox="0 0 160 160" width="160" height="160">
+      <circle class="ring-bg" cx="80" cy="80" r="70"/>
+      <circle class="ring-fill" id="ring-fill" cx="80" cy="80" r="70" stroke-dasharray="439.82" stroke-dashoffset="439.82" stroke="var(--green)"/>
+    </svg>
+    <div class="ring-text">
+      <div class="ring-pct" id="ring-pct">0%</div>
+      <div class="ring-label">SCORE</div>
+    </div>
+  </div>
+  <div class="result-title" id="res-title"></div>
+  <div class="result-sub" id="res-sub"></div>
+  <div class="result-verdict" id="res-verdict"></div>
+  <div class="result-actions">
+    <button class="btn-primary" onclick="retryQuiz()">Retry →</button>
+    <button class="btn-outline" onclick="window.location.href='index.html'">All Subjects</button>
+  </div>
+  <div class="review" id="review"></div>
+</div>
+
+<script>
+const BANK = [
+  {
+    q: "What does HACCP stand for?",
+    opts: [
+      "Hygienic Assessment and Contamination Control Procedures — a cleaning framework used in commercial food production facilities",
+      "Hazard Analysis and Critical Control Points — a systematic food safety management system that identifies and controls risks in food production",
+      "Health and Catering Compliance Protocol — the regulatory framework governing food handler licensing in the hospitality industry",
+      "Hazard Avoidance and Chemical Contamination Prevention — a safety system focused specifically on chemical risks in food preparation"
+    ],
+    ans: 1,
+    exp: "HACCP stands for Hazard Analysis and Critical Control Points. It is a proactive, science-based food safety management system that identifies where hazards can occur in the food production process and establishes controls to prevent them."
+  },
+  {
+    q: "How many principles does the HACCP system have, and what is the first principle?",
+    opts: [
+      "Five principles — the first being to establish corrective actions for any deviation from a critical control point during production",
+      "Six principles — the first being to establish monitoring procedures that verify critical limits are being met at all control points",
+      "Seven principles — the first being to conduct a hazard analysis to identify all potential biological, chemical, and physical hazards",
+      "Nine principles — the first being to define the scope of the food safety plan and identify all products covered by the system"
+    ],
+    ans: 2,
+    exp: "HACCP has 7 principles: 1) Conduct hazard analysis, 2) Identify Critical Control Points (CCPs), 3) Establish critical limits, 4) Establish monitoring procedures, 5) Establish corrective actions, 6) Establish verification procedures, 7) Establish record-keeping systems."
+  },
+  {
+    q: "What is a 'Critical Control Point' (CCP) in HACCP?",
+    opts: [
+      "Any step in the food preparation process where a supervisor must sign off before production can continue to the next stage",
+      "A step in the food production process where a control measure can be applied to prevent, eliminate, or reduce a food safety hazard to an acceptable level",
+      "The final quality check conducted by the Executive Chef before a dish leaves the pass and is served to the guest",
+      "A documented point in the HACCP plan where the food safety team reviews all temperature logs for the previous 24-hour period"
+    ],
+    ans: 1,
+    exp: "A CCP is a specific step in the process — such as cooking, chilling, or pasteurisation — where a control can be applied to prevent or eliminate a hazard. For example, cooking chicken to 74°C is a CCP that destroys Salmonella."
+  },
+  {
+    q: "What is a 'critical limit' in a HACCP plan?",
+    opts: [
+      "The maximum number of food safety violations a kitchen is permitted before regulatory authorities suspend its food handling licence",
+      "The minimum or maximum value — such as a temperature or pH — that must be met at a CCP to ensure the hazard is controlled",
+      "The time limit within which corrective action must be taken after a critical control point failure is identified during monitoring",
+      "The financial limit beyond which a food safety incident triggers mandatory reporting to the national food standards authority"
+    ],
+    ans: 1,
+    exp: "A critical limit is the measurable boundary at a CCP — for example, a minimum internal cooking temperature of 74°C for poultry, or a maximum storage temperature of 5°C. If the critical limit is not met, the food may be unsafe."
+  },
+  {
+    q: "What is the difference between a 'hazard' and a 'risk' in food safety terminology?",
+    opts: [
+      "A hazard is something that has already caused illness in a food operation, while a risk is something that has the potential to cause illness in the future",
+      "A hazard is anything with the potential to cause harm — such as a bacterium or a chemical — while risk is the likelihood of that hazard actually causing harm",
+      "A hazard refers only to biological threats such as bacteria and viruses, while risk refers to physical and chemical threats only",
+      "A hazard is assessed by the kitchen team, while risk is formally evaluated only by external food safety inspectors during audits"
+    ],
+    ans: 1,
+    exp: "A hazard is a biological, chemical, or physical agent with the potential to cause harm. Risk is the probability that the hazard will cause illness — determined by likelihood and severity. HACCP focuses on identifying hazards and then assessing the risk they pose."
+  },
+  {
+    q: "What are the three types of food safety hazards that HACCP addresses?",
+    opts: [
+      "Environmental, operational, and administrative hazards — covering everything from kitchen design to staff training and record-keeping systems",
+      "Biological hazards (bacteria, viruses, parasites), chemical hazards (cleaning agents, pesticides), and physical hazards (glass, bone, metal)",
+      "Primary, secondary, and tertiary hazards — classified by their point of entry into the food supply chain from farm to fork",
+      "Supplier hazards, preparation hazards, and service hazards — corresponding to the three stages of the food production process"
+    ],
+    ans: 1,
+    exp: "HACCP addresses three hazard categories: Biological (bacteria, viruses, moulds, parasites), Chemical (pesticides, cleaning chemicals, allergens, additives), and Physical (glass, bone, metal, stone, plastic). Each requires different controls."
+  },
+  {
+    q: "What is the purpose of a 'flow diagram' in a HACCP plan?",
+    opts: [
+      "A visual tool used to communicate the hierarchy of the kitchen brigade to new staff during their induction and orientation period",
+      "A step-by-step map of the entire food production process from receiving to service, used to identify where hazards could occur at each stage",
+      "A chart used by the purchasing department to map supplier delivery routes and schedule receiving times for daily food orders",
+      "A diagram posted in the kitchen showing the correct sequence of cleaning tasks to be completed at the end of each service"
+    ],
+    ans: 1,
+    exp: "A HACCP flow diagram maps every step a food product goes through — receiving, storage, preparation, cooking, cooling, reheating, and service. It is the foundation for identifying where hazards can enter and what controls are needed at each step."
+  },
+  {
+    q: "What conditions do bacteria need to multiply rapidly — remembered by the acronym FAT TOM?",
+    opts: [
+      "Fat, Acidity, Temperature, Time, Oxygen, and Moisture — the six conditions that must all be present simultaneously for bacterial growth",
+      "Food, Acidity, Temperature, Time, Oxygen, and Moisture — the six environmental factors that control bacterial multiplication rates",
+      "Freshness, Atmosphere, Toxins, Temperature, Organisms, and Moisture — factors used to assess whether a food product is safe to serve",
+      "Food, Allergens, Time, Toxins, Oxygen, and Microorganisms — the six HACCP-defined risk factors for biological contamination events"
+    ],
+    ans: 1,
+    exp: "FAT TOM: Food (protein/carbohydrate rich), Acidity (pH 4.6–7.5 is optimal), Temperature (5°C–63°C danger zone), Time (2+ hours in danger zone), Oxygen (most bacteria need it; some don't), Moisture (high water activity). Control these and you control bacterial growth."
+  },
+  {
+    q: "What is the temperature danger zone and what happens to bacteria within it?",
+    opts: [
+      "0°C to 5°C — the range at which all refrigerated food must be stored and within which no significant bacterial growth can occur",
+      "5°C to 63°C — the range within which most harmful bacteria multiply rapidly, potentially doubling in number every 20 minutes",
+      "63°C to 74°C — the range within which bacteria begin to die and food must be held during hot service to remain safe",
+      "100°C to 121°C — the sterilisation range used in commercial canning where all bacterial spores are destroyed under pressure"
+    ],
+    ans: 1,
+    exp: "The danger zone is 5°C to 63°C. Within this range, most pathogens double every 20 minutes under ideal conditions. Food that spends more than 2 cumulative hours in this zone is considered potentially unsafe and should be discarded."
+  },
+  {
+    q: "What minimum internal temperature must poultry reach to be considered safe to eat?",
+    opts: [
+      "63°C (145°F) — the minimum safe temperature for whole muscle cuts of beef and lamb where only the surface has been exposed to contamination",
+      "70°C (158°F) — the recommended temperature for reheated food that has been previously cooked, chilled, and stored correctly",
+      "74°C (165°F) — the minimum safe internal temperature for all poultry, minced meat, and stuffed products throughout the product",
+      "85°C (185°F) — the temperature required for braised and stewed poultry dishes that have been prepared in advance for banquet service"
+    ],
+    ans: 2,
+    exp: "Poultry must reach 74°C (165°F) throughout — not just on the surface. This temperature destroys Salmonella, Campylobacter, and other poultry-associated pathogens. Always verify with a probe thermometer inserted into the thickest part, away from bone."
+  },
+  {
+    q: "What is the correct minimum temperature for holding hot food during service?",
+    opts: [
+      "55°C — the temperature at which most bacteria stop multiplying, sufficient to hold hot food safely for up to four hours during service",
+      "60°C — the standard hot holding temperature used in bain-maries and hot cabinets across most commercial food service operations",
+      "63°C — the minimum temperature at which hot food must be held during service to keep it out of the temperature danger zone",
+      "70°C — the temperature required to keep hot food safe during service, above which all known food safety pathogens are destroyed"
+    ],
+    ans: 2,
+    exp: "Hot food must be held at a minimum of 63°C during service. Below this, the food enters the danger zone and bacteria can begin multiplying. Hot holding equipment (bain-maries, heat lamps, hot cabinets) must be checked with a probe thermometer regularly."
+  },
+  {
+    q: "What is the correct maximum temperature for chilled food storage in a refrigerator?",
+    opts: [
+      "0°C — the freezing point of water, below which food begins to freeze and cell structures in fresh produce are damaged irreparably",
+      "5°C — the maximum safe temperature for chilled food storage, above which the danger zone begins and bacterial growth accelerates",
+      "8°C — the legal maximum temperature for commercial refrigerators in most countries, set to balance safety and energy efficiency",
+      "10°C — the maximum temperature for storing dry goods and ambient products that do not require active refrigeration during storage"
+    ],
+    ans: 1,
+    exp: "The maximum safe temperature for chilled storage is 5°C. Above this, the food enters the danger zone. Refrigerators should be set between 1°C and 4°C to maintain a safe margin. Temperatures must be checked and logged daily."
+  },
+  {
+    q: "What is the safe temperature for frozen food storage?",
+    opts: [
+      "-8°C — the minimum temperature for domestic freezers, sufficient to prevent bacterial growth but not always adequate for long-term commercial storage",
+      "-15°C — the standard commercial freezer temperature that slows bacterial activity enough for safe storage of up to three months",
+      "-18°C — the minimum safe temperature for frozen food storage, at which bacterial activity is effectively halted and food is preserved safely",
+      "-25°C — the blast freezing temperature used only for initial rapid freezing, not for long-term frozen food storage in a commercial kitchen"
+    ],
+    ans: 2,
+    exp: "Frozen food must be stored at -18°C or below. At this temperature bacterial growth effectively stops, though bacteria are not killed. Fluctuations above -18°C can allow partial thawing and bacterial activity — this is why temperature logging of freezers is essential."
+  },
+  {
+    q: "What is the correct procedure for thawing frozen food safely in a professional kitchen?",
+    opts: [
+      "Place frozen food on the kitchen bench at room temperature overnight so it thaws evenly before preparation begins in the morning",
+      "Submerge frozen food in a bowl of warm water at approximately 40°C to speed up thawing and reduce preparation time before service",
+      "Thaw food under refrigeration at 5°C or below, in a microwave if cooking immediately, or under cold running water if kept moving — never at room temperature",
+      "Place frozen food in a sealed bag and submerge it in the bain-marie at 63°C until fully thawed, then transfer it to the refrigerator"
+    ],
+    ans: 2,
+    exp: "Safe thawing methods: in the refrigerator (slowest but safest), under cold running water (food kept moving), or in a microwave (only if cooking immediately). Room temperature thawing allows the outer layers to enter the danger zone while the centre is still frozen — never acceptable."
+  },
+  {
+    q: "What is 'cross-contamination' and give an example of how it occurs in a kitchen?",
+    opts: [
+      "The accidental mixing of two allergen-free dishes during plating, causing a guest to receive the wrong meal for their dietary requirement",
+      "The transfer of harmful microorganisms from a contaminated source — such as raw chicken — to a ready-to-eat food via hands, surfaces, or equipment",
+      "The contamination of food by cleaning chemicals when sanitiser is applied to a surface before it has been fully rinsed with water",
+      "The introduction of foreign objects such as bone fragments or metal shards into food during the butchery or processing stage"
+    ],
+    ans: 1,
+    exp: "Cross-contamination: raw chicken juices drip onto a salad in the refrigerator; a cook cuts raw meat then vegetables on the same board without washing it; unwashed hands transfer bacteria from raw protein to a cooked dish. Colour-coded boards, proper storage (raw below cooked), and handwashing prevent it."
+  },
+  {
+    q: "In proper refrigerator storage order, which item must always be stored on the lowest shelf?",
+    opts: [
+      "Ready-to-eat foods such as cooked meats, dairy products, and prepared salads that will be served without further cooking",
+      "Raw fish and seafood, which must be kept at the coldest part of the refrigerator to slow spoilage and bacterial growth",
+      "Raw meat and poultry, which must be stored at the bottom to prevent their juices dripping onto and contaminating other foods",
+      "Fruits and vegetables, which must be stored at the bottom to prevent them from being crushed by heavier items placed above them"
+    ],
+    ans: 2,
+    exp: "Raw meat and poultry go on the bottom shelf — their juices must never drip onto other foods. Correct refrigerator order from top to bottom: ready-to-eat foods → whole fish → whole cuts of beef/pork → minced meat → raw poultry (bottom)."
+  },
+  {
+    q: "What is a 'corrective action' in HACCP terminology?",
+    opts: [
+      "The immediate retraining of a staff member who has been observed breaking food safety rules during a routine kitchen inspection",
+      "The action taken when monitoring shows that a critical limit has not been met — to correct the process and prevent unsafe food reaching the consumer",
+      "The monthly review of HACCP records conducted by the food safety manager to identify trends and update the hazard analysis",
+      "The process of adjusting supplier contracts when delivered food products consistently fail to meet the kitchen's quality specifications"
+    ],
+    ans: 1,
+    exp: "A corrective action is the response when a CCP critical limit is breached. For example, if chicken reaches only 68°C (below the 74°C limit), the corrective action is to return it to the oven until the correct temperature is achieved, and log the deviation."
+  },
+  {
+    q: "What is the difference between 'cleaning' and 'sanitising' in a food safety context, and in what order must they be done?",
+    opts: [
+      "Sanitising removes visible dirt and grease using detergent, while cleaning reduces microorganisms using heat or chemical agents — sanitise first, then clean",
+      "Cleaning removes visible dirt and grease, while sanitising reduces microbial contamination to a safe level — always clean first, then sanitise",
+      "Both processes are interchangeable and can be done in any order using a combined detergent-sanitiser product on all food contact surfaces",
+      "Cleaning is done only at the end of service, while sanitising is a continuous process carried out after each task throughout the day"
+    ],
+    ans: 1,
+    exp: "Clean first (remove visible dirt with detergent and water), then sanitise (reduce microorganisms with heat or chemical sanitiser). You must never sanitise a dirty surface — organic matter neutralises the sanitiser, making it ineffective. The sequence is always: clean → rinse → sanitise → air dry."
+  },
+  {
+    q: "What is a 'virus' in the context of foodborne illness, and how does it differ from bacteria?",
+    opts: [
+      "A virus is a living single-celled organism that multiplies in food like bacteria does, but at a much slower rate requiring longer exposure times",
+      "A virus is a non-living infectious agent that cannot multiply in food — it needs a living host cell to replicate and causes illness through contamination at very low doses",
+      "A virus is a larger organism than bacteria that is always visible under a standard kitchen microscope and can be removed by thorough cooking",
+      "A virus is a toxin produced by bacteria under specific temperature conditions and cannot be destroyed by normal cooking or reheating"
+    ],
+    ans: 1,
+    exp: "Unlike bacteria, viruses cannot multiply in food — they need a living host cell. They are transmitted through contaminated food or surfaces and cause illness at extremely low doses (Norovirus: as few as 18 particles). Cooking destroys most viruses, but contamination of ready-to-eat food by infected handlers is the main risk."
+  },
+  {
+    q: "What makes Norovirus particularly difficult to control in a food service environment?",
+    opts: [
+      "It survives at cooking temperatures above 74°C and cannot be destroyed by any heat-based food safety control currently available",
+      "It is highly contagious at very low doses, survives on surfaces for days, and can be spread by infected staff before symptoms appear",
+      "It multiplies rapidly in refrigerated food between 0°C and 5°C, making cold storage an ineffective control measure against this virus",
+      "It is resistant to all approved food contact sanitisers, requiring specialist chemical treatments unavailable in standard kitchen settings"
+    ],
+    ans: 1,
+    exp: "Norovirus is extremely contagious — fewer than 20 particles cause infection. It survives on surfaces for days, resists many sanitisers, and infected people shed the virus before symptoms appear and for 48 hours after recovery. Strict exclusion of sick staff is the primary control."
+  },
+  {
+    q: "What is the correct minimum rest period before a food handler who had Norovirus symptoms can return to work?",
+    opts: [
+      "12 hours after symptoms resolve — sufficient time for the body to clear the virus and for the handler to resume safe food handling",
+      "24 hours after symptoms resolve — the standard exclusion period applied to all gastrointestinal illnesses in food service settings",
+      "48 hours after all symptoms have completely resolved — because Norovirus continues to be shed after the person feels recovered",
+      "72 hours after symptoms resolve — the period required by all food safety authorities before any staff member may handle open food again"
+    ],
+    ans: 2,
+    exp: "Food handlers must remain off work for a minimum of 48 hours after all symptoms (vomiting, diarrhoea) have fully resolved. Norovirus is still shed in large quantities after recovery. Returning too early is one of the leading causes of outbreak spread in catering environments."
+  },
+  {
+    q: "What is 'waste disposal' best practice in a professional kitchen?",
+    opts: [
+      "All kitchen waste is placed in a single general bin at the end of service and collected by local waste management services daily",
+      "Waste is separated into food waste, recyclables, and general waste — stored in covered, labelled bins, kept away from food prep areas, and collected regularly",
+      "Food waste is poured down the kitchen sink drain to prevent pest attraction, while packaging waste is collected in unsealed bags near the back door",
+      "All kitchen waste is frozen overnight to prevent pest activity and defrosted only on the morning of the scheduled collection day"
+    ],
+    ans: 1,
+    exp: "Correct waste management: separate food waste, recyclables (glass, card, plastic), and general waste. Bins must be covered, pest-proof, clearly labelled, and stored away from food preparation areas. Waste must be removed regularly — overflowing bins attract pests and create contamination risks."
+  },
+  {
+    q: "What is 'pest control' in a kitchen context and why is it a food safety requirement?",
+    opts: [
+      "A monthly deep-cleaning process conducted by the kitchen team to remove food debris from areas that attract insects and rodents",
+      "A programme of preventive measures and monitoring to prevent pests — rodents, cockroaches, flies — from entering the kitchen and contaminating food",
+      "The legal requirement to report any pest sighting to the local health authority within 24 hours of it being observed by kitchen staff",
+      "The use of chemical pesticides applied directly to food storage areas to kill insects and rodents that may enter food preparation zones"
+    ],
+    ans: 1,
+    exp: "Pest control is a preventive programme: sealing entry points, removing food sources, maintaining cleanliness, regular inspections, and working with licensed pest control contractors. Pests contaminate food with bacteria, droppings, hair, and physical matter — a single rodent sighting can trigger a closure."
+  },
+  {
+    q: "What are 'monitoring procedures' in a HACCP plan?",
+    opts: [
+      "The annual review process where the entire HACCP plan is reassessed by an external food safety consultant and updated accordingly",
+      "The scheduled observations, measurements, and tests carried out at CCPs to confirm that critical limits are being consistently met",
+      "The informal checks made by kitchen staff at the start of each shift to confirm that all refrigerators are set to the correct temperature",
+      "The process of reviewing customer complaints and illness reports to identify potential gaps in the kitchen's food safety management system"
+    ],
+    ans: 1,
+    exp: "Monitoring procedures are the scheduled, documented checks at each CCP — for example, recording internal cooking temperatures every hour, or checking refrigerator temperatures twice daily. Monitoring provides evidence that controls are working and creates the records needed for verification."
+  },
+  {
+    q: "What is 'verification' in the HACCP system?",
+    opts: [
+      "The process of confirming that a food product meets the customer's taste and presentation standards before it is approved for the menu",
+      "Activities — such as audits, reviews, and additional testing — that confirm the HACCP system is working effectively and producing safe food",
+      "The legal sign-off by a food safety inspector that a kitchen's HACCP plan meets the minimum regulatory requirements for its food category",
+      "The final step in HACCP where the Executive Chef signs each temperature log to confirm the recorded data has been reviewed"
+    ],
+    ans: 1,
+    exp: "Verification confirms that the HACCP system is actually working — through internal audits, reviewing monitoring records, additional microbiological testing, and periodic reassessment of the hazard analysis. It is distinct from monitoring, which checks day-to-day compliance."
+  },
+  {
+    q: "What is the purpose of 'record keeping' as the seventh principle of HACCP?",
+    opts: [
+      "To create a paper trail that shifts legal responsibility for any food safety incident from the kitchen to the food safety management system",
+      "To provide documented evidence that monitoring is occurring, critical limits are being met, and corrective actions are taken when needed",
+      "To satisfy insurance requirements that all food businesses must maintain written records of every dish prepared and served each day",
+      "To enable the kitchen team to track supplier performance and identify which deliveries are most likely to contain contaminated products"
+    ],
+    ans: 1,
+    exp: "Record keeping provides documented proof that the HACCP system is being followed. Records of temperature logs, corrective actions, supplier checks, and staff training are essential for demonstrating due diligence — particularly in the event of a food safety incident or regulatory inspection."
+  },
+  {
+    q: "What is 'due diligence' in a food safety legal context?",
+    opts: [
+      "The legal obligation for all kitchen staff to hold a minimum Level 2 food hygiene certificate before handling open food in a professional setting",
+      "A legal defence demonstrating that a business took all reasonable precautions to prevent a food safety offence — supported by documented evidence",
+      "The duty of care owed by a restaurant to its guests, requiring it to disclose all allergens present in every dish on the menu",
+      "The process of conducting daily taste tests to confirm that all dishes meet the quality and safety standards required by management"
+    ],
+    ans: 1,
+    exp: "Due diligence is a legal defence in food safety law — if a business can demonstrate it took all reasonable steps to prevent a food safety issue (through documented HACCP records, training records, temperature logs), it may avoid prosecution even if an incident occurs."
+  },
+  {
+    q: "What is 'recycling' best practice in a commercial kitchen and why does it matter for sustainability?",
+    opts: [
+      "Placing all used cooking oil, food scraps, and packaging into a single recycling bin to reduce the number of waste containers in the kitchen",
+      "Separating glass, cardboard, plastic, and metal packaging from food waste, compressing where possible, and using licensed recycling contractors",
+      "Rinsing all food packaging in the kitchen sink before placing it in the general waste bin to prevent contamination of other waste streams",
+      "Storing all recycling materials in the walk-in refrigerator overnight to prevent pest access before collection the following morning"
+    ],
+    ans: 1,
+    exp: "Commercial kitchens generate significant waste. Recycling best practice: separate glass, cardboard, metal, and plastic from food waste. Use licensed waste contractors for each stream. Recycling reduces landfill, cuts costs, and meets sustainability reporting requirements increasingly demanded by hotel groups and restaurant chains."
+  },
+  {
+    q: "What is the role of temperature probes in food safety management, and how should they be maintained?",
+    opts: [
+      "Temperature probes are used only for checking refrigerator and freezer temperatures and should be cleaned with a dry cloth after each use",
+      "Temperature probes verify internal food temperatures at CCPs — they must be calibrated regularly, sanitised between uses, and logged to maintain accuracy",
+      "Temperature probes are used by the Executive Chef only during menu development to confirm new dishes meet the required doneness specifications",
+      "Temperature probes are a backup tool used only when oven thermostats are suspected to be malfunctioning during a busy service period"
+    ],
+    ans: 1,
+    exp: "Probe thermometers are essential HACCP tools for verifying cooking temperatures at CCPs. They must be: calibrated regularly (check accuracy in ice water at 0°C and boiling water at 100°C), sanitised between each use with probe wipes, and the readings logged as part of the monitoring record."
+  },
+  {
+    q: "What is the key food safety risk with cooked rice, and how is it prevented?",
+    opts: [
+      "Cooked rice absorbs moisture during storage that dilutes its flavour — it must be kept covered and consumed within six hours of cooking",
+      "Cooked rice supports the growth of Bacillus cereus spores that survive cooking — rice must be cooled rapidly and refrigerated within one hour",
+      "Cooked rice develops surface mould within two hours at room temperature — it must be sealed airtight and frozen immediately after cooking",
+      "Cooked rice loses its structural integrity when held hot — it must be kept below 40°C during service to maintain the correct texture"
+    ],
+    ans: 1,
+    exp: "Cooked rice is a high-risk food for Bacillus cereus. The spores survive cooking, germinate when rice cools slowly, and produce heat-stable toxins. Prevention: cook fresh, cool rapidly (spread thin, refrigerate within 1 hour), and never reheat more than once. Never leave cooked rice at room temperature."
+  }
+];
+
+let order=[],cur=0,picks={},playerName='',score=0;
+function shuffle(arr){const a=[...arr];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');window.scrollTo(0,0);}
+function startQuiz(){const inp=document.getElementById('name-input').value.trim();playerName=inp||'Anonymous';order=shuffle(BANK.map((_,i)=>i));cur=0;picks={};score=0;document.getElementById('q-total').textContent=BANK.length;show('quiz-screen');render();}
+function render(){
+  const idx=order[cur],q=BANK[idx],total=BANK.length;
+  document.getElementById('q-num').textContent=cur+1;
+  document.getElementById('q-score').textContent=score;
+  document.getElementById('q-label').textContent=`Question ${cur+1} of ${total}`;
+  document.getElementById('q-text').textContent=q.q;
+  document.getElementById('progress-fill').style.width=((cur/total)*100)+'%';
+  document.getElementById('explanation').className='explanation';
+  document.getElementById('explanation').textContent='';
+  document.getElementById('next-btn').className='next-btn';
+  const letters=['A','B','C','D'],optEl=document.getElementById('options');
+  optEl.innerHTML='';
+  shuffle([0,1,2,3]).forEach((oi,li)=>{
+    const btn=document.createElement('button');
+    btn.className='opt-btn';btn.dataset.opt=oi;
+    btn.innerHTML=`<span class="opt-letter">${letters[li]}</span><span>${q.opts[oi]}</span>`;
+    btn.onclick=()=>selectAnswer(oi,idx);
+    optEl.appendChild(btn);
+  });
+}
+function selectAnswer(chosen,idx){
+  const q=BANK[idx],correct=chosen===q.ans;
+  picks[idx]=chosen;if(correct)score++;
+  document.getElementById('q-score').textContent=score;
+  document.querySelectorAll('.opt-btn').forEach(btn=>{
+    btn.disabled=true;const oi=parseInt(btn.dataset.opt);
+    if(oi===q.ans)btn.classList.add('correct');
+    else if(oi===chosen&&!correct)btn.classList.add('wrong');
+  });
+  if(!correct){const e=document.getElementById('explanation');e.textContent='✗ '+q.exp;e.classList.add('show');}
+  const nb=document.getElementById('next-btn');nb.classList.add('show');
+  nb.textContent=cur+1<BANK.length?'Next Question →':'See Results →';
+}
+function nextQuestion(){cur++;if(cur>=BANK.length)showResults();else{render();window.scrollTo(0,0);}}
+function showResults(){
+  show('results-screen');
+  const total=BANK.length,pct=Math.round((score/total)*100),passed=pct>=70;
+  document.getElementById('result-name').textContent=playerName;
+  document.getElementById('ring-pct').textContent=pct+'%';
+  document.getElementById('ring-pct').style.color=passed?'var(--green)':'var(--red)';
+  document.getElementById('ring-fill').style.stroke=passed?'var(--green)':'var(--red)';
+  setTimeout(()=>{document.getElementById('ring-fill').style.strokeDashoffset=439.82-(439.82*pct/100);},100);
+  document.getElementById('res-title').textContent=pct>=90?'Excellent!':pct>=70?'Passed!':'Needs Work';
+  document.getElementById('res-sub').textContent=`${score} correct out of ${total} questions`;
+  const v=document.getElementById('res-verdict');
+  if(passed){v.textContent='✓ You passed — score above 70%';v.className='result-verdict pass';}
+  else{v.textContent='✗ Below 70% — please retake the quiz';v.className='result-verdict fail';}
+  const rv=document.getElementById('review');rv.innerHTML='<h3>Review</h3>';
+  order.forEach(idx=>{
+    const q=BANK[idx],ua=picks[idx],ok=ua===q.ans;
+    const d=document.createElement('div');d.className='rv-item '+(ok?'ok':'miss');
+    d.innerHTML=`<div class="rv-q">${q.q}</div><div class="rv-a">${ok
+      ?`<span class="c">✓ Correct: ${q.opts[q.ans]}</span>`
+      :`<span class="w">✗ You chose: ${ua!==undefined?q.opts[ua]:'Skipped'}</span><br><span class="c">✓ Correct: ${q.opts[q.ans]}</span><br><span style="color:var(--muted)">${q.exp}</span>`
+    }</div>`;
+    rv.appendChild(d);
+  });
+}
+function retryQuiz(){order=shuffle(order);cur=0;picks={};score=0;document.getElementById('q-score').textContent=0;show('quiz-screen');render();}
+document.getElementById('name-input').addEventListener('keydown',e=>{if(e.key==='Enter')startQuiz();});
+</script>
+</body>
+</html>
