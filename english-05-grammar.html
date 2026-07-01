@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Grammar — Present Simple & Past — July 2026 Exam</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📖</text></svg>">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@400;500&display=swap');
+  :root{--bg:#080810;--surface:#11111f;--border:#1e1e35;--purple:#7c3aed;--purple-l:#9d5bf0;--green:#22c55e;--red:#ef4444;--text:#e8e8f0;--muted:#7070a0;}
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Syne',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;align-items:center;justify-content:center;}
+  body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px);background-size:40px 40px;opacity:.4;pointer-events:none;z-index:0;}
+  .screen{position:relative;z-index:1;width:100%;max-width:660px;margin:0 auto;padding:24px 20px 48px;display:none;}
+  .screen.active{display:block;}
+  #name-screen{text-align:center;padding-top:80px;}
+  .back-link{display:inline-flex;align-items:center;gap:6px;font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);text-decoration:none;letter-spacing:1px;margin-bottom:48px;}
+  .back-link:hover{color:var(--purple-l);}
+  .subject-tag{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--purple-l);margin-bottom:12px;}
+  #name-screen h1{font-size:clamp(22px,5vw,36px);font-weight:800;line-height:1.15;margin-bottom:8px;background:linear-gradient(135deg,#fff 30%,var(--purple-l));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+  #name-screen p{color:var(--muted);font-family:'DM Mono',monospace;font-size:12px;margin-bottom:40px;}
+  .name-box{display:flex;flex-direction:column;align-items:center;gap:12px;}
+  .name-box input{width:100%;max-width:320px;padding:12px 16px;background:var(--surface);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:'Syne',sans-serif;font-size:15px;outline:none;text-align:center;}
+  .name-box input:focus{border-color:var(--purple);}
+  .name-box input::placeholder{color:var(--muted);}
+  .btn-primary{padding:12px 32px;background:var(--purple);color:#fff;border:none;border-radius:8px;font-family:'Syne',sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:background .2s;}
+  .btn-primary:hover{background:var(--purple-l);}
+  .quiz-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;}
+  .quiz-meta{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);}
+  .quiz-meta span{color:var(--purple-l);font-weight:500;}
+  .quiz-back{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);background:none;border:1px solid var(--border);padding:5px 10px;border-radius:6px;cursor:pointer;}
+  .quiz-back:hover{color:var(--text);border-color:var(--purple);}
+  .progress-bar{width:100%;height:3px;background:var(--border);border-radius:2px;margin-bottom:32px;overflow:hidden;}
+  .progress-fill{height:100%;background:linear-gradient(90deg,var(--purple),var(--purple-l));border-radius:2px;transition:width .3s ease;}
+  .question-num{font-family:'DM Mono',monospace;font-size:10px;color:var(--purple-l);letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;}
+  .question-text{font-size:clamp(15px,3vw,18px);font-weight:600;line-height:1.5;margin-bottom:28px;}
+  .options{display:flex;flex-direction:column;gap:10px;}
+  .opt-btn{display:flex;align-items:center;gap:12px;padding:13px 16px;background:var(--surface);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:'Syne',sans-serif;font-size:14px;cursor:pointer;text-align:left;width:100%;}
+  .opt-btn:hover:not(:disabled){border-color:var(--purple);background:#16162a;}
+  .opt-btn .opt-letter{flex-shrink:0;width:26px;height:26px;border-radius:6px;background:var(--border);display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);}
+  .opt-btn:hover:not(:disabled) .opt-letter{background:var(--purple);color:#fff;}
+  .opt-btn.correct{border-color:var(--green);background:rgba(34,197,94,.1);}
+  .opt-btn.correct .opt-letter{background:var(--green);color:#fff;}
+  .opt-btn.wrong{border-color:var(--red);background:rgba(239,68,68,.1);}
+  .opt-btn.wrong .opt-letter{background:var(--red);color:#fff;}
+  .opt-btn:disabled{cursor:default;}
+  .explanation{display:none;margin-top:16px;padding:14px 16px;background:rgba(124,58,237,.1);border:1px solid rgba(124,58,237,.25);border-left:3px solid var(--purple);border-radius:8px;font-size:13px;line-height:1.6;color:#c4b5fd;font-family:'DM Mono',monospace;}
+  .explanation.show{display:block;}
+  .action-row{display:flex;gap:10px;margin-top:24px;}
+  .next-btn{flex:1;padding:13px;background:var(--purple);color:#fff;border:none;border-radius:8px;font-family:'Syne',sans-serif;font-size:14px;font-weight:700;cursor:pointer;display:none;}
+  .next-btn:hover{background:var(--purple-l);}
+  .next-btn.show{display:block;}
+  .quit-btn{padding:13px 18px;background:none;border:1px solid var(--border);border-radius:8px;color:var(--muted);font-family:'DM Mono',monospace;font-size:12px;cursor:pointer;display:none;white-space:nowrap;}
+  .quit-btn:hover{color:var(--text);border-color:var(--purple);}
+  .quit-btn.show{display:block;}
+  #results-screen{text-align:center;padding-top:40px;}
+  .result-name{font-family:'DM Mono',monospace;font-size:12px;color:var(--muted);margin-bottom:32px;}
+  .score-ring{position:relative;width:160px;height:160px;margin:0 auto 28px;}
+  .score-ring svg{transform:rotate(-90deg);}
+  .score-ring .ring-bg{fill:none;stroke:var(--border);stroke-width:10;}
+  .score-ring .ring-fill{fill:none;stroke-width:10;stroke-linecap:round;transition:stroke-dashoffset 1s ease,stroke .5s;}
+  .score-ring .ring-text{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+  .ring-pct{font-size:34px;font-weight:800;line-height:1;}
+  .ring-label{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);margin-top:4px;letter-spacing:1px;}
+  .result-title{font-size:24px;font-weight:800;margin-bottom:8px;}
+  .result-sub{font-family:'DM Mono',monospace;font-size:12px;color:var(--muted);margin-bottom:8px;}
+  .result-verdict{font-family:'DM Mono',monospace;font-size:12px;padding:8px 20px;border-radius:20px;display:inline-block;margin-bottom:32px;}
+  .result-verdict.pass{background:rgba(34,197,94,.12);color:var(--green);border:1px solid rgba(34,197,94,.3);}
+  .result-verdict.fail{background:rgba(239,68,68,.12);color:var(--red);border:1px solid rgba(239,68,68,.3);}
+  .result-actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:40px;}
+  .btn-outline{padding:11px 24px;background:none;border:1px solid var(--border);border-radius:8px;color:var(--muted);font-family:'Syne',sans-serif;font-size:13px;font-weight:600;cursor:pointer;}
+  .btn-outline:hover{border-color:var(--purple);color:var(--text);}
+  .review{text-align:left;}
+  .review h3{font-size:13px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:2px;margin-bottom:16px;font-family:'DM Mono',monospace;}
+  .rv-item{padding:14px 16px;border-radius:8px;margin-bottom:10px;border:1px solid var(--border);}
+  .rv-item.ok{border-color:rgba(34,197,94,.25);background:rgba(34,197,94,.05);}
+  .rv-item.miss{border-color:rgba(239,68,68,.25);background:rgba(239,68,68,.05);}
+  .rv-q{font-size:13px;font-weight:600;margin-bottom:8px;line-height:1.4;}
+  .rv-a{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);line-height:1.6;}
+  .rv-a .c{color:var(--green);}
+  .rv-a .w{color:var(--red);}
+</style>
+</head>
+<body>
+<div class="screen active" id="name-screen">
+  <a class="back-link" href="index.html">← Back to subjects</a>
+  <div class="subject-tag">English · Grammar</div>
+  <h1>Grammar: Present Simple & Simple Past</h1>
+  <p>25 questions · Positive, negative, questions & contractions</p>
+  <div class="name-box">
+    <input type="text" id="name-input" placeholder="Enter your name" maxlength="30" autocomplete="off">
+    <button class="btn-primary" onclick="startQuiz()">Start Quiz</button>
+  </div>
+</div>
+<div class="screen" id="quiz-screen">
+  <div class="quiz-header">
+    <div class="quiz-meta">Question <span id="q-num">1</span> of <span id="q-total">25</span></div>
+    <div class="quiz-meta">Score <span id="q-score">0</span></div>
+    <button class="quiz-back" onclick="goBack()">← Quit</button>
+  </div>
+  <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+  <div class="question-num" id="q-label"></div>
+  <div class="question-text" id="q-text"></div>
+  <div class="options" id="options"></div>
+  <div class="explanation" id="explanation"></div>
+  <div class="action-row">
+    <button class="quit-btn" id="quit-btn" onclick="goBack()">← Back to subjects</button>
+    <button class="next-btn" id="next-btn" onclick="nextQuestion()">Next Question →</button>
+  </div>
+</div>
+<div class="screen" id="results-screen">
+  <div class="result-name" id="result-name"></div>
+  <div class="score-ring">
+    <svg viewBox="0 0 160 160" width="160" height="160">
+      <circle class="ring-bg" cx="80" cy="80" r="70"/>
+      <circle class="ring-fill" id="ring-fill" cx="80" cy="80" r="70" stroke-dasharray="439.82" stroke-dashoffset="439.82" stroke="var(--green)"/>
+    </svg>
+    <div class="ring-text">
+      <div class="ring-pct" id="ring-pct">0%</div>
+      <div class="ring-label">SCORE</div>
+    </div>
+  </div>
+  <div class="result-title" id="res-title"></div>
+  <div class="result-sub" id="res-sub"></div>
+  <div class="result-verdict" id="res-verdict"></div>
+  <div class="result-actions">
+    <button class="btn-primary" onclick="retryQuiz()">Retry →</button>
+    <button class="btn-outline" onclick="window.location.href='index.html'">All Subjects</button>
+  </div>
+  <div class="review" id="review"></div>
+</div>
+<script>
+const BANK=[
+{q:"When do we use the Present Simple tense?",opts:["To describe actions happening right now at this exact moment","To talk about future plans that are already arranged","Things we do every day, things we like or dislike, and facts or general truths","To describe completed actions in the recent past"],ans:2,exp:"Present Simple is used for: (1) things we do every day / habits, (2) things we like or dislike, (3) facts or general truths. Examples: 'I eat biryani every Friday.' 'She likes chocolate.' 'Water boils at 100°C.'"},
+{q:"What is the correct Present Simple positive form for 'She / eat'?",opts:["She eat paratha","She eats paratha","She is eating paratha","She eatting paratha"],ans:1,exp:"In Present Simple, third person singular (he/she/it) adds -s or -es to the verb. 'She eat' ✗ → 'She eats' ✓. 'He eats', 'She lives', 'It comes'. I/You/We/They use the base form: 'I eat', 'They eat'."},
+{q:"Which is the correct negative sentence in Present Simple?",opts:["She not eat chicken","She don't eat chicken","She doesn't eat chicken","She isn't eat chicken"],ans:2,exp:"Negative in Present Simple: Subject + don't/doesn't + base verb. He/She/It → doesn't + base verb. 'She doesn't eat chicken.' ✓ I/You/We/They → don't + base verb. 'I don't eat spicy food.' ✓"},
+{q:"What is the negative of 'I live in Karachi'?",opts:["I not live in Karachi","I doesn't live in Karachi","I'm not live in Karachi","I don't live in Karachi"],ans:3,exp:"'I don't live in Karachi.' For I/You/We/They use 'don't + base verb'. 'She doesn't live in Rawalpindi.' For He/She/It use 'doesn't + base verb'. Never use 'not' alone without don't/doesn't."},
+{q:"What is the correct negative of 'He eats paratha'?",opts:["He not eats paratha","He don't eat paratha","He doesn't eat paratha","He isn't eat paratha"],ans:2,exp:"'He doesn't eat paratha.' For He/She/It: doesn't + base form (NOT doesn't eats). The -s moves to doesn't. 'He eats' → 'He doesn't eat'. Never 'doesn't eats' ✗."},
+{q:"What is the Present Continuous used for?",opts:["To talk about habits and things we do every day","To describe actions happening RIGHT NOW at this moment","To talk about completed past actions","To describe future arrangements next week"],ans:1,exp:"Present Continuous (am/is/are + verb-ing) is used for actions happening right now. 'She is watching a drama.' = right now. 'Are you reading a book?' = at this moment. 'Are they waiting for Namir?' = currently happening."},
+{q:"What is the correct Present Continuous form for 'I / cook / dinner'?",opts:["I cook dinner","I cooking dinner","I am cooking dinner","I does cooking dinner"],ans:2,exp:"Present Continuous = Subject + am/is/are + verb-ing. 'I am cooking dinner.' ✓ I → am. You/We/They → are. He/She/It → is. 'She is cooking dinner.' 'They are reading a book.'"},
+{q:"What is the correct question form in Present Continuous?",opts:["She going to the hotel today?","Is she going to the hotel today?","Does she going to the hotel today?","She is going to hotel today?"],ans:1,exp:"Questions in Present Continuous: Am/Is/Are + Subject + verb-ing? 'Is she going to the hotel today?' ✓ 'Are they waiting?' ✓ 'Am I on time?' ✓ Invert the helping verb (am/is/are) and the subject."},
+{q:"What is the contraction of 'They are not'?",opts:["They isn't","They aren't","They're not / They aren't","They don't are"],ans:2,exp:"'They are not' → 'They aren't' or 'They're not'. Both contractions are correct. Other contractions: I'm not, He isn't / He's not, She isn't / She's not, We aren't / We're not, It isn't / It's not."},
+{q:"What is the Simple Past tense used for?",opts:["For actions happening right now","For general truths and daily habits","For completed actions that happened in the past","For future plans and arrangements"],ans:2,exp:"Simple Past is used for completed actions in the past — things that happened and are finished. Key time markers: yesterday, last week, last Sunday, 5 miles ago. 'She walked 5 miles yesterday.' 'He slept late last Sunday.'"},
+{q:"What is the Simple Past positive form for regular verbs?",opts:["Subject + verb (base form)","Subject + verb + -ing","Subject + did + verb","Subject + verb + -ed or irregular form (V2)"],ans:3,exp:"Simple Past positive: Subject + verb-ed (regular) or irregular form (V2). Regular: walk → walked, dance → danced. Irregular: sleep → slept, ride → rode, sit → sat, give → gave. 'She walked 5 miles yesterday.' 'He slept late.'"},
+{q:"What is the correct Simple Past negative form?",opts:["She not walked to the mall","She didn't walked to the mall","She didn't walk to the mall","She doesn't walked to the mall"],ans:2,exp:"Simple Past negative: Subject + didn't + base verb (NOT past form). 'She didn't walk' ✓ NOT 'She didn't walked' ✗. The past tense marker moves to 'didn't'. All subjects use 'didn't' — there is no 'didn'ts'."},
+{q:"What is the correct Simple Past question form?",opts:["Did he sleep late last Tuesday?","Did he slept late last Tuesday?","Does he sleep late last Tuesday?","He slept late last Tuesday?"],ans:0,exp:"Simple Past questions: Did + Subject + base verb? 'Did he sleep late last Tuesday?' ✓ NOT 'Did he slept' ✗. The base form is used after 'did'. All subjects use 'did' in questions — no 'does' or 'do'."},
+{q:"Which sentence is in Simple Past tense?",opts:["She is cooking dinner right now","She cooks dinner every evening","She cooked dinner last night","She will cook dinner tomorrow"],ans:2,exp:"'She cooked dinner last night' is Simple Past. 'Last night' is a past time marker. 'Cooked' = past form of cook (regular verb + -ed). The other sentences are: present continuous (is cooking), present simple (cooks), future (will cook)."},
+{q:"What does the contraction 'I'm not' mean?",opts:["I am not","I will not","I do not","I did not"],ans:0,exp:"'I'm not' = 'I am not'. The apostrophe replaces the space and the 'a' in 'am'. Contractions: I'm = I am, She's = She is, They're = They are, We're = We are, He's = He is. 'I'm not going to the office today.'"},
+{q:"Complete the sentence: 'We _____ eat spicy food.' (negative, present simple, we)",opts:["We doesn't eat spicy food","We don't eat spicy food","We aren't eat spicy food","We not eat spicy food"],ans:1,exp:"'We don't eat spicy food.' For I/You/We/They use 'don't + base verb' in Present Simple negative. 'Don't' = do not. 'We don't' is correct. 'We doesn't' ✗ — doesn't is only for He/She/It."},
+{q:"What is the correct form of 'She / come / from Multan'?",opts:["She come from Multan","She comes from Multan","She is come from Multan","She coming from Multan"],ans:1,exp:"'She comes from Multan.' Present Simple, third person singular → add -s. Come → comes. 'He comes, She comes, It comes.' The other options are wrong: come (no -s for she), is come (wrong tense), coming (wrong form)."},
+{q:"What helping verb do we use to make questions in Present Simple for 'He'?",opts:["Am","Is","Are","Does"],ans:3,exp:"For He/She/It in Present Simple questions: Does + subject + base verb? 'Does he eat chicken?' 'Does she come from Multan?' NOT 'Do he' ✗. For I/You/We/They: Do + subject + base verb. 'Do you eat chicken?'"},
+{q:"Which is the correct question in Present Simple for 'you'?",opts:["Do you eat biryani?","Does you eat biryani?","Are you eat biryani?","You eat biryani?"],ans:0,exp:"'Do you eat biryani?' For I/You/We/They use 'Do + subject + base verb?' in Present Simple questions. 'Does' is only for He/She/It. 'Do you', 'Do we', 'Do they'."},
+{q:"What is the Simple Past of 'sleep'?",opts:["Sleeped","Slept","Sleept","Sleeping"],ans:1,exp:"Sleep → Slept. Irregular verb — does NOT add -ed. 'She slept late last Sunday.' Other irregular past forms from the lesson: walk → walked (regular), sit → sat, give → gave, ride → rode."},
+{q:"Which sentence shows a general truth in Present Simple?",opts:["She is eating lunch right now at the table","She ate lunch an hour ago in the canteen","Water boils at 100 degrees Celsius","She will eat lunch later in the afternoon"],ans:2,exp:"'Water boils at 100 degrees Celsius' is a general truth — a scientific fact that is always true. Present Simple is used for facts/truths: 'The sun rises in the east.' 'Cats eat meat.' These are always true, not just habits."},
+{q:"In negative Present Continuous, which is correct for 'They'?",opts:["They not watching TV","They don't watching TV","They aren't watching TV","They isn't watching TV"],ans:2,exp:"Present Continuous negative: Subject + am/is/are + not + verb-ing. They → are not → aren't. 'They aren't watching TV.' ✓ 'I'm not watching.' 'She isn't watching.' 'They aren't watching.' Never 'don't' with continuous."},
+{q:"What is the correct negative contraction for 'He is not'?",opts:["He isn't or He's not","He don't","He aren't","He not is"],ans:0,exp:"'He is not' → 'He isn't' or 'He's not'. Both are correct contractions. 'He isn't feeling well.' 'He's not coming today.' Other third person singular contractions: 'She isn't / She's not', 'It isn't / It's not'."},
+{q:"What word do we add to make Simple Past negative?",opts:["Not after the main verb","Didn't before the base verb","Doesn't before the base verb","Wasn't before the main verb"],ans:1,exp:"Simple Past negative: Subject + didn't + base verb. 'She didn't sleep late.' 'I didn't walk to the mall.' 'Did' becomes 'didn't' (did + not). Use the base form after didn't — NEVER the past form."},
+{q:"Which sentence is grammatically correct in Present Simple?",opts:["He live in Lahore","He lives in Lahore","He is lives in Lahore","He livees in Lahore"],ans:1,exp:"'He lives in Lahore.' ✓ Third person singular (he/she/it) + -s on the verb. 'live' → 'lives'. 'He live' ✗ (no -s), 'is lives' ✗ (wrong tense), 'livees' ✗ (wrong spelling — just add -s, not -es, to 'live')."}
+];
+let order=[],cur=0,picks={},playerName='',score=0;
+function shuffle(a){const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]];}return b;}
+function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');window.scrollTo(0,0);}
+function goBack(){if(confirm('Quit quiz?'))window.location.href='index.html';}
+function startQuiz(){playerName=document.getElementById('name-input').value.trim()||'Anonymous';order=shuffle(BANK.map((_,i)=>i));cur=0;picks={};score=0;document.getElementById('q-total').textContent=BANK.length;show('quiz-screen');render();}
+function render(){const idx=order[cur],q=BANK[idx],total=BANK.length;document.getElementById('q-num').textContent=cur+1;document.getElementById('q-score').textContent=score;document.getElementById('q-label').textContent=`Question ${cur+1} of ${total}`;document.getElementById('q-text').textContent=q.q;document.getElementById('progress-fill').style.width=((cur/total)*100)+'%';document.getElementById('explanation').className='explanation';document.getElementById('next-btn').className='next-btn';document.getElementById('quit-btn').className='quit-btn';const optEl=document.getElementById('options');optEl.innerHTML='';shuffle([0,1,2,3]).forEach((oi,li)=>{const btn=document.createElement('button');btn.className='opt-btn';btn.dataset.opt=oi;btn.innerHTML=`<span class="opt-letter">${'ABCD'[li]}</span><span>${q.opts[oi]}</span>`;btn.onclick=()=>select(oi,idx);optEl.appendChild(btn);});}
+function select(chosen,idx){const q=BANK[idx],ok=chosen===q.ans;picks[idx]=chosen;if(ok)score++;document.getElementById('q-score').textContent=score;document.querySelectorAll('.opt-btn').forEach(b=>{b.disabled=true;const oi=parseInt(b.dataset.opt);if(oi===q.ans)b.classList.add('correct');else if(oi===chosen&&!ok)b.classList.add('wrong');});if(!ok){const e=document.getElementById('explanation');e.textContent='✗ '+q.exp;e.classList.add('show');}const nb=document.getElementById('next-btn');nb.classList.add('show');nb.textContent=cur+1<BANK.length?'Next →':'See Results →';document.getElementById('quit-btn').classList.add('show');}
+function nextQuestion(){cur++;if(cur>=BANK.length)showResults();else{render();window.scrollTo(0,0);}}
+function showResults(){show('results-screen');const total=BANK.length,pct=Math.round((score/total)*100),passed=pct>=70;document.getElementById('result-name').textContent=playerName;document.getElementById('ring-pct').textContent=pct+'%';document.getElementById('ring-pct').style.color=passed?'var(--green)':'var(--red)';document.getElementById('ring-fill').style.stroke=passed?'var(--green)':'var(--red)';setTimeout(()=>{document.getElementById('ring-fill').style.strokeDashoffset=439.82-(439.82*pct/100);},100);document.getElementById('res-title').textContent=pct>=90?'Excellent!':pct>=70?'Passed!':'Needs Work';document.getElementById('res-sub').textContent=`${score} correct out of ${total}`;const v=document.getElementById('res-verdict');v.textContent=passed?'✓ Passed — above 70%':'✗ Below 70% — please retry';v.className='result-verdict '+(passed?'pass':'fail');const rv=document.getElementById('review');rv.innerHTML='<h3>Review</h3>';order.forEach(idx=>{const q=BANK[idx],ua=picks[idx],ok=ua===q.ans;const d=document.createElement('div');d.className='rv-item '+(ok?'ok':'miss');d.innerHTML=`<div class="rv-q">${q.q}</div><div class="rv-a">${ok?`<span class="c">✓ ${q.opts[q.ans]}</span>`:`<span class="w">✗ ${ua!==undefined?q.opts[ua]:'—'}</span><br><span class="c">✓ ${q.opts[q.ans]}</span><br><span style="color:var(--muted)">${q.exp}</span>`}</div>`;rv.appendChild(d);});}
+function retryQuiz(){order=shuffle(order);cur=0;picks={};score=0;document.getElementById('q-score').textContent=0;show('quiz-screen');render();}
+document.getElementById('name-input').addEventListener('keydown',e=>{if(e.key==='Enter')startQuiz();});
+</script>
+</body>
+</html>

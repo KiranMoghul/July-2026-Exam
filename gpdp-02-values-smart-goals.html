@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Values, Work Ethics, Self-Awareness & SMART Goals — July 2026 Exam</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌱</text></svg>">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@400;500&display=swap');
+  :root{--bg:#080810;--surface:#11111f;--border:#1e1e35;--purple:#7c3aed;--purple-l:#9d5bf0;--green:#22c55e;--red:#ef4444;--text:#e8e8f0;--muted:#7070a0;}
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Syne',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;align-items:center;justify-content:center;}
+  body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px);background-size:40px 40px;opacity:.4;pointer-events:none;z-index:0;}
+  .screen{position:relative;z-index:1;width:100%;max-width:660px;margin:0 auto;padding:24px 20px 48px;display:none;}
+  .screen.active{display:block;}
+  #name-screen{text-align:center;padding-top:80px;}
+  .back-link{display:inline-flex;align-items:center;gap:6px;font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);text-decoration:none;letter-spacing:1px;margin-bottom:48px;}
+  .back-link:hover{color:var(--purple-l);}
+  .subject-tag{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--purple-l);margin-bottom:12px;}
+  #name-screen h1{font-size:clamp(20px,5vw,34px);font-weight:800;line-height:1.15;margin-bottom:8px;background:linear-gradient(135deg,#fff 30%,var(--purple-l));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+  #name-screen p{color:var(--muted);font-family:'DM Mono',monospace;font-size:12px;margin-bottom:40px;}
+  .name-box{display:flex;flex-direction:column;align-items:center;gap:12px;}
+  .name-box input{width:100%;max-width:320px;padding:12px 16px;background:var(--surface);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:'Syne',sans-serif;font-size:15px;outline:none;text-align:center;}
+  .name-box input:focus{border-color:var(--purple);}
+  .name-box input::placeholder{color:var(--muted);}
+  .btn-primary{padding:12px 32px;background:var(--purple);color:#fff;border:none;border-radius:8px;font-family:'Syne',sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:background .2s;}
+  .btn-primary:hover{background:var(--purple-l);}
+  .quiz-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;}
+  .quiz-meta{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);}
+  .quiz-meta span{color:var(--purple-l);font-weight:500;}
+  .quiz-back{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);background:none;border:1px solid var(--border);padding:5px 10px;border-radius:6px;cursor:pointer;}
+  .quiz-back:hover{color:var(--text);border-color:var(--purple);}
+  .progress-bar{width:100%;height:3px;background:var(--border);border-radius:2px;margin-bottom:16px;overflow:hidden;}
+  .progress-fill{height:100%;background:linear-gradient(90deg,var(--purple),var(--purple-l));border-radius:2px;transition:width .3s ease;}
+  .section-label{font-family:'DM Mono',monospace;font-size:10px;color:var(--green);letter-spacing:2px;text-transform:uppercase;margin-bottom:6px;padding:4px 10px;background:rgba(34,197,94,.08);border-radius:4px;display:inline-block;}
+  .question-num{font-family:'DM Mono',monospace;font-size:10px;color:var(--purple-l);letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;margin-top:8px;}
+  .question-text{font-size:clamp(15px,3vw,18px);font-weight:600;line-height:1.5;margin-bottom:28px;}
+  .options{display:flex;flex-direction:column;gap:10px;}
+  .opt-btn{display:flex;align-items:center;gap:12px;padding:13px 16px;background:var(--surface);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:'Syne',sans-serif;font-size:14px;cursor:pointer;text-align:left;width:100%;}
+  .opt-btn:hover:not(:disabled){border-color:var(--purple);background:#16162a;}
+  .opt-btn .opt-letter{flex-shrink:0;width:26px;height:26px;border-radius:6px;background:var(--border);display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);}
+  .opt-btn:hover:not(:disabled) .opt-letter{background:var(--purple);color:#fff;}
+  .opt-btn.correct{border-color:var(--green);background:rgba(34,197,94,.1);}
+  .opt-btn.correct .opt-letter{background:var(--green);color:#fff;}
+  .opt-btn.wrong{border-color:var(--red);background:rgba(239,68,68,.1);}
+  .opt-btn.wrong .opt-letter{background:var(--red);color:#fff;}
+  .opt-btn:disabled{cursor:default;}
+  .explanation{display:none;margin-top:16px;padding:14px 16px;background:rgba(124,58,237,.1);border:1px solid rgba(124,58,237,.25);border-left:3px solid var(--purple);border-radius:8px;font-size:13px;line-height:1.6;color:#c4b5fd;font-family:'DM Mono',monospace;}
+  .explanation.show{display:block;}
+  .action-row{display:flex;gap:10px;margin-top:24px;}
+  .next-btn{flex:1;padding:13px;background:var(--purple);color:#fff;border:none;border-radius:8px;font-family:'Syne',sans-serif;font-size:14px;font-weight:700;cursor:pointer;display:none;}
+  .next-btn:hover{background:var(--purple-l);}
+  .next-btn.show{display:block;}
+  .quit-btn{padding:13px 18px;background:none;border:1px solid var(--border);border-radius:8px;color:var(--muted);font-family:'DM Mono',monospace;font-size:12px;cursor:pointer;display:none;white-space:nowrap;}
+  .quit-btn:hover{color:var(--text);border-color:var(--purple);}
+  .quit-btn.show{display:block;}
+  #results-screen{text-align:center;padding-top:40px;}
+  .result-name{font-family:'DM Mono',monospace;font-size:12px;color:var(--muted);margin-bottom:32px;}
+  .score-ring{position:relative;width:160px;height:160px;margin:0 auto 28px;}
+  .score-ring svg{transform:rotate(-90deg);}
+  .score-ring .ring-bg{fill:none;stroke:var(--border);stroke-width:10;}
+  .score-ring .ring-fill{fill:none;stroke-width:10;stroke-linecap:round;transition:stroke-dashoffset 1s ease,stroke .5s;}
+  .score-ring .ring-text{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+  .ring-pct{font-size:34px;font-weight:800;line-height:1;}
+  .ring-label{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);margin-top:4px;letter-spacing:1px;}
+  .result-title{font-size:24px;font-weight:800;margin-bottom:8px;}
+  .result-sub{font-family:'DM Mono',monospace;font-size:12px;color:var(--muted);margin-bottom:8px;}
+  .result-verdict{font-family:'DM Mono',monospace;font-size:12px;padding:8px 20px;border-radius:20px;display:inline-block;margin-bottom:32px;}
+  .result-verdict.pass{background:rgba(34,197,94,.12);color:var(--green);border:1px solid rgba(34,197,94,.3);}
+  .result-verdict.fail{background:rgba(239,68,68,.12);color:var(--red);border:1px solid rgba(239,68,68,.3);}
+  .result-actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:40px;}
+  .btn-outline{padding:11px 24px;background:none;border:1px solid var(--border);border-radius:8px;color:var(--muted);font-family:'Syne',sans-serif;font-size:13px;font-weight:600;cursor:pointer;}
+  .btn-outline:hover{border-color:var(--purple);color:var(--text);}
+  .review{text-align:left;}
+  .review h3{font-size:13px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:2px;margin-bottom:16px;font-family:'DM Mono',monospace;}
+  .rv-item{padding:14px 16px;border-radius:8px;margin-bottom:10px;border:1px solid var(--border);}
+  .rv-item.ok{border-color:rgba(34,197,94,.25);background:rgba(34,197,94,.05);}
+  .rv-item.miss{border-color:rgba(239,68,68,.25);background:rgba(239,68,68,.05);}
+  .rv-q{font-size:13px;font-weight:600;margin-bottom:8px;line-height:1.4;}
+  .rv-a{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);line-height:1.6;}
+  .rv-a .c{color:var(--green);}
+  .rv-a .w{color:var(--red);}
+</style>
+</head>
+<body>
+<div class="screen active" id="name-screen">
+  <a class="back-link" href="index.html">← Back to subjects</a>
+  <div class="subject-tag">GPDP · Topic 02</div>
+  <h1>Values, Work Ethics, Self-Awareness & SMART Goals</h1>
+  <p>25 questions · Values · Work ethics · Strengths & weaknesses · Goal setting · SMART</p>
+  <div class="name-box">
+    <input type="text" id="name-input" placeholder="Enter your name" maxlength="30" autocomplete="off">
+    <button class="btn-primary" onclick="startQuiz()">Start Quiz</button>
+  </div>
+</div>
+<div class="screen" id="quiz-screen">
+  <div class="quiz-header">
+    <div class="quiz-meta">Question <span id="q-num">1</span> of <span id="q-total">25</span></div>
+    <div class="quiz-meta">Score <span id="q-score">0</span></div>
+    <button class="quiz-back" onclick="goBack()">← Quit</button>
+  </div>
+  <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+  <div class="section-label" id="section-label"></div>
+  <div class="question-num" id="q-label"></div>
+  <div class="question-text" id="q-text"></div>
+  <div class="options" id="options"></div>
+  <div class="explanation" id="explanation"></div>
+  <div class="action-row">
+    <button class="quit-btn" id="quit-btn" onclick="goBack()">← Back to subjects</button>
+    <button class="next-btn" id="next-btn" onclick="nextQuestion()">Next Question →</button>
+  </div>
+</div>
+<div class="screen" id="results-screen">
+  <div class="result-name" id="result-name"></div>
+  <div class="score-ring">
+    <svg viewBox="0 0 160 160" width="160" height="160">
+      <circle class="ring-bg" cx="80" cy="80" r="70"/>
+      <circle class="ring-fill" id="ring-fill" cx="80" cy="80" r="70" stroke-dasharray="439.82" stroke-dashoffset="439.82" stroke="var(--green)"/>
+    </svg>
+    <div class="ring-text">
+      <div class="ring-pct" id="ring-pct">0%</div>
+      <div class="ring-label">SCORE</div>
+    </div>
+  </div>
+  <div class="result-title" id="res-title"></div>
+  <div class="result-sub" id="res-sub"></div>
+  <div class="result-verdict" id="res-verdict"></div>
+  <div class="result-actions">
+    <button class="btn-primary" onclick="retryQuiz()">Retry →</button>
+    <button class="btn-outline" onclick="window.location.href='index.html'">All Subjects</button>
+  </div>
+  <div class="review" id="review"></div>
+</div>
+<script>
+const BANK=[
+{s:"💎 Values",q:"What are values?",opts:["A set of rules written by management that employees must follow at all times","Our fundamental beliefs that influence our attitude and help us determine what is meaningful and important in life","A scoring system used to evaluate employee performance in annual reviews","The financial worth of a business or individual calculated at the end of each year"],ans:1,exp:"Values are our fundamental beliefs that influence our attitude and help us determine what is meaningful and important in life. Simply put, values are the things we consider to be good, desirable, and worthwhile."},
+{s:"💎 Values",q:"Which of the following is the simplest definition of values?",opts:["Rules that society forces people to follow through laws and regulations","Opinions that change frequently based on circumstances and social trends","The things we consider to be good, desirable, and worthwhile","Skills and qualifications that make a person more employable"],ans:2,exp:"Simply put, values are the things we consider to be good, desirable, and worthwhile. They are deeply held beliefs that guide how we behave and make decisions in all areas of life."},
+{s:"💎 Values",q:"How do values influence a person?",opts:["They determine a person's salary and career progression automatically","They influence our attitude and help us determine what is meaningful and important in life","They are assigned by employers and change depending on the job role","They affect only our personal lives — not our professional behaviour at work"],ans:1,exp:"Values influence our attitude and help us determine what is meaningful and important. They shape how we behave, make decisions, treat others, and prioritise our time and energy — both in personal life and at work."},
+{s:"⚖️ Work Ethics",q:"What does 'work ethics' refer to?",opts:["The legal rules that govern how many hours employees can work per week","A company's written code of conduct displayed on notice boards","The set of values and attitudes individuals bring to their jobs, enabling them to make decisions and carry out responsibilities with integrity and professionalism","A government certification that confirms a person is legally permitted to work"],ans:2,exp:"Work ethics refers to the set of values and attitudes individuals bring to their jobs, enabling them to make decisions and carry out responsibilities with integrity and professionalism."},
+{s:"⚖️ Work Ethics",q:"Which of the following is a correct list of strong work ethics in hospitality?",opts:["Speed, volume, profit, efficiency, and punctuality","Honesty, responsibility, quality, service, discipline, humility, and teamwork","Confidence, ambition, assertiveness, independence, and creativity","Appearance, punctuality, speed, accuracy, and obedience"],ans:1,exp:"Strong work ethics in hospitality include: honesty, responsibility, quality, service, discipline, humility, and teamwork. These ethics directly impact guest satisfaction and workplace trust."},
+{s:"⚖️ Work Ethics",q:"What is the opposite of ethical behaviour in the workplace?",opts:["Being overly friendly, too relaxed, and insufficiently formal with colleagues","Working slowly, taking long breaks, and failing to meet deadlines","Theft, violence, dishonesty, and neglect","Asking too many questions and challenging management decisions"],ans:2,exp:"The opposite of ethical behaviour includes: theft, violence, dishonesty, and neglect. These behaviours undermine trust, harm colleagues and customers, and damage the reputation of the establishment."},
+{s:"⚖️ Work Ethics",q:"Why do strong work ethics matter in hospitality specifically?",opts:["They are only required for management staff — not for kitchen or service workers","They ensure the hotel meets government inspection requirements every year","They directly impact guest satisfaction and workplace trust — the two pillars of hospitality success","They are required only when dealing with international guests in luxury settings"],ans:2,exp:"Strong work ethics directly impact guest satisfaction and workplace trust. In hospitality, every interaction with a guest is influenced by the values and ethics of the staff member. Honesty, responsibility, and teamwork create a positive experience for both guests and colleagues."},
+{s:"⚖️ Work Ethics",q:"What does 'humility' as a work ethic mean in a hospitality context?",opts:["Staying silent and never offering suggestions or feedback to supervisors","Knowing your own limits, being open to learning, and not acting superior to colleagues or guests","Keeping your personal achievements and qualifications private at all times","Always agreeing with the customer even when they are factually incorrect"],ans:1,exp:"Humility means knowing your own limits, being open to learning and feedback, and not acting superior to colleagues or guests. In hospitality, humility is essential — the guest's needs always come first, and every team member's contribution matters."},
+{s:"🪞 Self-Awareness",q:"What is self-awareness?",opts:["The ability to memorise your CV and recite it accurately during an interview","The ability to understand your own thoughts, emotions, strengths, and areas for improvement","The ability to observe and judge the behaviour of other people in your team","The ability to control the emotions of others in difficult workplace situations"],ans:1,exp:"Self-awareness is the ability to understand your own thoughts, emotions, strengths, and areas for improvement. It is a skill that can be developed through regular reflection and practice."},
+{s:"🪞 Self-Awareness",q:"Is self-awareness a fixed trait or something that can be developed?",opts:["It is a fixed trait — people are either born self-aware or they are not","It is fixed by the age of 18 — it cannot be meaningfully developed in adulthood","It is a habit that can be developed through regular reflection and practice","It can only be developed through formal psychological therapy and counselling"],ans:2,exp:"Self-awareness is a habit that can be developed through regular reflection and practice. Like any skill, it improves over time with conscious effort — through journaling, seeking feedback, and honest self-evaluation."},
+{s:"🪞 Self-Awareness",q:"What are 'strengths' in the context of self-awareness?",opts:["Areas where a person struggles and needs additional training and support","The positive traits, skills, and abilities you perform well — including knowledge, being organised, confident, and a good team player","Qualifications and certificates earned from formal educational institutions","Physical attributes such as height, appearance, and stamina that help in the workplace"],ans:1,exp:"Strengths are the positive traits, skills, and abilities you perform well. Examples include: being knowledgeable, organised, confident, a good team player, punctual, or detail-oriented. Knowing your strengths helps you contribute most effectively at work."},
+{s:"🪞 Self-Awareness",q:"What are 'weaknesses' in the context of self-awareness?",opts:["Personal opinions that differ from those of your manager or supervisor","Qualifications you do not currently have but plan to obtain in the future","Traits or skills that need improvement — such as poor time management or difficulty speaking in public","Any characteristic that makes you different from the majority of your colleagues"],ans:2,exp:"Weaknesses are traits or skills that need improvement — such as poor time management, difficulty speaking in public, or impatience. Identifying weaknesses honestly is a sign of maturity and self-awareness — and the first step towards improvement."},
+{s:"🪞 Self-Awareness",q:"Why is self-awareness useful during a job interview?",opts:["It allows you to avoid answering personal questions by redirecting the conversation","It helps you memorise standard answers and deliver them without hesitation","It helps you answer questions about your strengths and weaknesses confidently and honestly","It allows you to predict what questions the interviewer will ask before the interview"],ans:2,exp:"Self-awareness helps you answer interview questions about strengths and weaknesses confidently and honestly. Interviewers value genuine, thoughtful answers — not scripted ones. Self-aware candidates come across as mature, honest, and ready to grow."},
+{s:"🎯 Goal Setting",q:"What is goal setting?",opts:["Writing a list of tasks to complete during a single working shift","The process of deciding what you want to achieve, breaking it into steps, and taking action to get there","Setting performance targets for other members of your team to achieve","Identifying problems in the workplace and reporting them to management"],ans:1,exp:"Goal setting is the process of deciding what you want to achieve, breaking it into steps, and taking action to get there. It helps you track progress and stay motivated throughout your journey."},
+{s:"🎯 Goal Setting",q:"What happens when people do not have clear goals?",opts:["They become more creative and innovative because they are not restricted by targets","They work more efficiently because they can respond flexibly to each situation","They lose focus — just as planning a trip requires a destination, time, and route","They naturally find the right direction through trial and error over time"],ans:2,exp:"Without clear goals, we lose focus. The analogy used in class: planning a trip requires a destination, a time, and a route. Without these, you cannot get anywhere purposefully. Goals provide direction, motivation, and a measure of progress."},
+{s:"🎯 Goal Setting",q:"What are the five key goal-setting questions?",opts:["Who am I? Where do I live? What do I like? Who do I know? When will I retire?","What can I do right now? What do I want to achieve? What should I do to get there? Who can help me? How will I know I've reached my goal?","What is my salary? What are my benefits? What are my hours? Who is my manager? What is my job title?","What are my weaknesses? What are my strengths? What is my MBTI type? What are my values? What are my goals?"],ans:1,exp:"The five key goal-setting questions: What can I do right now? What do I want to achieve? What should I do to get there? Who can help me? How will I know I've reached my goal? These guide structured, actionable goal planning."},
+{s:"🎯 Goal Setting",q:"What does SMART stand for in goal setting?",opts:["Strong, Motivating, Achievable, Realistic, and Timely","Specific, Measurable, Achievable, Relevant, and Time-based","Simple, Manageable, Accurate, Resourced, and Tracked","Structured, Meaningful, Actionable, Realistic, and Timed"],ans:1,exp:"SMART stands for: Specific (clear and precise), Measurable (trackable with indicators), Achievable (realistic given your skills), Relevant (aligned with your career direction), and Time-based (has a clear deadline or timeframe)."},
+{s:"🎯 Goal Setting",q:"What does 'Specific' mean in a SMART goal?",opts:["The goal uses general language so it can apply to many different situations","The goal is only shared with specific people — kept confidential from others","Be clear and precise about what you want to achieve — no vague or broad targets","The goal relates to a specific day or time rather than a general timeframe"],ans:2,exp:"'Specific' means being clear and precise about what you want. A specific goal clearly states who is involved, what you want to accomplish, and why it matters. 'I want to improve' is vague. 'I want to improve my food plating skills by the end of semester' is specific."},
+{s:"🎯 Goal Setting",q:"What does 'Measurable' mean in a SMART goal?",opts:["The goal is measured by your manager and scored in your performance review","Track progress with clear indicators so you can see how far you have come","The goal involves a numerical target such as earning a specific salary amount","The goal can be measured by comparing yourself to your colleagues"],ans:1,exp:"'Measurable' means tracking progress with clear indicators. A measurable goal answers: How much? How many? How will I know I've achieved it? Without measurement, you cannot tell if you're making progress or have reached your goal."},
+{s:"🎯 Goal Setting",q:"What does 'Achievable' mean in a SMART goal?",opts:["The goal must be something that has already been achieved by someone else before","The goal is so challenging that it requires stretching far beyond your current abilities","The goal is realistic and attainable given your current skills, resources, and situation","The goal can be achieved within a single working day with no additional support"],ans:2,exp:"'Achievable' means the goal is realistic and attainable given your current skills, resources, and situation. An achievable goal challenges you to grow — but it is not so impossible that it causes frustration or demotivation."},
+{s:"🎯 Goal Setting",q:"What does 'Relevant' mean in a SMART goal?",opts:["The goal is currently trending in the industry and widely discussed on social media","The goal is relevant to what your manager has asked you to prioritise this month","The goal is aligned with your career direction and matters to your professional growth","The goal is relevant to your personal life outside of work and hobbies"],ans:2,exp:"'Relevant' means the goal is aligned with your career direction and matters to your professional development. A relevant goal fits within your larger life or career plan — it is not a distraction or a goal set just to please someone else."},
+{s:"🎯 Goal Setting",q:"What does 'Time-based' mean in a SMART goal?",opts:["The goal is completed during working hours only — not outside of work","The goal has a clear deadline or timeframe so there is a sense of urgency and accountability","The goal is reviewed every month regardless of whether it has been completed","The goal relates specifically to time management as a professional skill"],ans:1,exp:"'Time-based' means the goal has a clear deadline or timeframe. Without a deadline, goals tend to drift indefinitely. A time-based goal creates urgency and accountability — 'I will complete my food hygiene certificate by July 2026.'"},
+{s:"🎯 Goal Setting",q:"Which of the following is an example of a SMART goal?",opts:["I want to be a better chef someday when I have more experience","I will improve my communication and become more professional","I will complete my COTHM Diploma in Culinary Arts by July 2026 and achieve a minimum score of 70% in all subjects","I want to work in a five-star hotel in the future if possible"],ans:2,exp:"'I will complete my COTHM Diploma in Culinary Arts by July 2026 and achieve a minimum score of 70% in all subjects' is SMART: Specific (diploma, 70%), Measurable (percentage score), Achievable (realistic), Relevant (career goal), Time-based (July 2026)."},
+{s:"🎯 Goal Setting",q:"How does goal setting help with motivation?",opts:["Goals eliminate all obstacles by automatically providing the resources needed to succeed","Goals replace the need for hard work — once written down, they attract success automatically","Goals help you track progress and stay motivated — seeing improvement encourages continued effort","Goals only help with motivation if they are approved and endorsed by a supervisor or mentor"],ans:2,exp:"Goal setting helps you track progress and stay motivated. Seeing concrete progress towards a clear target gives you a sense of achievement and encourages you to keep going — especially when things get difficult."},
+{s:"🎯 Goal Setting",q:"Which best summarises why values, work ethics, self-awareness, and SMART goals are all taught together in GPDP?",opts:["They are four unrelated topics placed together only due to scheduling convenience","They are all required by government law for hospitality diploma programmes","They form a connected framework for personal and professional development — values guide your ethics, self-awareness reveals your strengths and areas to grow, and SMART goals give you a structured path to act on that knowledge","They are assessed together in one final exam — so studying them separately is inefficient"],ans:2,exp:"Values, work ethics, self-awareness, and SMART goals form a connected framework for professional development. Values guide ethics. Self-awareness reveals strengths and weaknesses. SMART goals provide a structured plan to grow. Together they build the foundation of a professional hospitality career."}
+];
+let order=[],cur=0,picks={},playerName='',score=0;
+function shuffle(a){const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]];}return b;}
+function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');window.scrollTo(0,0);}
+function goBack(){if(confirm('Quit quiz?'))window.location.href='index.html';}
+function startQuiz(){playerName=document.getElementById('name-input').value.trim()||'Anonymous';order=shuffle(BANK.map((_,i)=>i));cur=0;picks={};score=0;document.getElementById('q-total').textContent=BANK.length;show('quiz-screen');render();}
+function render(){const idx=order[cur],q=BANK[idx],total=BANK.length;document.getElementById('q-num').textContent=cur+1;document.getElementById('q-score').textContent=score;document.getElementById('section-label').textContent=q.s;document.getElementById('q-label').textContent=`Question ${cur+1} of ${total}`;document.getElementById('q-text').textContent=q.q;document.getElementById('progress-fill').style.width=((cur/total)*100)+'%';document.getElementById('explanation').className='explanation';document.getElementById('next-btn').className='next-btn';document.getElementById('quit-btn').className='quit-btn';const optEl=document.getElementById('options');optEl.innerHTML='';shuffle([0,1,2,3]).forEach((oi,li)=>{const btn=document.createElement('button');btn.className='opt-btn';btn.dataset.opt=oi;btn.innerHTML=`<span class="opt-letter">${'ABCD'[li]}</span><span>${q.opts[oi]}</span>`;btn.onclick=()=>select(oi,idx);optEl.appendChild(btn);});}
+function select(chosen,idx){const q=BANK[idx],ok=chosen===q.ans;picks[idx]=chosen;if(ok)score++;document.getElementById('q-score').textContent=score;document.querySelectorAll('.opt-btn').forEach(b=>{b.disabled=true;const oi=parseInt(b.dataset.opt);if(oi===q.ans)b.classList.add('correct');else if(oi===chosen&&!ok)b.classList.add('wrong');});if(!ok){const e=document.getElementById('explanation');e.textContent='✗ '+q.exp;e.classList.add('show');}const nb=document.getElementById('next-btn');nb.classList.add('show');nb.textContent=cur+1<BANK.length?'Next →':'See Results →';document.getElementById('quit-btn').classList.add('show');}
+function nextQuestion(){cur++;if(cur>=BANK.length)showResults();else{render();window.scrollTo(0,0);}}
+function showResults(){show('results-screen');const total=BANK.length,pct=Math.round((score/total)*100),passed=pct>=70;document.getElementById('result-name').textContent=playerName;document.getElementById('ring-pct').textContent=pct+'%';document.getElementById('ring-pct').style.color=passed?'var(--green)':'var(--red)';document.getElementById('ring-fill').style.stroke=passed?'var(--green)':'var(--red)';setTimeout(()=>{document.getElementById('ring-fill').style.strokeDashoffset=439.82-(439.82*pct/100);},100);document.getElementById('res-title').textContent=pct>=90?'Excellent!':pct>=70?'Passed!':'Needs Work';document.getElementById('res-sub').textContent=`${score} correct out of ${total}`;const v=document.getElementById('res-verdict');v.textContent=passed?'✓ Passed — above 70%':'✗ Below 70% — please retry';v.className='result-verdict '+(passed?'pass':'fail');const rv=document.getElementById('review');rv.innerHTML='<h3>Review</h3>';order.forEach(idx=>{const q=BANK[idx],ua=picks[idx],ok=ua===q.ans;const d=document.createElement('div');d.className='rv-item '+(ok?'ok':'miss');d.innerHTML=`<div class="rv-q"><span style="font-family:'DM Mono',monospace;font-size:10px;color:var(--purple-l)">${q.s}</span><br>${q.q}</div><div class="rv-a">${ok?`<span class="c">✓ ${q.opts[q.ans]}</span>`:`<span class="w">✗ ${ua!==undefined?q.opts[ua]:'—'}</span><br><span class="c">✓ ${q.opts[q.ans]}</span><br><span style="color:var(--muted)">${q.exp}</span>`}</div>`;rv.appendChild(d);});}
+function retryQuiz(){order=shuffle(order);cur=0;picks={};score=0;document.getElementById('q-score').textContent=0;show('quiz-screen');render();}
+document.getElementById('name-input').addEventListener('keydown',e=>{if(e.key==='Enter')startQuiz();});
+</script>
+</body>
+</html>

@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Interview & Professional Skills — July 2026 Exam</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📖</text></svg>">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@400;500&display=swap');
+  :root{--bg:#080810;--surface:#11111f;--border:#1e1e35;--purple:#7c3aed;--purple-l:#9d5bf0;--green:#22c55e;--red:#ef4444;--text:#e8e8f0;--muted:#7070a0;}
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Syne',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;align-items:center;justify-content:center;}
+  body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px);background-size:40px 40px;opacity:.4;pointer-events:none;z-index:0;}
+  .screen{position:relative;z-index:1;width:100%;max-width:660px;margin:0 auto;padding:24px 20px 48px;display:none;}
+  .screen.active{display:block;}
+  #name-screen{text-align:center;padding-top:80px;}
+  .back-link{display:inline-flex;align-items:center;gap:6px;font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);text-decoration:none;letter-spacing:1px;margin-bottom:48px;transition:color .2s;}
+  .back-link:hover{color:var(--purple-l);}
+  .subject-tag{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--purple-l);margin-bottom:12px;}
+  #name-screen h1{font-size:clamp(22px,5vw,36px);font-weight:800;line-height:1.15;margin-bottom:8px;background:linear-gradient(135deg,#fff 30%,var(--purple-l));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+  #name-screen p{color:var(--muted);font-family:'DM Mono',monospace;font-size:12px;margin-bottom:40px;}
+  .name-box{display:flex;flex-direction:column;align-items:center;gap:12px;}
+  .name-box input{width:100%;max-width:320px;padding:12px 16px;background:var(--surface);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:'Syne',sans-serif;font-size:15px;outline:none;text-align:center;}
+  .name-box input:focus{border-color:var(--purple);}
+  .name-box input::placeholder{color:var(--muted);}
+  .btn-primary{padding:12px 32px;background:var(--purple);color:#fff;border:none;border-radius:8px;font-family:'Syne',sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:background .2s,transform .1s;}
+  .btn-primary:hover{background:var(--purple-l);transform:translateY(-1px);}
+  .quiz-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;}
+  .quiz-meta{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);}
+  .quiz-meta span{color:var(--purple-l);font-weight:500;}
+  .quiz-back{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);background:none;border:1px solid var(--border);padding:5px 10px;border-radius:6px;cursor:pointer;}
+  .quiz-back:hover{color:var(--text);border-color:var(--purple);}
+  .progress-bar{width:100%;height:3px;background:var(--border);border-radius:2px;margin-bottom:16px;overflow:hidden;}
+  .progress-fill{height:100%;background:linear-gradient(90deg,var(--purple),var(--purple-l));border-radius:2px;transition:width .3s ease;}
+  .section-label{font-family:'DM Mono',monospace;font-size:10px;color:var(--green);letter-spacing:2px;text-transform:uppercase;margin-bottom:6px;padding:4px 10px;background:rgba(34,197,94,.08);border-radius:4px;display:inline-block;}
+  .question-num{font-family:'DM Mono',monospace;font-size:10px;color:var(--purple-l);letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;margin-top:8px;}
+  .question-text{font-size:clamp(15px,3vw,18px);font-weight:600;line-height:1.5;margin-bottom:28px;}
+  .options{display:flex;flex-direction:column;gap:10px;}
+  .opt-btn{display:flex;align-items:center;gap:12px;padding:13px 16px;background:var(--surface);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:'Syne',sans-serif;font-size:14px;cursor:pointer;text-align:left;width:100%;}
+  .opt-btn:hover:not(:disabled){border-color:var(--purple);background:#16162a;}
+  .opt-btn .opt-letter{flex-shrink:0;width:26px;height:26px;border-radius:6px;background:var(--border);display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);}
+  .opt-btn:hover:not(:disabled) .opt-letter{background:var(--purple);color:#fff;}
+  .opt-btn.correct{border-color:var(--green);background:rgba(34,197,94,.1);}
+  .opt-btn.correct .opt-letter{background:var(--green);color:#fff;}
+  .opt-btn.wrong{border-color:var(--red);background:rgba(239,68,68,.1);}
+  .opt-btn.wrong .opt-letter{background:var(--red);color:#fff;}
+  .opt-btn:disabled{cursor:default;}
+  .explanation{display:none;margin-top:16px;padding:14px 16px;background:rgba(124,58,237,.1);border:1px solid rgba(124,58,237,.25);border-left:3px solid var(--purple);border-radius:8px;font-size:13px;line-height:1.6;color:#c4b5fd;font-family:'DM Mono',monospace;}
+  .explanation.show{display:block;}
+  .action-row{display:flex;gap:10px;margin-top:24px;}
+  .next-btn{flex:1;padding:13px;background:var(--purple);color:#fff;border:none;border-radius:8px;font-family:'Syne',sans-serif;font-size:14px;font-weight:700;cursor:pointer;display:none;}
+  .next-btn:hover{background:var(--purple-l);}
+  .next-btn.show{display:block;}
+  .quit-btn{padding:13px 18px;background:none;border:1px solid var(--border);border-radius:8px;color:var(--muted);font-family:'DM Mono',monospace;font-size:12px;cursor:pointer;display:none;white-space:nowrap;}
+  .quit-btn:hover{color:var(--text);border-color:var(--purple);}
+  .quit-btn.show{display:block;}
+  #results-screen{text-align:center;padding-top:40px;}
+  .result-name{font-family:'DM Mono',monospace;font-size:12px;color:var(--muted);margin-bottom:32px;}
+  .score-ring{position:relative;width:160px;height:160px;margin:0 auto 28px;}
+  .score-ring svg{transform:rotate(-90deg);}
+  .score-ring .ring-bg{fill:none;stroke:var(--border);stroke-width:10;}
+  .score-ring .ring-fill{fill:none;stroke-width:10;stroke-linecap:round;transition:stroke-dashoffset 1s ease,stroke .5s;}
+  .score-ring .ring-text{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+  .ring-pct{font-size:34px;font-weight:800;line-height:1;}
+  .ring-label{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);margin-top:4px;letter-spacing:1px;}
+  .result-title{font-size:24px;font-weight:800;margin-bottom:8px;}
+  .result-sub{font-family:'DM Mono',monospace;font-size:12px;color:var(--muted);margin-bottom:8px;}
+  .result-verdict{font-family:'DM Mono',monospace;font-size:12px;padding:8px 20px;border-radius:20px;display:inline-block;margin-bottom:32px;}
+  .result-verdict.pass{background:rgba(34,197,94,.12);color:var(--green);border:1px solid rgba(34,197,94,.3);}
+  .result-verdict.fail{background:rgba(239,68,68,.12);color:var(--red);border:1px solid rgba(239,68,68,.3);}
+  .result-actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:40px;}
+  .btn-outline{padding:11px 24px;background:none;border:1px solid var(--border);border-radius:8px;color:var(--muted);font-family:'Syne',sans-serif;font-size:13px;font-weight:600;cursor:pointer;}
+  .btn-outline:hover{border-color:var(--purple);color:var(--text);}
+  .review{text-align:left;}
+  .review h3{font-size:13px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:2px;margin-bottom:16px;font-family:'DM Mono',monospace;}
+  .rv-item{padding:14px 16px;border-radius:8px;margin-bottom:10px;border:1px solid var(--border);}
+  .rv-item.ok{border-color:rgba(34,197,94,.25);background:rgba(34,197,94,.05);}
+  .rv-item.miss{border-color:rgba(239,68,68,.25);background:rgba(239,68,68,.05);}
+  .rv-q{font-size:13px;font-weight:600;margin-bottom:8px;line-height:1.4;}
+  .rv-a{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);line-height:1.6;}
+  .rv-a .c{color:var(--green);}
+  .rv-a .w{color:var(--red);}
+</style>
+</head>
+<body>
+<div class="screen active" id="name-screen">
+  <a class="back-link" href="index.html">← Back to subjects</a>
+  <div class="subject-tag">English · Topic 08</div>
+  <h1>Interview & Professional Skills</h1>
+  <p>25 questions · Common interview questions · Do's & don'ts · Grooming · Professional appearance</p>
+  <div class="name-box">
+    <input type="text" id="name-input" placeholder="Enter your name" maxlength="30" autocomplete="off">
+    <button class="btn-primary" onclick="startQuiz()">Start Quiz</button>
+  </div>
+</div>
+<div class="screen" id="quiz-screen">
+  <div class="quiz-header">
+    <div class="quiz-meta">Question <span id="q-num">1</span> of <span id="q-total">25</span></div>
+    <div class="quiz-meta">Score <span id="q-score">0</span></div>
+    <button class="quiz-back" onclick="goBack()">← Quit</button>
+  </div>
+  <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+  <div class="section-label" id="section-label"></div>
+  <div class="question-num" id="q-label"></div>
+  <div class="question-text" id="q-text"></div>
+  <div class="options" id="options"></div>
+  <div class="explanation" id="explanation"></div>
+  <div class="action-row">
+    <button class="quit-btn" id="quit-btn" onclick="goBack()">← Back to subjects</button>
+    <button class="next-btn" id="next-btn" onclick="nextQuestion()">Next Question →</button>
+  </div>
+</div>
+<div class="screen" id="results-screen">
+  <div class="result-name" id="result-name"></div>
+  <div class="score-ring">
+    <svg viewBox="0 0 160 160" width="160" height="160">
+      <circle class="ring-bg" cx="80" cy="80" r="70"/>
+      <circle class="ring-fill" id="ring-fill" cx="80" cy="80" r="70" stroke-dasharray="439.82" stroke-dashoffset="439.82" stroke="var(--green)"/>
+    </svg>
+    <div class="ring-text">
+      <div class="ring-pct" id="ring-pct">0%</div>
+      <div class="ring-label">SCORE</div>
+    </div>
+  </div>
+  <div class="result-title" id="res-title"></div>
+  <div class="result-sub" id="res-sub"></div>
+  <div class="result-verdict" id="res-verdict"></div>
+  <div class="result-actions">
+    <button class="btn-primary" onclick="retryQuiz()">Retry →</button>
+    <button class="btn-outline" onclick="window.location.href='index.html'">All Subjects</button>
+  </div>
+  <div class="review" id="review"></div>
+</div>
+<script>
+const BANK=[
+{s:"🎤 Interview Questions",q:"What is the purpose of a job interview?",opts:["To test the candidate's academic qualifications through a written examination","To select a suitable employee by judging their confidence, personality, communication skills, and knowledge","To give candidates a tour of the workplace before they are automatically hired","To check how quickly a candidate can complete a practical cooking task"],ans:1,exp:"The purpose of an interview is to select a suitable employee. Employers use it to judge a candidate's confidence, personality, communication skills, experience, and future goals."},
+{s:"🎤 Interview Questions",q:"What does 'Tell me about yourself' typically ask for?",opts:["A complete list of every job you have ever held in chronological order","Your full personal biography including family background and childhood","A brief professional introduction covering your background, skills, and career goals","A detailed description of your daily routine and personal hobbies"],ans:2,exp:"'Tell me about yourself' is one of the most common interview openers. It asks for a brief, professional introduction — your background, relevant skills, experience, and why you are suited for the role. Keep it concise and focused on your professional self."},
+{s:"🎤 Interview Questions",q:"What does 'Why do you want this job?' assess?",opts:["Whether the candidate has memorised the full history of the company","The candidate's punctuality and ability to arrive at the interview on time","The candidate's motivation, genuine interest in the role, and fit with the organisation","Whether the candidate can name all the managers in the department"],ans:2,exp:"'Why do you want this job?' assesses the candidate's motivation and genuine interest. Employers want to know if you are applying because you genuinely want this specific role — or just any available position."},
+{s:"🎤 Interview Questions",q:"What is the purpose of 'What are your strengths?' in an interview?",opts:["To test if the candidate can recite a prepared list without any examples","To assess the candidate's self-awareness and ability to identify their positive skills","To find weaknesses that are disguised as strengths by inexperienced candidates","To check whether the candidate has read the job description carefully"],ans:1,exp:"'What are your strengths?' tests self-awareness and the ability to identify positive skills, traits, and abilities. Strengths include being organised, confident, a good team player, skilled, or knowledgeable. Giving specific examples makes the answer more convincing."},
+{s:"🎤 Interview Questions",q:"What does 'What are your weaknesses?' test in a candidate?",opts:["The ability to criticise yourself harshly and list every personal flaw","Honesty and self-reflection — the ability to identify areas for improvement professionally","The candidate's willingness to share personal problems with strangers","Whether the candidate will admit to being completely unqualified for the role"],ans:1,exp:"'What are your weaknesses?' tests honesty and self-reflection. A good answer acknowledges a genuine area for improvement while showing that you are actively working on it. Never say 'I have no weaknesses' — it appears dishonest."},
+{s:"🎤 Interview Questions",q:"What does 'Why should we hire you?' ask a candidate to demonstrate?",opts:["The ability to memorise company statistics and recite them accurately","The candidate's value proposition — what unique skills and qualities they bring to the role","A comparison between themselves and all other candidates who applied","Their ability to negotiate a higher salary than the advertised rate"],ans:1,exp:"'Why should we hire you?' asks candidates to articulate their value — what unique skills, experience, and qualities make them the best fit for this specific role. A strong answer connects your strengths directly to the job requirements."},
+{s:"🎤 Interview Questions",q:"What does 'What are your future goals?' help employers assess?",opts:["Whether the candidate plans to stay in the same role for the next 30 years","The candidate's ambition, career direction, and how the role fits their development plan","Whether the candidate wants to become the general manager within the first year","The candidate's salary expectations for the next five years"],ans:1,exp:"'What are your future goals?' helps employers assess a candidate's ambition and career direction — and whether the role fits into their development plan. Employers prefer candidates with clear, realistic goals that align with the organisation's growth."},
+{s:"✅ Interview Do's & Don'ts",q:"Which of the following is a GOOD practice in a job interview?",opts:["Arriving 10 minutes late to demonstrate you are in high demand","Using your mobile phone to look up answers you don't know","Maintaining eye contact, sitting with good posture, and answering confidently","Interrupting the interviewer to add information before they finish speaking"],ans:2,exp:"Good interview practices include: maintaining eye contact (shows confidence), sitting with good posture (shows professionalism), dressing professionally (positive first impression), arriving on time (shows respect), and answering questions confidently and politely."},
+{s:"✅ Interview Do's & Don'ts",q:"What is considered a serious mistake in a job interview?",opts:["Asking a relevant question at the end of the interview to show genuine interest","Smiling politely and greeting the interviewer with a firm handshake","Using a mobile phone during the interview","Giving specific examples from your experience to support your answers"],ans:2,exp:"Using a mobile phone during an interview is a serious mistake — it shows disrespect, lack of focus, and poor professionalism. Other mistakes: interrupting the interviewer, speaking too fast, poor posture, negative attitude, and lack of confidence."},
+{s:"✅ Interview Do's & Don'ts",q:"Why is arriving on time for an interview important?",opts:["It allows you to memorise the company's name before meeting the panel","It shows respect for the interviewer's time and demonstrates reliability","It gives you time to rehearse your answers in the waiting room","It is required by law in most countries for all formal job interviews"],ans:1,exp:"Arriving on time for an interview shows respect and reliability — two qualities employers value highly. Arriving early (5–10 minutes) also gives you time to compose yourself before the interview begins."},
+{s:"✅ Interview Do's & Don'ts",q:"What does 'preparing answers to common questions in advance' do for interview performance?",opts:["It makes the answers sound scripted and robotic — reducing authenticity","It helps the candidate remember personal information they might otherwise forget","It improves performance by reducing nervousness and ensuring clearer, more structured answers","It is unnecessary if the candidate is naturally confident and communicative"],ans:2,exp:"Preparing answers in advance improves interview performance — it reduces nervousness, ensures answers are clear and structured, and allows the candidate to include relevant examples. It shows initiative and genuine interest in the role."},
+{s:"✅ Interview Do's & Don'ts",q:"What does asking relevant questions at the END of an interview demonstrate?",opts:["Aggression and an unwillingness to accept the job on the employer's terms","Lack of preparation because the candidate should already know all the answers","Genuine interest in the role and organisation — and active engagement in the interview","A desire to extend the interview unnecessarily to make a longer impression"],ans:2,exp:"Asking relevant questions at the end of an interview demonstrates genuine interest in the role and organisation. Good questions include asking about team culture, training, or expectations for the role. It shows the candidate has done research and is thinking seriously about the position."},
+{s:"✅ Interview Do's & Don'ts",q:"Which of the following is correct about an interview process?",opts:["An interview is a one-way process where only the employer evaluates the candidate","An interview is a two-way process where the candidate also evaluates the employer","An interview is only relevant for senior positions — junior staff are hired without one","An interview is always conducted in writing — never face-to-face in modern settings"],ans:1,exp:"An interview is a two-way process — the candidate also evaluates the employer to decide if the role and organisation are a good fit. Asking thoughtful questions and observing the workplace culture are part of this evaluation."},
+{s:"👔 Grooming & Professional Appearance",q:"Why is professional grooming important in hospitality?",opts:["It is only important for managers and senior staff who meet guests regularly","It shows professionalism, respect for the job, and attention to detail — and builds customer trust","Grooming standards are optional in the hospitality industry — personal choice is respected","It is important only when working in luxury five-star hotels — not in casual dining"],ans:1,exp:"Professional presentation, attire, hygiene, and grooming reflect a person's professionalism, respect for the job, and attention to detail. Well-groomed employees are perceived as more approachable, confident, and competent — strengthening customer trust and enhancing the guest experience."},
+{s:"👔 Grooming & Professional Appearance",q:"What is the correct requirement for shoes and socks in a professional hospitality uniform?",opts:["Shoes can be any dark colour — navy, brown, or black — with patterned socks","Shoes must be plain black with no colour detail and socks must cover the ankle","Shoes must be white for hygiene reasons with black non-slip soles","Any comfortable shoe is acceptable as long as it is clean and polished"],ans:1,exp:"Shoes and socks must be plain black — fully black with no colour detail. Socks must cover the ankle. This maintains a consistent, polished professional appearance as part of the hospitality uniform standard."},
+{s:"👔 Grooming & Professional Appearance",q:"What is the correct standard for uniforms in professional hospitality?",opts:["Uniforms must include all mandatory accessories and must be free from stains and wrinkles","Uniforms may be worn for two days without washing if they appear clean","Any version of the uniform is acceptable as long as the name badge is visible","Uniforms are optional on days when there are no guest-facing interactions"],ans:0,exp:"Uniforms must include all mandatory accessories and must be free from stains and wrinkles. A stained or wrinkled uniform creates a negative impression and undermines the professional image of both the employee and the establishment."},
+{s:"👔 Grooming & Professional Appearance",q:"What is the ideal gap between the shirt cuff and blazer sleeve in a professional uniform?",opts:["No gap — the blazer sleeve should completely cover the shirt cuff at all times","½ to 1 inch — showing a small portion of the shirt cuff for a polished look","2 to 3 inches — showing a substantial portion of the shirt for visual contrast","The cuff should extend 2 inches beyond the blazer sleeve for maximum elegance"],ans:1,exp:"The ideal gap between the shirt cuff and blazer sleeve is ½ to 1 inch — showing a small portion of the shirt cuff. This detail reflects attention to grooming and creates a polished, professional appearance."},
+{s:"👔 Grooming & Professional Appearance",q:"What are the nail requirements for hospitality professionals?",opts:["Nails can be any length as long as they are clean and a natural colour","Nails must be short, trimmed, and clean — nail polish should be avoided","Long nails are acceptable for front-of-house staff but not for kitchen staff","Coloured nail polish is permitted for female staff in all hospitality settings"],ans:1,exp:"Nails must be short, trimmed, and clean — and nail polish should be avoided. This applies to all hospitality professionals. In food service, it is also a hygiene requirement — long nails and nail polish can contaminate food."},
+{s:"👔 Grooming & Professional Appearance",q:"What is the requirement for fragrance in a professional hospitality setting?",opts:["No fragrance at all — deodorant is the only permitted scent in hospitality","Strong, distinctive fragrances are encouraged to create a memorable impression","Use only a mild fragrance — avoid strong or overpowering scents","Fragrances are entirely unrestricted — personal preference is always respected"],ans:2,exp:"Only a mild fragrance should be used — strong or overpowering scents should be avoided. In hospitality, strong perfume can disturb guests, mask food aromas, or cause allergic reactions. This applies to all staff."},
+{s:"👔 Grooming & Professional Appearance",q:"What is the makeup standard for female hospitality staff?",opts:["Bold, vibrant makeup is encouraged to create a confident, memorable impression","No makeup is permitted — all staff must present a completely natural face","Makeup must be soft and discreet — no strong lipstick, no heavy eyeshadow","Only red lipstick is permitted — it is the traditional colour for hospitality uniform"],ans:2,exp:"Makeup must be soft and discreet — no strong lipstick, no heavy eyeshadow. Subtle, professional makeup enhances appearance without being distracting. The goal is a polished, natural look that reflects professionalism."},
+{s:"👔 Grooming & Professional Appearance",q:"What is the beard requirement for male hospitality staff?",opts:["Beards are completely prohibited — all male staff must be clean-shaven at all times","Beards of any length and style are permitted as a personal expression of identity","Beards must be clean and trimmed for a sharp, professional look","Beards are only permitted for senior staff above the position of supervisor"],ans:2,exp:"Beards must be clean and trimmed for a sharp, professional look. Unkempt or untidy beards are not acceptable in professional hospitality settings. Presentation standards apply to facial hair just as they do to clothing and nails."},
+{s:"👔 Grooming & Professional Appearance",q:"What are the hair requirements for hospitality professionals?",opts:["Hair can be worn in any style as long as it is clean and freshly washed","Long, flowing hair is encouraged for a relaxed, approachable hospitality look","Hair should be neatly tied back for both male and female staff — avoid long unkempt styles","Hair colour must be natural — no highlights, colour treatment, or styling products"],ans:2,exp:"Hair should be neatly tied back for both male and female staff. Avoid long and unkempt hairstyles — maintain a professional haircut. In kitchen environments, hair must also be covered with a hat or hairnet as a food safety measure."},
+{s:"👔 Grooming & Professional Appearance",q:"What does the jewellery standard require for hospitality professionals?",opts:["Jewellery is unrestricted as it reflects the individual's cultural identity","Bold, statement jewellery is encouraged to create a memorable guest impression","Jewellery must be minimal — and in kitchen environments should be completely avoided","Female staff may wear any jewellery but male staff must wear none"],ans:2,exp:"Jewellery must be minimal in professional hospitality settings. In kitchen environments, jewellery should be completely avoided — it can harbour bacteria, fall into food, or get caught in equipment, creating both hygiene and safety hazards."},
+{s:"👔 Grooming & Professional Appearance",q:"Why are professional appearance and grooming described as a 'reflection of professionalism'?",opts:["Because physical appearance is the only factor used by employers when hiring staff","Because well-groomed staff are perceived as more approachable, confident, and competent — building customer trust and enhancing the guest experience","Because guests always judge a restaurant entirely on the appearance of staff — not on food quality","Because grooming standards are set by government regulations in all countries"],ans:1,exp:"Professional presentation is a reflection of professionalism, respect for the job, and attention to detail. Well-groomed employees are perceived as more approachable, confident, and competent — this directly strengthens customer trust and enhances the overall guest experience."},
+{s:"👔 Grooming & Professional Appearance",q:"Which of these is a complete list of POSITIVE interview behaviours?",opts:["Arriving late, using phone, speaking fast, avoiding eye contact, wearing casual clothes","Dressing professionally, arriving on time, maintaining eye contact, sitting properly, answering confidently, listening carefully","Interrupting, disagreeing with the interviewer, bringing a friend for support, chewing gum","Wearing minimal clothing, speaking in a dialect, discussing salary immediately, leaving early"],ans:1,exp:"Positive interview behaviours: dress professionally (first impression), arrive on time (reliability), maintain eye contact (confidence), sit with good posture (professionalism), answer confidently, listen carefully, smile politely, and use formal language throughout."}
+];
+let order=[],cur=0,picks={},playerName='',score=0;
+function shuffle(a){const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]];}return b;}
+function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');window.scrollTo(0,0);}
+function goBack(){if(confirm('Quit quiz?'))window.location.href='index.html';}
+function startQuiz(){playerName=document.getElementById('name-input').value.trim()||'Anonymous';order=shuffle(BANK.map((_,i)=>i));cur=0;picks={};score=0;document.getElementById('q-total').textContent=BANK.length;show('quiz-screen');render();}
+function render(){const idx=order[cur],q=BANK[idx],total=BANK.length;document.getElementById('q-num').textContent=cur+1;document.getElementById('q-score').textContent=score;document.getElementById('section-label').textContent=q.s;document.getElementById('q-label').textContent=`Question ${cur+1} of ${total}`;document.getElementById('q-text').textContent=q.q;document.getElementById('progress-fill').style.width=((cur/total)*100)+'%';document.getElementById('explanation').className='explanation';document.getElementById('next-btn').className='next-btn';document.getElementById('quit-btn').className='quit-btn';const optEl=document.getElementById('options');optEl.innerHTML='';shuffle([0,1,2,3]).forEach((oi,li)=>{const btn=document.createElement('button');btn.className='opt-btn';btn.dataset.opt=oi;btn.innerHTML=`<span class="opt-letter">${'ABCD'[li]}</span><span>${q.opts[oi]}</span>`;btn.onclick=()=>select(oi,idx);optEl.appendChild(btn);});}
+function select(chosen,idx){const q=BANK[idx],ok=chosen===q.ans;picks[idx]=chosen;if(ok)score++;document.getElementById('q-score').textContent=score;document.querySelectorAll('.opt-btn').forEach(b=>{b.disabled=true;const oi=parseInt(b.dataset.opt);if(oi===q.ans)b.classList.add('correct');else if(oi===chosen&&!ok)b.classList.add('wrong');});if(!ok){const e=document.getElementById('explanation');e.textContent='✗ '+q.exp;e.classList.add('show');}const nb=document.getElementById('next-btn');nb.classList.add('show');nb.textContent=cur+1<BANK.length?'Next →':'See Results →';document.getElementById('quit-btn').classList.add('show');}
+function nextQuestion(){cur++;if(cur>=BANK.length)showResults();else{render();window.scrollTo(0,0);}}
+function showResults(){show('results-screen');const total=BANK.length,pct=Math.round((score/total)*100),passed=pct>=70;document.getElementById('result-name').textContent=playerName;document.getElementById('ring-pct').textContent=pct+'%';document.getElementById('ring-pct').style.color=passed?'var(--green)':'var(--red)';document.getElementById('ring-fill').style.stroke=passed?'var(--green)':'var(--red)';setTimeout(()=>{document.getElementById('ring-fill').style.strokeDashoffset=439.82-(439.82*pct/100);},100);document.getElementById('res-title').textContent=pct>=90?'Excellent!':pct>=70?'Passed!':'Needs Work';document.getElementById('res-sub').textContent=`${score} correct out of ${total}`;const v=document.getElementById('res-verdict');v.textContent=passed?'✓ Passed — above 70%':'✗ Below 70% — please retry';v.className='result-verdict '+(passed?'pass':'fail');const rv=document.getElementById('review');rv.innerHTML='<h3>Review</h3>';order.forEach(idx=>{const q=BANK[idx],ua=picks[idx],ok=ua===q.ans;const d=document.createElement('div');d.className='rv-item '+(ok?'ok':'miss');d.innerHTML=`<div class="rv-q"><span style="font-family:'DM Mono',monospace;font-size:10px;color:var(--purple-l)">${q.s}</span><br>${q.q}</div><div class="rv-a">${ok?`<span class="c">✓ ${q.opts[q.ans]}</span>`:`<span class="w">✗ ${ua!==undefined?q.opts[ua]:'—'}</span><br><span class="c">✓ ${q.opts[q.ans]}</span><br><span style="color:var(--muted)">${q.exp}</span>`}</div>`;rv.appendChild(d);});}
+function retryQuiz(){order=shuffle(order);cur=0;picks={};score=0;document.getElementById('q-score').textContent=0;show('quiz-screen');render();}
+document.getElementById('name-input').addEventListener('keydown',e=>{if(e.key==='Enter')startQuiz();});
+</script>
+</body>
+</html>

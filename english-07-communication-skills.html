@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Communication Skills — July 2026 Exam</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📖</text></svg>">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@400;500&display=swap');
+  :root{--bg:#080810;--surface:#11111f;--border:#1e1e35;--purple:#7c3aed;--purple-l:#9d5bf0;--green:#22c55e;--red:#ef4444;--text:#e8e8f0;--muted:#7070a0;}
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Syne',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;align-items:center;justify-content:center;}
+  body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px);background-size:40px 40px;opacity:.4;pointer-events:none;z-index:0;}
+  .screen{position:relative;z-index:1;width:100%;max-width:660px;margin:0 auto;padding:24px 20px 48px;display:none;}
+  .screen.active{display:block;}
+  #name-screen{text-align:center;padding-top:80px;}
+  .back-link{display:inline-flex;align-items:center;gap:6px;font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);text-decoration:none;letter-spacing:1px;margin-bottom:48px;transition:color .2s;}
+  .back-link:hover{color:var(--purple-l);}
+  .subject-tag{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--purple-l);margin-bottom:12px;}
+  #name-screen h1{font-size:clamp(22px,5vw,36px);font-weight:800;line-height:1.15;margin-bottom:8px;background:linear-gradient(135deg,#fff 30%,var(--purple-l));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+  #name-screen p{color:var(--muted);font-family:'DM Mono',monospace;font-size:12px;margin-bottom:40px;}
+  .name-box{display:flex;flex-direction:column;align-items:center;gap:12px;}
+  .name-box input{width:100%;max-width:320px;padding:12px 16px;background:var(--surface);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:'Syne',sans-serif;font-size:15px;outline:none;text-align:center;transition:border-color .2s;}
+  .name-box input:focus{border-color:var(--purple);}
+  .name-box input::placeholder{color:var(--muted);}
+  .btn-primary{padding:12px 32px;background:var(--purple);color:#fff;border:none;border-radius:8px;font-family:'Syne',sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:background .2s,transform .1s;letter-spacing:.5px;}
+  .btn-primary:hover{background:var(--purple-l);transform:translateY(-1px);}
+  .quiz-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;}
+  .quiz-meta{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);}
+  .quiz-meta span{color:var(--purple-l);font-weight:500;}
+  .quiz-back{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);background:none;border:1px solid var(--border);padding:5px 10px;border-radius:6px;cursor:pointer;transition:color .2s,border-color .2s;}
+  .quiz-back:hover{color:var(--text);border-color:var(--purple);}
+  .progress-bar{width:100%;height:3px;background:var(--border);border-radius:2px;margin-bottom:16px;overflow:hidden;}
+  .progress-fill{height:100%;background:linear-gradient(90deg,var(--purple),var(--purple-l));border-radius:2px;transition:width .3s ease;}
+  .section-label{font-family:'DM Mono',monospace;font-size:10px;color:var(--green);letter-spacing:2px;text-transform:uppercase;margin-bottom:6px;padding:4px 10px;background:rgba(34,197,94,.08);border-radius:4px;display:inline-block;}
+  .question-num{font-family:'DM Mono',monospace;font-size:10px;color:var(--purple-l);letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;margin-top:8px;}
+  .question-text{font-size:clamp(15px,3vw,18px);font-weight:600;line-height:1.5;margin-bottom:28px;color:var(--text);}
+  .options{display:flex;flex-direction:column;gap:10px;}
+  .opt-btn{display:flex;align-items:center;gap:12px;padding:13px 16px;background:var(--surface);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:'Syne',sans-serif;font-size:14px;font-weight:400;cursor:pointer;text-align:left;transition:border-color .15s,background .15s;width:100%;}
+  .opt-btn:hover:not(:disabled){border-color:var(--purple);background:#16162a;}
+  .opt-btn .opt-letter{flex-shrink:0;width:26px;height:26px;border-radius:6px;background:var(--border);display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);transition:background .15s,color .15s;}
+  .opt-btn:hover:not(:disabled) .opt-letter{background:var(--purple);color:#fff;}
+  .opt-btn.correct{border-color:var(--green);background:rgba(34,197,94,.1);}
+  .opt-btn.correct .opt-letter{background:var(--green);color:#fff;}
+  .opt-btn.wrong{border-color:var(--red);background:rgba(239,68,68,.1);}
+  .opt-btn.wrong .opt-letter{background:var(--red);color:#fff;}
+  .opt-btn:disabled{cursor:default;}
+  .explanation{display:none;margin-top:16px;padding:14px 16px;background:rgba(124,58,237,.1);border:1px solid rgba(124,58,237,.25);border-left:3px solid var(--purple);border-radius:8px;font-size:13px;line-height:1.6;color:#c4b5fd;font-family:'DM Mono',monospace;}
+  .explanation.show{display:block;}
+  .action-row{display:flex;gap:10px;margin-top:24px;}
+  .next-btn{flex:1;padding:13px;background:var(--purple);color:#fff;border:none;border-radius:8px;font-family:'Syne',sans-serif;font-size:14px;font-weight:700;cursor:pointer;display:none;transition:background .2s;letter-spacing:.5px;}
+  .next-btn:hover{background:var(--purple-l);}
+  .next-btn.show{display:block;}
+  .quit-btn{padding:13px 18px;background:none;border:1px solid var(--border);border-radius:8px;color:var(--muted);font-family:'DM Mono',monospace;font-size:12px;cursor:pointer;display:none;transition:color .2s,border-color .2s;white-space:nowrap;}
+  .quit-btn:hover{color:var(--text);border-color:var(--purple);}
+  .quit-btn.show{display:block;}
+  #results-screen{text-align:center;padding-top:40px;}
+  .result-name{font-family:'DM Mono',monospace;font-size:12px;color:var(--muted);margin-bottom:32px;}
+  .score-ring{position:relative;width:160px;height:160px;margin:0 auto 28px;}
+  .score-ring svg{transform:rotate(-90deg);}
+  .score-ring .ring-bg{fill:none;stroke:var(--border);stroke-width:10;}
+  .score-ring .ring-fill{fill:none;stroke-width:10;stroke-linecap:round;transition:stroke-dashoffset 1s ease,stroke .5s;}
+  .score-ring .ring-text{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+  .ring-pct{font-size:34px;font-weight:800;line-height:1;}
+  .ring-label{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);margin-top:4px;letter-spacing:1px;}
+  .result-title{font-size:24px;font-weight:800;margin-bottom:8px;}
+  .result-sub{font-family:'DM Mono',monospace;font-size:12px;color:var(--muted);margin-bottom:8px;}
+  .result-verdict{font-family:'DM Mono',monospace;font-size:12px;padding:8px 20px;border-radius:20px;display:inline-block;margin-bottom:32px;}
+  .result-verdict.pass{background:rgba(34,197,94,.12);color:var(--green);border:1px solid rgba(34,197,94,.3);}
+  .result-verdict.fail{background:rgba(239,68,68,.12);color:var(--red);border:1px solid rgba(239,68,68,.3);}
+  .result-actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:40px;}
+  .btn-outline{padding:11px 24px;background:none;border:1px solid var(--border);border-radius:8px;color:var(--muted);font-family:'Syne',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:border-color .2s,color .2s;}
+  .btn-outline:hover{border-color:var(--purple);color:var(--text);}
+  .review{text-align:left;}
+  .review h3{font-size:13px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:2px;margin-bottom:16px;font-family:'DM Mono',monospace;}
+  .rv-item{padding:14px 16px;border-radius:8px;margin-bottom:10px;border:1px solid var(--border);}
+  .rv-item.ok{border-color:rgba(34,197,94,.25);background:rgba(34,197,94,.05);}
+  .rv-item.miss{border-color:rgba(239,68,68,.25);background:rgba(239,68,68,.05);}
+  .rv-q{font-size:13px;font-weight:600;margin-bottom:8px;line-height:1.4;}
+  .rv-a{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);line-height:1.6;}
+  .rv-a .c{color:var(--green);}
+  .rv-a .w{color:var(--red);}
+</style>
+</head>
+<body>
+<div class="screen active" id="name-screen">
+  <a class="back-link" href="index.html">← Back to subjects</a>
+  <div class="subject-tag">English · Topic 07</div>
+  <h1>Communication Skills</h1>
+  <p>35 questions · Art of communication · 7 C's · Verbal vs Non-Verbal · Body Language · Barriers</p>
+  <div class="name-box">
+    <input type="text" id="name-input" placeholder="Enter your name" maxlength="30" autocomplete="off">
+    <button class="btn-primary" onclick="startQuiz()">Start Quiz</button>
+  </div>
+</div>
+<div class="screen" id="quiz-screen">
+  <div class="quiz-header">
+    <div class="quiz-meta">Question <span id="q-num">1</span> of <span id="q-total">35</span></div>
+    <div class="quiz-meta">Score <span id="q-score">0</span></div>
+    <button class="quiz-back" onclick="goBack()">← Quit</button>
+  </div>
+  <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+  <div class="section-label" id="section-label"></div>
+  <div class="question-num" id="q-label"></div>
+  <div class="question-text" id="q-text"></div>
+  <div class="options" id="options"></div>
+  <div class="explanation" id="explanation"></div>
+  <div class="action-row">
+    <button class="quit-btn" id="quit-btn" onclick="goBack()">← Back to subjects</button>
+    <button class="next-btn" id="next-btn" onclick="nextQuestion()">Next Question →</button>
+  </div>
+</div>
+<div class="screen" id="results-screen">
+  <div class="result-name" id="result-name"></div>
+  <div class="score-ring">
+    <svg viewBox="0 0 160 160" width="160" height="160">
+      <circle class="ring-bg" cx="80" cy="80" r="70"/>
+      <circle class="ring-fill" id="ring-fill" cx="80" cy="80" r="70" stroke-dasharray="439.82" stroke-dashoffset="439.82" stroke="var(--green)"/>
+    </svg>
+    <div class="ring-text">
+      <div class="ring-pct" id="ring-pct">0%</div>
+      <div class="ring-label">SCORE</div>
+    </div>
+  </div>
+  <div class="result-title" id="res-title"></div>
+  <div class="result-sub" id="res-sub"></div>
+  <div class="result-verdict" id="res-verdict"></div>
+  <div class="result-actions">
+    <button class="btn-primary" onclick="retryQuiz()">Retry →</button>
+    <button class="btn-outline" onclick="window.location.href='index.html'">All Subjects</button>
+  </div>
+  <div class="review" id="review"></div>
+</div>
+<script>
+const BANK=[
+// === SECTION A: ART OF EFFECTIVE COMMUNICATION ===
+{s:"🗣️ Art of Effective Communication",q:"What is communication?",opts:["The process of writing formal reports and submitting them through official channels","The process of exchanging ideas, feelings, thoughts, and information between two or more people","The process of listening to instructions without providing any response or feedback","The process of sending messages through technology only — email, text, and social media"],ans:1,exp:"Communication is the process of exchanging ideas, feelings, thoughts, and information between two or more people. It requires at least two parties — a sender and a receiver."},
+{s:"🗣️ Art of Effective Communication",q:"What does 'effective communication' mean?",opts:["Sending as many messages as possible in a short period of time","Communicating only in writing to keep a clear record of all exchanges","When the receiver understands the message clearly and correctly without confusion","Communicating loudly and confidently so everyone in the room can hear"],ans:2,exp:"Effective communication means the receiver understands the message clearly and correctly without confusion. The goal is not just to speak — but to be understood."},
+{s:"🗣️ Art of Effective Communication",q:"What are the five main elements of communication?",opts:["Speaker, microphone, audience, screen, and applause","Sender, message, receiver, medium, and feedback","Words, tone, body language, emotion, and timing","Verbal, written, digital, visual, and physical channels"],ans:1,exp:"The five main elements of communication are: Sender (person who sends the message), Message (information being communicated), Receiver (person who receives it), Medium (method used — speaking, email etc.), and Feedback (response from receiver)."},
+{s:"🗣️ Art of Effective Communication",q:"What happens if there is no feedback in communication?",opts:["Communication becomes faster and more efficient without the delay of responses","Communication is considered incomplete — feedback confirms the message was understood","Communication automatically improves because the sender speaks more clearly","Nothing changes — feedback is optional and not essential to communication"],ans:1,exp:"Without feedback, communication is considered incomplete. Feedback is the response from the receiver that confirms the message was received and understood correctly. It makes communication a two-way process."},
+{s:"🗣️ Art of Effective Communication",q:"Why is communication important in hospitality?",opts:["It is used only by managers — kitchen staff and servers do not need communication skills","It improves customer satisfaction, builds teamwork, reduces mistakes, and creates a professional image","It is only important when dealing with international guests who speak different languages","It helps employees clock in and out accurately at the beginning and end of each shift"],ans:1,exp:"Communication is important in hospitality because it improves customer satisfaction, strengthens teamwork in the kitchen, helps solve problems quickly, reduces misunderstandings, and creates a professional image for staff and the establishment."},
+{s:"🗣️ Art of Effective Communication",q:"Which of the following is an example of effective verbal communication in hospitality?",opts:["A waiter writing the order on a napkin and leaving it on the table","A chef explaining orders clearly to staff in the kitchen before service","A manager texting instructions to all employees instead of holding a briefing","A server pointing at the menu instead of describing the dish to the guest"],ans:1,exp:"A chef explaining orders clearly to kitchen staff is effective verbal communication — it is spoken, clear, and purposeful. A waiter politely talking to a customer is another example of effective verbal communication in hospitality."},
+// === SECTION B: 7 C'S OF COMMUNICATION ===
+{s:"📋 The 7 C's of Communication",q:"How many C's are there in the 7 C's of Communication?",opts:["Five — Clarity, Confidence, Conciseness, Courtesy, and Correctness","Six — Clear, Concise, Correct, Complete, Coherent, and Courteous","Seven — Clear, Concise, Concrete, Correct, Coherent, Complete, and Courteous","Eight — including Consistency as the eighth C added in later versions"],ans:2,exp:"The 7 C's of Communication are: Clear, Concise, Concrete, Correct, Coherent, Complete, and Courteous. All seven must be present for communication to be truly effective."},
+{s:"📋 The 7 C's of Communication",q:"What does 'Clear' mean in the 7 C's of Communication?",opts:["Using technical jargon and industry terms to sound knowledgeable","The message should be easy to understand without ambiguity or confusion","Speaking at maximum volume so the receiver can always hear","Writing long detailed messages so nothing is left out"],ans:1,exp:"'Clear' means the message should be easy to understand without ambiguity. The receiver should not have to guess what the sender means. Clear communication avoids confusion and misinterpretation."},
+{s:"📋 The 7 C's of Communication",q:"What does 'Concise' mean in the 7 C's of Communication?",opts:["Using as many words as possible to be thorough and cover all points","Repeating the key message three times to make sure it is remembered","Keeping the message brief and to the point without unnecessary information","Using formal language and long sentences to demonstrate professionalism"],ans:2,exp:"'Concise' means keeping the message brief and to the point — no unnecessary words, repetition, or filler. Concise communication respects the receiver's time and makes the message easier to process."},
+{s:"📋 The 7 C's of Communication",q:"What does 'Concrete' mean in the 7 C's of Communication?",opts:["Using abstract ideas and vague language to allow the receiver to interpret the message freely","The message should be specific and supported by facts, figures, or clear examples","Writing the message on paper rather than delivering it digitally or verbally","Speaking in a low, firm tone to convey authority and decisiveness"],ans:1,exp:"'Concrete' means the message is specific, clear, and supported by facts or examples — not vague or abstract. For example: 'The food must be served at 75°C' is concrete. 'Serve it hot' is vague."},
+{s:"📋 The 7 C's of Communication",q:"What does 'Correct' mean in the 7 C's of Communication?",opts:["The message must agree with whatever the receiver already believes","Using accurate information, proper grammar, and correct spelling in the message","Sending the message at exactly the right time of day","Making sure the message is politically correct and avoids all controversy"],ans:1,exp:"'Correct' means using accurate information, proper grammar, correct spelling, and the right facts. Incorrect information or grammar errors damage credibility and can cause serious misunderstandings."},
+{s:"📋 The 7 C's of Communication",q:"What does 'Courteous' mean in the 7 C's of Communication?",opts:["Being direct and blunt to save time in professional communication","Sending long messages to show the receiver you value the relationship","Being polite, respectful, and considerate of the receiver's feelings and perspective","Speaking only when spoken to and never initiating communication"],ans:2,exp:"'Courteous' means being polite, respectful, and considerate. Courteous communication shows respect for the receiver's feelings and perspective — it uses positive language and avoids rudeness or arrogance."},
+{s:"📋 The 7 C's of Communication",q:"What does 'Coherent' mean in the 7 C's of Communication?",opts:["The message is very short — limited to one sentence for maximum impact","The message is logically organised and easy to follow from beginning to end","The message is sent at the most convenient time for the receiver","The message uses only the most basic vocabulary that everyone understands"],ans:1,exp:"'Coherent' means the message is logically organised and flows naturally from one point to the next. A coherent message is easy to follow — ideas are connected and presented in a logical sequence."},
+{s:"📋 The 7 C's of Communication",q:"What does 'Complete' mean in the 7 C's of Communication?",opts:["The message contains all the information the receiver needs — no important details are missing","The message has been delivered and confirmed received by the other party","The message includes a summary at the end repeating all key points","The message is sent using all available channels simultaneously"],ans:0,exp:"'Complete' means the message contains all the information the receiver needs to understand and act on it. An incomplete message leads to confusion, follow-up questions, and mistakes."},
+// === SECTION C: VERBAL vs NON-VERBAL ===
+{s:"📞 Verbal vs Non-Verbal Communication",q:"What is verbal communication?",opts:["Communication that uses only written words — never spoken words","Communication that uses spoken or written words to convey messages","Communication that relies entirely on body language and facial expressions","Communication that happens only through digital technology and devices"],ans:1,exp:"Verbal communication uses spoken or written words to convey messages. Examples: face-to-face conversations, phone calls, emails, presentations, reports. It is structured, intentional, and provides explicit information."},
+{s:"📞 Verbal vs Non-Verbal Communication",q:"What is non-verbal communication?",opts:["Communication using only sign language for people with hearing difficulties","Written communication that does not contain any spoken words","Sending messages through body language, facial expressions, tone of voice, and gestures","Communication using visual aids like posters, diagrams, and presentations"],ans:2,exp:"Non-verbal communication involves sending messages through body language, facial expressions, tone of voice, and gestures. It is often unconscious, emotional, and continuous — and can form up to 90% of communication."},
+{s:"📞 Verbal vs Non-Verbal Communication",q:"What percentage of communication can non-verbal communication form?",opts:["Up to 30% — verbal words carry the majority of the communication message","Up to 50% — verbal and non-verbal contribute equally to communication","Up to 70% — only a small fraction of communication is truly non-verbal","Up to 90% — non-verbal communication forms the vast majority of a message"],ans:3,exp:"Non-verbal communication can form up to 90% of communication. This means the words we say are a relatively small part of the total message — how we say it, our facial expressions, posture, and gestures carry far more weight."},
+{s:"📞 Verbal vs Non-Verbal Communication",q:"Which of the following is an example of non-verbal communication?",opts:["Sending an email to a colleague about the meeting agenda","Making a phone call to a supplier to confirm a delivery order","Crossed arms and avoiding eye contact during a conversation","Writing a formal report for the management team"],ans:2,exp:"Crossed arms and avoiding eye contact are non-verbal communication — they communicate defensiveness, discomfort, or disinterest without any words. Email, phone calls, and written reports are verbal communication."},
+{s:"📞 Verbal vs Non-Verbal Communication",q:"What is 'Paralinguistics' as a type of non-verbal communication?",opts:["The physical distance a person keeps from others during conversation","The use of time — such as punctuality — to send a non-verbal message","How words are spoken — including tone, speed, volume, and pitch — which changes meaning","Clothing and personal items used to project a specific image or status"],ans:2,exp:"Paralinguistics refers to how words are spoken — including tone, speed, volume, and pitch. The same sentence can mean very different things depending on how it is delivered. 'That's interesting' said enthusiastically vs sarcastically means completely opposite things."},
+{s:"📞 Verbal vs Non-Verbal Communication",q:"What is 'Proxemics' in non-verbal communication?",opts:["The use of facial expressions to communicate emotions universally","The physical distance maintained between people during communication","The clothing and accessories worn to project a professional image","The rate and volume of speech used to convey urgency or calm"],ans:1,exp:"Proxemics is the physical distance maintained between people during communication — indicating the level of intimacy or comfort. Standing very close to someone may feel intrusive; maintaining appropriate distance shows respect for personal space."},
+{s:"📞 Verbal vs Non-Verbal Communication",q:"What is the key difference in how verbal and non-verbal communication are delivered?",opts:["Verbal communication uses multiple channels simultaneously while non-verbal uses only one","Verbal typically uses a single channel (words) while non-verbal uses multiple channels simultaneously (expressions + posture + tone)","Non-verbal communication is always more reliable and accurate than verbal communication","There is no meaningful difference — both are equally planned and conscious"],ans:1,exp:"Verbal communication typically uses a single channel (words — spoken or written). Non-verbal communication uses multiple channels simultaneously — facial expressions, posture, gestures, and tone all happening at the same time. This makes non-verbal harder to control and more emotionally revealing."},
+// === SECTION D: BODY LANGUAGE ===
+{s:"🤝 Body Language",q:"What is body language?",opts:["A formal sign language used by people with hearing impairments worldwide","A form of non-verbal communication using body movements, posture, gestures, facial expressions, and eye contact","A verbal communication technique used to emphasise key points in a speech","A written language system that uses symbols and shapes instead of letters"],ans:1,exp:"Body language is a form of non-verbal communication using body movements, posture, gestures, facial expressions, and eye contact. It creates the first impression before words are even spoken."},
+{s:"🤝 Body Language",q:"Which of the following is an example of POSITIVE body language?",opts:["Slouching in a chair with arms crossed and eyes looking down","Straight upright posture, open hands, a friendly smile, and firm handshake","Avoiding eye contact and checking your phone during a conversation","Sighing loudly and tapping fingers while someone else is speaking"],ans:1,exp:"Positive body language includes: straight upright posture, open hands (signal honesty), a friendly smile (approachability), firm handshake (confidence), leaning forward slightly (engagement), and good eye contact. These all build trust and rapport."},
+{s:"🤝 Body Language",q:"What does 'crossing your arms' typically communicate?",opts:["Openness and willingness to engage in conversation","Agreement and enthusiasm about the topic being discussed","Defensiveness, discomfort, or a closed attitude during communication","Confidence and authority in a professional setting"],ans:2,exp:"Crossing arms is a negative body language signal — it typically suggests defensiveness, discomfort, or a closed attitude. In a hospitality setting, crossed arms towards a guest creates a barrier and negative impression."},
+{s:"🤝 Body Language",q:"What does 'avoiding eye contact' suggest in body language?",opts:["Deep concentration and careful thought about what the person is saying","Confidence in the message being delivered and authority over the situation","Nervousness, dishonesty, or shyness — a lack of confidence or engagement","Respect for the other person's space and privacy during the interaction"],ans:2,exp:"Avoiding eye contact may indicate nervousness, dishonesty, or shyness. In contrast, maintaining good eye contact shows confidence, attentiveness, and trustworthiness. Eye contact is crucial during interviews and guest interactions."},
+{s:"🤝 Body Language",q:"What does 'nodding the head' communicate?",opts:["Disagreement with what the speaker is saying","Boredom and a desire to end the conversation quickly","Agreement, understanding, or encouragement for the speaker to continue","Impatience and frustration with the pace of the conversation"],ans:2,exp:"Nodding the head communicates agreement or understanding — it also encourages the speaker to continue. It is a positive active listening signal that shows you are engaged and following what is being said."},
+{s:"🤝 Body Language",q:"Why is body language especially important in hospitality?",opts:["Because guests cannot speak the same language as staff in most hotels","Because written communication is not possible in a restaurant or hotel setting","Because first impressions in hospitality are formed through body language before words are even spoken","Because body language replaces verbal communication entirely in service settings"],ans:2,exp:"Body language is especially important in hospitality because first impressions are formed through body language before a single word is spoken. A welcoming smile, open posture, and confident approach immediately affect how a guest feels about the service."},
+// === SECTION E: BARRIERS TO COMMUNICATION ===
+{s:"🚧 Barriers to Communication",q:"What is a 'barrier to communication'?",opts:["A physical wall or partition that separates the kitchen from the dining area","Anything that prevents a message from being received or understood correctly","A formal document that restricts who can communicate with senior management","A policy that limits the number of messages sent per hour in a workplace"],ans:1,exp:"A communication barrier is anything that prevents a message from being received, understood, or interpreted correctly. Barriers can be physical, emotional, linguistic, or psychological."},
+{s:"🚧 Barriers to Communication",q:"Which of the following is an example of a PHYSICAL barrier to communication?",opts:["Fear of speaking in public causing a person to stay silent","Two people speaking different languages and failing to understand each other","A noisy kitchen environment where staff cannot hear instructions clearly","Stress and anger causing a person to communicate poorly with colleagues"],ans:2,exp:"A noisy kitchen is a physical barrier — loud sounds physically prevent the message from being received clearly. Other physical barriers include poor lighting, distance, or faulty equipment."},
+{s:"🚧 Barriers to Communication",q:"What is a 'language barrier' in communication?",opts:["Speaking too quickly for the listener to follow the words","When people speak different languages and misunderstandings result","A lack of vocabulary causing someone to repeat words unnecessarily","When written messages contain too many technical terms for the reader"],ans:1,exp:"A language barrier occurs when people speak different languages and cannot understand each other. It can also occur when someone uses jargon or technical terms that the other person does not understand."},
+{s:"🚧 Barriers to Communication",q:"Which of the following best describes an EMOTIONAL barrier to communication?",opts:["A speaker using unfamiliar vocabulary that the listener does not recognise","The distance between speaker and listener making it hard to hear clearly","Stress or anger that affects the quality and clarity of communication","Background noise that prevents the message from being heard"],ans:2,exp:"Emotional barriers include stress, anger, fear, or anxiety that prevent clear communication. When someone is angry, they may speak aggressively or unclearly. When afraid, they may stay silent. Emotional barriers are internal and psychological."},
+{s:"🚧 Barriers to Communication",q:"Which of the following is the BEST way to remove a communication barrier?",opts:["Speak louder and faster so more information is delivered in a shorter time","Use complex vocabulary to demonstrate expertise and authority","Speak slowly and clearly, use simple words, listen carefully, and stay calm","Avoid giving feedback so the conversation ends more quickly"],ans:2,exp:"The best ways to remove communication barriers: speak slowly and clearly, use simple words, listen carefully, stay calm, use positive body language, and avoid distractions. These strategies work against most types of barriers."},
+{s:"🚧 Barriers to Communication",q:"What is 'active listening' and why is it important?",opts:["Listening while doing another task simultaneously to save time","Fully concentrating on the speaker, not interrupting, asking relevant questions, and giving appropriate feedback","Listening only to the parts of the message that are personally relevant","Repeating everything the speaker says word for word to show you were paying attention"],ans:1,exp:"Active listening means fully concentrating on the speaker, not interrupting, asking relevant questions, and giving appropriate feedback. It is one of the most important communication skills — it reduces errors, builds trust, and shows respect."},
+{s:"🚧 Barriers to Communication",q:"How does 'poor listening' act as a communication barrier?",opts:["It causes the sender to speak too quickly and lose track of the message","It means the receiver ignores or does not fully process the information received — leading to errors","It forces the sender to repeat the message multiple times unnecessarily","It creates a physical barrier between the sender and receiver in the room"],ans:1,exp:"Poor listening means the receiver ignores or does not fully process the information — leading to misunderstandings, wrong orders, and mistakes. In hospitality, poor listening can cause wrong food orders and guest complaints."},
+{s:"🚧 Barriers to Communication",q:"Which method helps OVERCOME a language barrier in communication?",opts:["Speak in a louder voice and slower pace using the same complex vocabulary","Use simple words, visual aids, demonstrations, or repeat key information clearly","Avoid the interaction entirely to prevent any misunderstanding from occurring","Use technical jargon that both parties are expected to understand professionally"],ans:1,exp:"To overcome a language barrier: use simple words, avoid jargon, use visual aids or demonstrations, repeat key information, and speak clearly at a moderate pace. In hospitality, pointing at a menu or demonstrating a task helps bridge language gaps."}
+];
+let order=[],cur=0,picks={},playerName='',score=0;
+function shuffle(a){const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]];}return b;}
+function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');window.scrollTo(0,0);}
+function goBack(){if(confirm('Quit quiz?'))window.location.href='index.html';}
+function startQuiz(){playerName=document.getElementById('name-input').value.trim()||'Anonymous';order=shuffle(BANK.map((_,i)=>i));cur=0;picks={};score=0;document.getElementById('q-total').textContent=BANK.length;show('quiz-screen');render();}
+function render(){const idx=order[cur],q=BANK[idx],total=BANK.length;document.getElementById('q-num').textContent=cur+1;document.getElementById('q-score').textContent=score;document.getElementById('section-label').textContent=q.s;document.getElementById('q-label').textContent=`Question ${cur+1} of ${total}`;document.getElementById('q-text').textContent=q.q;document.getElementById('progress-fill').style.width=((cur/total)*100)+'%';document.getElementById('explanation').className='explanation';document.getElementById('next-btn').className='next-btn';document.getElementById('quit-btn').className='quit-btn';const optEl=document.getElementById('options');optEl.innerHTML='';shuffle([0,1,2,3]).forEach((oi,li)=>{const btn=document.createElement('button');btn.className='opt-btn';btn.dataset.opt=oi;btn.innerHTML=`<span class="opt-letter">${'ABCD'[li]}</span><span>${q.opts[oi]}</span>`;btn.onclick=()=>select(oi,idx);optEl.appendChild(btn);});}
+function select(chosen,idx){const q=BANK[idx],ok=chosen===q.ans;picks[idx]=chosen;if(ok)score++;document.getElementById('q-score').textContent=score;document.querySelectorAll('.opt-btn').forEach(b=>{b.disabled=true;const oi=parseInt(b.dataset.opt);if(oi===q.ans)b.classList.add('correct');else if(oi===chosen&&!ok)b.classList.add('wrong');});if(!ok){const e=document.getElementById('explanation');e.textContent='✗ '+q.exp;e.classList.add('show');}const nb=document.getElementById('next-btn');nb.classList.add('show');nb.textContent=cur+1<BANK.length?'Next →':'See Results →';document.getElementById('quit-btn').classList.add('show');}
+function nextQuestion(){cur++;if(cur>=BANK.length)showResults();else{render();window.scrollTo(0,0);}}
+function showResults(){show('results-screen');const total=BANK.length,pct=Math.round((score/total)*100),passed=pct>=70;document.getElementById('result-name').textContent=playerName;document.getElementById('ring-pct').textContent=pct+'%';document.getElementById('ring-pct').style.color=passed?'var(--green)':'var(--red)';document.getElementById('ring-fill').style.stroke=passed?'var(--green)':'var(--red)';setTimeout(()=>{document.getElementById('ring-fill').style.strokeDashoffset=439.82-(439.82*pct/100);},100);document.getElementById('res-title').textContent=pct>=90?'Excellent!':pct>=70?'Passed!':'Needs Work';document.getElementById('res-sub').textContent=`${score} correct out of ${total}`;const v=document.getElementById('res-verdict');v.textContent=passed?'✓ Passed — above 70%':'✗ Below 70% — please retry';v.className='result-verdict '+(passed?'pass':'fail');const rv=document.getElementById('review');rv.innerHTML='<h3>Review</h3>';order.forEach(idx=>{const q=BANK[idx],ua=picks[idx],ok=ua===q.ans;const d=document.createElement('div');d.className='rv-item '+(ok?'ok':'miss');d.innerHTML=`<div class="rv-q"><span style="font-family:'DM Mono',monospace;font-size:10px;color:var(--purple-l)">${q.s}</span><br>${q.q}</div><div class="rv-a">${ok?`<span class="c">✓ ${q.opts[q.ans]}</span>`:`<span class="w">✗ ${ua!==undefined?q.opts[ua]:'—'}</span><br><span class="c">✓ ${q.opts[q.ans]}</span><br><span style="color:var(--muted)">${q.exp}</span>`}</div>`;rv.appendChild(d);});}
+function retryQuiz(){order=shuffle(order);cur=0;picks={};score=0;document.getElementById('q-score').textContent=0;show('quiz-screen');render();}
+document.getElementById('name-input').addEventListener('keydown',e=>{if(e.key==='Enter')startQuiz();});
+</script>
+</body>
+</html>

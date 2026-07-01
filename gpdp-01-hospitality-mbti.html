@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hospitality Overview & MBTI — July 2026 Exam</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌱</text></svg>">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@400;500&display=swap');
+  :root{--bg:#080810;--surface:#11111f;--border:#1e1e35;--purple:#7c3aed;--purple-l:#9d5bf0;--green:#22c55e;--red:#ef4444;--text:#e8e8f0;--muted:#7070a0;}
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Syne',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;align-items:center;justify-content:center;}
+  body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px);background-size:40px 40px;opacity:.4;pointer-events:none;z-index:0;}
+  .screen{position:relative;z-index:1;width:100%;max-width:660px;margin:0 auto;padding:24px 20px 48px;display:none;}
+  .screen.active{display:block;}
+  #name-screen{text-align:center;padding-top:80px;}
+  .back-link{display:inline-flex;align-items:center;gap:6px;font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);text-decoration:none;letter-spacing:1px;margin-bottom:48px;}
+  .back-link:hover{color:var(--purple-l);}
+  .subject-tag{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--purple-l);margin-bottom:12px;}
+  #name-screen h1{font-size:clamp(22px,5vw,36px);font-weight:800;line-height:1.15;margin-bottom:8px;background:linear-gradient(135deg,#fff 30%,var(--purple-l));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+  #name-screen p{color:var(--muted);font-family:'DM Mono',monospace;font-size:12px;margin-bottom:40px;}
+  .name-box{display:flex;flex-direction:column;align-items:center;gap:12px;}
+  .name-box input{width:100%;max-width:320px;padding:12px 16px;background:var(--surface);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:'Syne',sans-serif;font-size:15px;outline:none;text-align:center;}
+  .name-box input:focus{border-color:var(--purple);}
+  .name-box input::placeholder{color:var(--muted);}
+  .btn-primary{padding:12px 32px;background:var(--purple);color:#fff;border:none;border-radius:8px;font-family:'Syne',sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:background .2s;}
+  .btn-primary:hover{background:var(--purple-l);}
+  .quiz-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;}
+  .quiz-meta{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);}
+  .quiz-meta span{color:var(--purple-l);font-weight:500;}
+  .quiz-back{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);background:none;border:1px solid var(--border);padding:5px 10px;border-radius:6px;cursor:pointer;}
+  .quiz-back:hover{color:var(--text);border-color:var(--purple);}
+  .progress-bar{width:100%;height:3px;background:var(--border);border-radius:2px;margin-bottom:16px;overflow:hidden;}
+  .progress-fill{height:100%;background:linear-gradient(90deg,var(--purple),var(--purple-l));border-radius:2px;transition:width .3s ease;}
+  .section-label{font-family:'DM Mono',monospace;font-size:10px;color:var(--green);letter-spacing:2px;text-transform:uppercase;margin-bottom:6px;padding:4px 10px;background:rgba(34,197,94,.08);border-radius:4px;display:inline-block;}
+  .question-num{font-family:'DM Mono',monospace;font-size:10px;color:var(--purple-l);letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;margin-top:8px;}
+  .question-text{font-size:clamp(15px,3vw,18px);font-weight:600;line-height:1.5;margin-bottom:28px;}
+  .options{display:flex;flex-direction:column;gap:10px;}
+  .opt-btn{display:flex;align-items:center;gap:12px;padding:13px 16px;background:var(--surface);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:'Syne',sans-serif;font-size:14px;cursor:pointer;text-align:left;width:100%;}
+  .opt-btn:hover:not(:disabled){border-color:var(--purple);background:#16162a;}
+  .opt-btn .opt-letter{flex-shrink:0;width:26px;height:26px;border-radius:6px;background:var(--border);display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);}
+  .opt-btn:hover:not(:disabled) .opt-letter{background:var(--purple);color:#fff;}
+  .opt-btn.correct{border-color:var(--green);background:rgba(34,197,94,.1);}
+  .opt-btn.correct .opt-letter{background:var(--green);color:#fff;}
+  .opt-btn.wrong{border-color:var(--red);background:rgba(239,68,68,.1);}
+  .opt-btn.wrong .opt-letter{background:var(--red);color:#fff;}
+  .opt-btn:disabled{cursor:default;}
+  .explanation{display:none;margin-top:16px;padding:14px 16px;background:rgba(124,58,237,.1);border:1px solid rgba(124,58,237,.25);border-left:3px solid var(--purple);border-radius:8px;font-size:13px;line-height:1.6;color:#c4b5fd;font-family:'DM Mono',monospace;}
+  .explanation.show{display:block;}
+  .action-row{display:flex;gap:10px;margin-top:24px;}
+  .next-btn{flex:1;padding:13px;background:var(--purple);color:#fff;border:none;border-radius:8px;font-family:'Syne',sans-serif;font-size:14px;font-weight:700;cursor:pointer;display:none;}
+  .next-btn:hover{background:var(--purple-l);}
+  .next-btn.show{display:block;}
+  .quit-btn{padding:13px 18px;background:none;border:1px solid var(--border);border-radius:8px;color:var(--muted);font-family:'DM Mono',monospace;font-size:12px;cursor:pointer;display:none;white-space:nowrap;}
+  .quit-btn:hover{color:var(--text);border-color:var(--purple);}
+  .quit-btn.show{display:block;}
+  #results-screen{text-align:center;padding-top:40px;}
+  .result-name{font-family:'DM Mono',monospace;font-size:12px;color:var(--muted);margin-bottom:32px;}
+  .score-ring{position:relative;width:160px;height:160px;margin:0 auto 28px;}
+  .score-ring svg{transform:rotate(-90deg);}
+  .score-ring .ring-bg{fill:none;stroke:var(--border);stroke-width:10;}
+  .score-ring .ring-fill{fill:none;stroke-width:10;stroke-linecap:round;transition:stroke-dashoffset 1s ease,stroke .5s;}
+  .score-ring .ring-text{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+  .ring-pct{font-size:34px;font-weight:800;line-height:1;}
+  .ring-label{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);margin-top:4px;letter-spacing:1px;}
+  .result-title{font-size:24px;font-weight:800;margin-bottom:8px;}
+  .result-sub{font-family:'DM Mono',monospace;font-size:12px;color:var(--muted);margin-bottom:8px;}
+  .result-verdict{font-family:'DM Mono',monospace;font-size:12px;padding:8px 20px;border-radius:20px;display:inline-block;margin-bottom:32px;}
+  .result-verdict.pass{background:rgba(34,197,94,.12);color:var(--green);border:1px solid rgba(34,197,94,.3);}
+  .result-verdict.fail{background:rgba(239,68,68,.12);color:var(--red);border:1px solid rgba(239,68,68,.3);}
+  .result-actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:40px;}
+  .btn-outline{padding:11px 24px;background:none;border:1px solid var(--border);border-radius:8px;color:var(--muted);font-family:'Syne',sans-serif;font-size:13px;font-weight:600;cursor:pointer;}
+  .btn-outline:hover{border-color:var(--purple);color:var(--text);}
+  .review{text-align:left;}
+  .review h3{font-size:13px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:2px;margin-bottom:16px;font-family:'DM Mono',monospace;}
+  .rv-item{padding:14px 16px;border-radius:8px;margin-bottom:10px;border:1px solid var(--border);}
+  .rv-item.ok{border-color:rgba(34,197,94,.25);background:rgba(34,197,94,.05);}
+  .rv-item.miss{border-color:rgba(239,68,68,.25);background:rgba(239,68,68,.05);}
+  .rv-q{font-size:13px;font-weight:600;margin-bottom:8px;line-height:1.4;}
+  .rv-a{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);line-height:1.6;}
+  .rv-a .c{color:var(--green);}
+  .rv-a .w{color:var(--red);}
+</style>
+</head>
+<body>
+<div class="screen active" id="name-screen">
+  <a class="back-link" href="index.html">← Back to subjects</a>
+  <div class="subject-tag">GPDP · Topic 01</div>
+  <h1>Hospitality Overview & MBTI</h1>
+  <p>30 questions · Hospitality sectors · Hotel departments · MBTI personality types</p>
+  <div class="name-box">
+    <input type="text" id="name-input" placeholder="Enter your name" maxlength="30" autocomplete="off">
+    <button class="btn-primary" onclick="startQuiz()">Start Quiz</button>
+  </div>
+</div>
+<div class="screen" id="quiz-screen">
+  <div class="quiz-header">
+    <div class="quiz-meta">Question <span id="q-num">1</span> of <span id="q-total">30</span></div>
+    <div class="quiz-meta">Score <span id="q-score">0</span></div>
+    <button class="quiz-back" onclick="goBack()">← Quit</button>
+  </div>
+  <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+  <div class="section-label" id="section-label"></div>
+  <div class="question-num" id="q-label"></div>
+  <div class="question-text" id="q-text"></div>
+  <div class="options" id="options"></div>
+  <div class="explanation" id="explanation"></div>
+  <div class="action-row">
+    <button class="quit-btn" id="quit-btn" onclick="goBack()">← Back to subjects</button>
+    <button class="next-btn" id="next-btn" onclick="nextQuestion()">Next Question →</button>
+  </div>
+</div>
+<div class="screen" id="results-screen">
+  <div class="result-name" id="result-name"></div>
+  <div class="score-ring">
+    <svg viewBox="0 0 160 160" width="160" height="160">
+      <circle class="ring-bg" cx="80" cy="80" r="70"/>
+      <circle class="ring-fill" id="ring-fill" cx="80" cy="80" r="70" stroke-dasharray="439.82" stroke-dashoffset="439.82" stroke="var(--green)"/>
+    </svg>
+    <div class="ring-text">
+      <div class="ring-pct" id="ring-pct">0%</div>
+      <div class="ring-label">SCORE</div>
+    </div>
+  </div>
+  <div class="result-title" id="res-title"></div>
+  <div class="result-sub" id="res-sub"></div>
+  <div class="result-verdict" id="res-verdict"></div>
+  <div class="result-actions">
+    <button class="btn-primary" onclick="retryQuiz()">Retry →</button>
+    <button class="btn-outline" onclick="window.location.href='index.html'">All Subjects</button>
+  </div>
+  <div class="review" id="review"></div>
+</div>
+<script>
+const BANK=[
+{s:"🏨 Overview of Hospitality",q:"What is hospitality?",opts:["The business of selling food and beverages exclusively to paying customers in a restaurant","The act of kindness in welcoming and looking after the basic needs of the customer","A branch of the tourism industry that deals only with transportation and travel","The management of hotels, resorts, and cruise ships for profit-making purposes"],ans:1,exp:"Hospitality is the act of kindness in welcoming and looking after the basic needs of the customer. It primarily involves addressing customer satisfaction and catering to the needs of the guest."},
+{s:"🏨 Overview of Hospitality",q:"Into how many basic areas can the hospitality industry be broken down?",opts:["Two — food service and accommodation","Three — accommodation, food and beverages, and travel and tourism","Four — restaurants, hotels, airlines, and tourism boards","Five — fine dining, fast food, hotels, resorts, and cruise lines"],ans:1,exp:"The hospitality industry can be broken down into three basic areas: accommodation, food and beverages, and travel and tourism."},
+{s:"🏨 Overview of Hospitality",q:"Is hospitality a standalone industry?",opts:["Yes — hospitality is a completely independent industry separate from all others","Yes — hospitality operates independently from tourism and travel at all levels","No — hospitality is one facet of the service industry, not a standalone industry","No — hospitality is a sub-category of the manufacturing industry"],ans:2,exp:"Hospitality is one facet of the service industry — not a standalone industry. It is connected to tourism, transportation, events, and many other service sectors."},
+{s:"🏨 Overview of Hospitality",q:"Which of the following falls under the 'Restaurants and Food Service' section of hospitality?",opts:["Campgrounds, boutique hotels, and bed and breakfast services","Transportation, event planning, and convention centres","Restaurants, catering services, bars and taverns, private chefs, food trucks, and quick service restaurants","Motels, full-service hotels, and destination marketing organisations"],ans:2,exp:"Restaurants and food service includes: restaurants, catering services, bars and taverns, private chefs, food trucks, and quick service restaurants."},
+{s:"🏨 Overview of Hospitality",q:"Which of the following falls under the 'Lodging' section of hospitality?",opts:["Restaurants, catering services, bars and taverns, and food trucks","Transportation, event planning, conferences, and convention centres","Motels, campgrounds, boutique hotels, full-service hotels, and bed and breakfast services","Media publications, destination marketing, and tourist boards"],ans:2,exp:"Lodging includes: motels, campgrounds, boutique hotels, full-service hotels, and bed and breakfast services. Lodging provides accommodation to travellers and guests."},
+{s:"🏨 Overview of Hospitality",q:"Which of the following falls under 'Travel and Tourism' in hospitality?",opts:["Bars, taverns, quick service restaurants, and private chefs","Motels, campgrounds, full-service hotels, and bed and breakfast","Transportation, event planning, conferences, convention centres, destination marketing organisations, and media publications","Room service, housekeeping, food and beverage, and front desk operations"],ans:2,exp:"Travel and tourism includes: transportation, event planning, conferences, convention centres, destination marketing organisations, and media publications."},
+{s:"🏨 Overview of Hospitality",q:"Why does the culinary industry fall under hospitality?",opts:["Because culinary schools are always located inside five-star hotels","Because chefs are required to speak multiple languages for international guests","Because it deals with food preparation, restaurant management, catering, and customer service related to food","Because culinary arts was added to the hospitality classification by government legislation"],ans:2,exp:"The culinary industry falls under hospitality because it deals with food preparation, restaurant management, catering, and customer service related to food — all of which are core hospitality functions."},
+{s:"🏨 Overview of Hospitality",q:"How do hotels, resorts, and cruise lines relate to tourism?",opts:["They operate completely independently of tourism and do not rely on it","They compete with tourism businesses and prefer local guests over tourists","They heavily rely on tourism to attract guests — tourism is a key driver of their business","They actively discourage tourism to maintain exclusive service for regular guests"],ans:2,exp:"Hotels, resorts, and cruise lines heavily rely on tourism to attract guests. Tourism drives demand for accommodation, food and beverage, and leisure services — making it a fundamental component of the hospitality business model."},
+{s:"🏨 Overview of Hospitality",q:"Who sits at the top of a hotel's organisational structure?",opts:["The Head Chef — as food is the primary revenue generator in most hotels","The Front Office Manager — as they are the first point of contact for all guests","The General Manager — who oversees all departments and the overall operation","The Head of Human Resources — who manages all staff across the property"],ans:2,exp:"The General Manager sits at the top of the hotel's organisational structure. The GM oversees all departments and is responsible for the overall operation, performance, and guest experience of the property."},
+{s:"🏨 Overview of Hospitality",q:"How many departments does a hotel typically have?",opts:["Four — Kitchen, Service, Management, and Administration","Five — Front Desk, Housekeeping, Kitchen, Accounts, and Security","Six — Front Office, Housekeeping, Food and Beverage, Finance, HR, and Marketing","Seven — Front Office, Housekeeping, Food and Beverage, Finance, Human Resources, Sales and Marketing, and Security and Maintenance"],ans:3,exp:"A hotel has seven departments: Front Office, Housekeeping, Food and Beverage, Finance, Human Resources, Sales and Marketing, and Security and Maintenance."},
+{s:"🏨 Overview of Hospitality",q:"Which is the correct list of the seven hotel departments?",opts:["Reception, Kitchen, Laundry, Accounts, Purchasing, Marketing, and IT","Front Office, Housekeeping, Food and Beverage, Finance, Human Resources, Sales and Marketing, Security and Maintenance","Management, Operations, Staffing, Budgeting, Guest Relations, Logistics, and Facilities","Concierge, Valet, Room Service, Bar, Restaurant, Spa, and Events"],ans:1,exp:"The seven hotel departments are: Front Office, Housekeeping, Food and Beverage, Finance, Human Resources, Sales and Marketing, and Security and Maintenance."},
+{s:"🏨 Overview of Hospitality",q:"What is the primary focus of hospitality as an industry?",opts:["Generating maximum profit from each guest through upselling and cross-selling","Addressing customer satisfaction and catering to the needs of the guest","Training staff to follow strict operational procedures at all times","Maintaining the physical appearance of the property and its facilities"],ans:1,exp:"Hospitality primarily involves addressing customer satisfaction and catering to the needs of the guest. Guest experience is at the heart of everything in hospitality — from accommodation to food service to travel and tourism."},
+{s:"🧠 MBTI Personality Types",q:"What does MBTI stand for?",opts:["Management Behaviour and Team Integration","Myers-Briggs Type Indicator","Mental Balance and Thinking Index","Motivational Behaviour and Training Inventory"],ans:1,exp:"MBTI stands for Myers-Briggs Type Indicator. It is a personality assessment tool that places individuals into one of 16 personality types based on their preferences."},
+{s:"🧠 MBTI Personality Types",q:"Who developed the MBTI and what was it inspired by?",opts:["Sigmund Freud and Charles Darwin — inspired by evolutionary theory and psychoanalysis","Albert Einstein and Stephen Hawking — inspired by scientific observation of human behaviour","Isabel Briggs Myers and Katherine Cook Briggs — inspired by Carl Jung's theory of psychological types","Abraham Maslow and Carl Rogers — inspired by the humanistic psychology movement"],ans:2,exp:"MBTI was developed by Isabel Briggs Myers and Katherine Cook Briggs. It was inspired by Carl Jung's theory of psychological types — his work on how people perceive the world and make decisions."},
+{s:"🧠 MBTI Personality Types",q:"How many personality types does MBTI identify?",opts:["4 — based on the four basic personality temperaments identified by ancient philosophers","8 — one for each of the four dichotomies in both positive and negative directions","12 — based on the zodiac signs integrated with psychological research","16 — one unique personality type for each combination of the four dichotomies"],ans:3,exp:"MBTI places individuals into one of 16 personality types. Each type is a unique four-letter combination (e.g., INTJ, ESFP) produced by combining one preference from each of the four dichotomies."},
+{s:"🧠 MBTI Personality Types",q:"What does MBTI measure?",opts:["Intelligence and cognitive ability — predicting academic and professional success","Emotional stability and mental health — identifying psychological disorders","Personality preferences only — it does not measure intelligence or ability","Leadership potential — ranking individuals from most to least suitable for management"],ans:2,exp:"MBTI does not measure intelligence or ability — it identifies personality preferences only. In MBTI, there are no right or wrong answers — it is a self-reflective tool designed to enhance self-awareness."},
+{s:"🧠 MBTI Personality Types",q:"What is the primary purpose of MBTI?",opts:["To rank employees by performance and suitability for promotion","To diagnose psychological disorders and recommend treatment plans","To enhance self-awareness and improve communication and collaboration","To predict a person's future career success based on their personality type"],ans:2,exp:"The primary purpose of MBTI is to enhance self-awareness and improve communication and collaboration. Understanding your personality type helps you understand your strengths, how you interact with others, and how to work more effectively in teams."},
+{s:"🧠 MBTI Personality Types",q:"What does the Extraversion vs Introversion dichotomy in MBTI describe?",opts:["How organised and structured a person is in their daily life and work habits","How a person takes in information — through concrete facts or abstract patterns","Where you direct your energy: outward (people and environment) vs inward (thoughts and reflection)","How you make decisions: through logic and objectivity vs personal values and feelings"],ans:2,exp:"Extraversion vs Introversion describes where you direct your energy. Extraverts direct energy outward — towards people and the external environment. Introverts direct energy inward — towards thoughts, ideas, and reflection."},
+{s:"🧠 MBTI Personality Types",q:"What does the Sensing vs Intuition dichotomy in MBTI describe?",opts:["Where you direct your energy — outward towards people or inward towards thoughts","How you make decisions — through logic and objectivity or through personal values","How you organise your life — in a planned, structured way or a flexible, spontaneous way","How you take in information — concrete facts and present reality vs patterns, possibilities, and the big picture"],ans:3,exp:"Sensing vs Intuition describes how you take in information. Sensors prefer concrete facts, details, and present reality. Intuitives prefer patterns, possibilities, and the big picture — they focus on meaning and future potential."},
+{s:"🧠 MBTI Personality Types",q:"What does the Thinking vs Feeling dichotomy in MBTI describe?",opts:["How you take in information — through facts and details or through patterns and possibilities","Where you direct your energy — outward towards others or inward towards reflection","How you make decisions — through logic and objectivity vs personal values and impact on others","How you organise your life — in a planned structured way or a flexible spontaneous way"],ans:2,exp:"Thinking vs Feeling describes how you make decisions. Thinkers prefer logic, objectivity, and consistency. Feelers prefer personal values, empathy, and the impact of decisions on people. Both are valid — neither is superior."},
+{s:"🧠 MBTI Personality Types",q:"What does the Judging vs Perceiving dichotomy in MBTI describe?",opts:["How you take in information — through concrete facts or through patterns and possibilities","How you make decisions — through logic and objectivity or through personal values","Where you direct your energy — outward towards people or inward towards thoughts","How you organise your world — structured and planned (Judging) vs flexible and spontaneous (Perceiving)"],ans:3,exp:"Judging vs Perceiving describes how you organise your world. Judgers prefer structure, planning, and clear decisions. Perceivers prefer flexibility, adaptability, and keeping options open."},
+{s:"🧠 MBTI Personality Types",q:"How does MBTI produce a four-letter personality type?",opts:["By testing intelligence across four categories and scoring each out of ten","By combining one preference from each of the four dichotomies — producing a unique four-letter code","By averaging scores from four personality tests taken on four different days","By using a computer algorithm that analyses writing style and vocabulary"],ans:1,exp:"MBTI combines one preference from each of the four dichotomies to produce a four-letter personality type. For example: I (Introvert) + N (Intuitive) + T (Thinking) + J (Judging) = INTJ. There are 16 possible combinations."},
+{s:"🧠 MBTI Personality Types",q:"Which of the following is a valid MBTI personality type code?",opts:["ABCD","XYZQ","ESFP","LGBQ"],ans:2,exp:"ESFP is a valid MBTI personality type: E (Extraverted) + S (Sensing) + F (Feeling) + P (Perceiving). All MBTI types are four-letter codes combining one letter from each of the four dichotomies. There are 16 types in total."},
+{s:"🧠 MBTI Personality Types",q:"What does it mean that MBTI has 'no right or wrong answers'?",opts:["The test is multiple choice and all answers are equally correct regardless of your choice","Every personality type is equally valid — MBTI identifies preferences, not superiority or deficiency","The results are random and do not accurately reflect any aspect of a person's character","You can retake the test as many times as you want and the results will always be different"],ans:1,exp:"MBTI has no right or wrong answers because it is a self-reflective tool that identifies personality preferences — not good or bad traits. Every personality type has its own strengths and brings value to teams and workplaces. No type is superior to another."},
+{s:"🧠 MBTI Personality Types",q:"In MBTI, what does being an 'Extravert' mean?",opts:["You prefer to work alone and find social interactions draining and exhausting","You direct your energy outward — towards people, activities, and the external environment","You make decisions based on logic and objective analysis rather than personal feelings","You prefer a structured, planned approach to organising your daily life and work"],ans:1,exp:"An Extravert directs their energy outward — towards people, activities, and the external environment. Extraverts are energised by social interaction and external stimulation. This is the E in the MBTI four-letter code."},
+{s:"🧠 MBTI Personality Types",q:"In MBTI, what does being an 'Introvert' mean?",opts:["You are shy and unable to communicate effectively with other people","You dislike other people and prefer to avoid all social situations","You direct your energy inward — towards thoughts, ideas, and personal reflection","You make decisions purely based on logic without considering the feelings of others"],ans:2,exp:"An Introvert directs their energy inward — towards thoughts, ideas, and personal reflection. Introverts are energised by alone time and reflection, not by external stimulation. Introversion does not mean shy — it is about energy direction, not social ability."},
+{s:"🧠 MBTI Personality Types",q:"How many dichotomies does the MBTI assessment use?",opts:["Two — Extraversion/Introversion and Thinking/Feeling","Three — Sensing/Intuition, Thinking/Feeling, and Judging/Perceiving","Four — Extraversion/Introversion, Sensing/Intuition, Thinking/Feeling, and Judging/Perceiving","Five — including an additional Assertive/Turbulent dimension"],ans:2,exp:"MBTI uses four dichotomies: Extraversion/Introversion (E/I), Sensing/Intuition (S/N), Thinking/Feeling (T/F), and Judging/Perceiving (J/P). One letter from each dichotomy combines to form a four-letter personality type."},
+{s:"🧠 MBTI Personality Types",q:"Why is understanding your MBTI type useful in the hospitality industry?",opts:["It automatically qualifies you for promotion to a management position","It tells you exactly which hotel department you must work in based on your personality","It helps you understand your own communication style and how to work more effectively with colleagues and guests","It predicts your salary level and earning potential in the hospitality industry"],ans:2,exp:"Understanding your MBTI type helps you understand your own communication style, strengths, and how you interact with others. In hospitality, this improves teamwork, guest interactions, and self-development — which is why MBTI is part of the GPDP programme."},
+{s:"🧠 MBTI Personality Types",q:"Which MBTI dichotomy relates to how you ORGANISE your world?",opts:["Extraversion vs Introversion — where you direct your energy","Sensing vs Intuition — how you take in information and perceive the world","Thinking vs Feeling — how you make decisions and evaluate situations","Judging vs Perceiving — whether you prefer structure and planning or flexibility and spontaneity"],ans:3,exp:"Judging vs Perceiving relates to how you organise your world. Judging preference = structured, planned, decisive. Perceiving preference = flexible, spontaneous, open-ended. This is the fourth and final dichotomy in MBTI."},
+{s:"🧠 MBTI Personality Types",q:"Which MBTI dichotomy relates to how you TAKE IN INFORMATION?",opts:["Extraversion vs Introversion — where you direct your energy outward or inward","Sensing vs Intuition — concrete facts and present reality vs patterns and future possibilities","Thinking vs Feeling — logical analysis and objectivity vs personal values and empathy","Judging vs Perceiving — structured planning vs flexible spontaneity"],ans:1,exp:"Sensing vs Intuition relates to how you take in information. Sensors focus on concrete facts, details, and present reality. Intuitives focus on patterns, meanings, and possibilities — they tend to think big picture and future-focused."}
+];
+let order=[],cur=0,picks={},playerName='',score=0;
+function shuffle(a){const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]];}return b;}
+function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');window.scrollTo(0,0);}
+function goBack(){if(confirm('Quit quiz?'))window.location.href='index.html';}
+function startQuiz(){playerName=document.getElementById('name-input').value.trim()||'Anonymous';order=shuffle(BANK.map((_,i)=>i));cur=0;picks={};score=0;document.getElementById('q-total').textContent=BANK.length;show('quiz-screen');render();}
+function render(){const idx=order[cur],q=BANK[idx],total=BANK.length;document.getElementById('q-num').textContent=cur+1;document.getElementById('q-score').textContent=score;document.getElementById('section-label').textContent=q.s;document.getElementById('q-label').textContent=`Question ${cur+1} of ${total}`;document.getElementById('q-text').textContent=q.q;document.getElementById('progress-fill').style.width=((cur/total)*100)+'%';document.getElementById('explanation').className='explanation';document.getElementById('next-btn').className='next-btn';document.getElementById('quit-btn').className='quit-btn';const optEl=document.getElementById('options');optEl.innerHTML='';shuffle([0,1,2,3]).forEach((oi,li)=>{const btn=document.createElement('button');btn.className='opt-btn';btn.dataset.opt=oi;btn.innerHTML=`<span class="opt-letter">${'ABCD'[li]}</span><span>${q.opts[oi]}</span>`;btn.onclick=()=>select(oi,idx);optEl.appendChild(btn);});}
+function select(chosen,idx){const q=BANK[idx],ok=chosen===q.ans;picks[idx]=chosen;if(ok)score++;document.getElementById('q-score').textContent=score;document.querySelectorAll('.opt-btn').forEach(b=>{b.disabled=true;const oi=parseInt(b.dataset.opt);if(oi===q.ans)b.classList.add('correct');else if(oi===chosen&&!ok)b.classList.add('wrong');});if(!ok){const e=document.getElementById('explanation');e.textContent='✗ '+q.exp;e.classList.add('show');}const nb=document.getElementById('next-btn');nb.classList.add('show');nb.textContent=cur+1<BANK.length?'Next →':'See Results →';document.getElementById('quit-btn').classList.add('show');}
+function nextQuestion(){cur++;if(cur>=BANK.length)showResults();else{render();window.scrollTo(0,0);}}
+function showResults(){show('results-screen');const total=BANK.length,pct=Math.round((score/total)*100),passed=pct>=70;document.getElementById('result-name').textContent=playerName;document.getElementById('ring-pct').textContent=pct+'%';document.getElementById('ring-pct').style.color=passed?'var(--green)':'var(--red)';document.getElementById('ring-fill').style.stroke=passed?'var(--green)':'var(--red)';setTimeout(()=>{document.getElementById('ring-fill').style.strokeDashoffset=439.82-(439.82*pct/100);},100);document.getElementById('res-title').textContent=pct>=90?'Excellent!':pct>=70?'Passed!':'Needs Work';document.getElementById('res-sub').textContent=`${score} correct out of ${total}`;const v=document.getElementById('res-verdict');v.textContent=passed?'✓ Passed — above 70%':'✗ Below 70% — please retry';v.className='result-verdict '+(passed?'pass':'fail');const rv=document.getElementById('review');rv.innerHTML='<h3>Review</h3>';order.forEach(idx=>{const q=BANK[idx],ua=picks[idx],ok=ua===q.ans;const d=document.createElement('div');d.className='rv-item '+(ok?'ok':'miss');d.innerHTML=`<div class="rv-q"><span style="font-family:'DM Mono',monospace;font-size:10px;color:var(--purple-l)">${q.s}</span><br>${q.q}</div><div class="rv-a">${ok?`<span class="c">✓ ${q.opts[q.ans]}</span>`:`<span class="w">✗ ${ua!==undefined?q.opts[ua]:'—'}</span><br><span class="c">✓ ${q.opts[q.ans]}</span><br><span style="color:var(--muted)">${q.exp}</span>`}</div>`;rv.appendChild(d);});}
+function retryQuiz(){order=shuffle(order);cur=0;picks={};score=0;document.getElementById('q-score').textContent=0;show('quiz-screen');render();}
+document.getElementById('name-input').addEventListener('keydown',e=>{if(e.key==='Enter')startQuiz();});
+</script>
+</body>
+</html>

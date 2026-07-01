@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Describing My Routine — July 2026 Exam</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📖</text></svg>">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@400;500&display=swap');
+  :root{--bg:#080810;--surface:#11111f;--border:#1e1e35;--purple:#7c3aed;--purple-l:#9d5bf0;--green:#22c55e;--red:#ef4444;--text:#e8e8f0;--muted:#7070a0;}
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Syne',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;align-items:center;justify-content:center;}
+  body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px);background-size:40px 40px;opacity:.4;pointer-events:none;z-index:0;}
+  .screen{position:relative;z-index:1;width:100%;max-width:660px;margin:0 auto;padding:24px 20px 48px;display:none;}
+  .screen.active{display:block;}
+  #name-screen{text-align:center;padding-top:80px;}
+  .back-link{display:inline-flex;align-items:center;gap:6px;font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);text-decoration:none;letter-spacing:1px;margin-bottom:48px;}
+  .back-link:hover{color:var(--purple-l);}
+  .subject-tag{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--purple-l);margin-bottom:12px;}
+  #name-screen h1{font-size:clamp(22px,5vw,36px);font-weight:800;line-height:1.15;margin-bottom:8px;background:linear-gradient(135deg,#fff 30%,var(--purple-l));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+  #name-screen p{color:var(--muted);font-family:'DM Mono',monospace;font-size:12px;margin-bottom:40px;}
+  .name-box{display:flex;flex-direction:column;align-items:center;gap:12px;}
+  .name-box input{width:100%;max-width:320px;padding:12px 16px;background:var(--surface);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:'Syne',sans-serif;font-size:15px;outline:none;text-align:center;}
+  .name-box input:focus{border-color:var(--purple);}
+  .name-box input::placeholder{color:var(--muted);}
+  .btn-primary{padding:12px 32px;background:var(--purple);color:#fff;border:none;border-radius:8px;font-family:'Syne',sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:background .2s;}
+  .btn-primary:hover{background:var(--purple-l);}
+  .quiz-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;}
+  .quiz-meta{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);}
+  .quiz-meta span{color:var(--purple-l);font-weight:500;}
+  .quiz-back{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);background:none;border:1px solid var(--border);padding:5px 10px;border-radius:6px;cursor:pointer;}
+  .quiz-back:hover{color:var(--text);border-color:var(--purple);}
+  .progress-bar{width:100%;height:3px;background:var(--border);border-radius:2px;margin-bottom:32px;overflow:hidden;}
+  .progress-fill{height:100%;background:linear-gradient(90deg,var(--purple),var(--purple-l));border-radius:2px;transition:width .3s ease;}
+  .question-num{font-family:'DM Mono',monospace;font-size:10px;color:var(--purple-l);letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;}
+  .question-text{font-size:clamp(15px,3vw,18px);font-weight:600;line-height:1.5;margin-bottom:28px;}
+  .options{display:flex;flex-direction:column;gap:10px;}
+  .opt-btn{display:flex;align-items:center;gap:12px;padding:13px 16px;background:var(--surface);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:'Syne',sans-serif;font-size:14px;cursor:pointer;text-align:left;width:100%;}
+  .opt-btn:hover:not(:disabled){border-color:var(--purple);background:#16162a;}
+  .opt-btn .opt-letter{flex-shrink:0;width:26px;height:26px;border-radius:6px;background:var(--border);display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);}
+  .opt-btn:hover:not(:disabled) .opt-letter{background:var(--purple);color:#fff;}
+  .opt-btn.correct{border-color:var(--green);background:rgba(34,197,94,.1);}
+  .opt-btn.correct .opt-letter{background:var(--green);color:#fff;}
+  .opt-btn.wrong{border-color:var(--red);background:rgba(239,68,68,.1);}
+  .opt-btn.wrong .opt-letter{background:var(--red);color:#fff;}
+  .opt-btn:disabled{cursor:default;}
+  .explanation{display:none;margin-top:16px;padding:14px 16px;background:rgba(124,58,237,.1);border:1px solid rgba(124,58,237,.25);border-left:3px solid var(--purple);border-radius:8px;font-size:13px;line-height:1.6;color:#c4b5fd;font-family:'DM Mono',monospace;}
+  .explanation.show{display:block;}
+  .action-row{display:flex;gap:10px;margin-top:24px;}
+  .next-btn{flex:1;padding:13px;background:var(--purple);color:#fff;border:none;border-radius:8px;font-family:'Syne',sans-serif;font-size:14px;font-weight:700;cursor:pointer;display:none;}
+  .next-btn:hover{background:var(--purple-l);}
+  .next-btn.show{display:block;}
+  .quit-btn{padding:13px 18px;background:none;border:1px solid var(--border);border-radius:8px;color:var(--muted);font-family:'DM Mono',monospace;font-size:12px;cursor:pointer;display:none;white-space:nowrap;}
+  .quit-btn:hover{color:var(--text);border-color:var(--purple);}
+  .quit-btn.show{display:block;}
+  #results-screen{text-align:center;padding-top:40px;}
+  .result-name{font-family:'DM Mono',monospace;font-size:12px;color:var(--muted);margin-bottom:32px;}
+  .score-ring{position:relative;width:160px;height:160px;margin:0 auto 28px;}
+  .score-ring svg{transform:rotate(-90deg);}
+  .score-ring .ring-bg{fill:none;stroke:var(--border);stroke-width:10;}
+  .score-ring .ring-fill{fill:none;stroke-width:10;stroke-linecap:round;transition:stroke-dashoffset 1s ease,stroke .5s;}
+  .score-ring .ring-text{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+  .ring-pct{font-size:34px;font-weight:800;line-height:1;}
+  .ring-label{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);margin-top:4px;letter-spacing:1px;}
+  .result-title{font-size:24px;font-weight:800;margin-bottom:8px;}
+  .result-sub{font-family:'DM Mono',monospace;font-size:12px;color:var(--muted);margin-bottom:8px;}
+  .result-verdict{font-family:'DM Mono',monospace;font-size:12px;padding:8px 20px;border-radius:20px;display:inline-block;margin-bottom:32px;}
+  .result-verdict.pass{background:rgba(34,197,94,.12);color:var(--green);border:1px solid rgba(34,197,94,.3);}
+  .result-verdict.fail{background:rgba(239,68,68,.12);color:var(--red);border:1px solid rgba(239,68,68,.3);}
+  .result-actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:40px;}
+  .btn-outline{padding:11px 24px;background:none;border:1px solid var(--border);border-radius:8px;color:var(--muted);font-family:'Syne',sans-serif;font-size:13px;font-weight:600;cursor:pointer;}
+  .btn-outline:hover{border-color:var(--purple);color:var(--text);}
+  .review{text-align:left;}
+  .review h3{font-size:13px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:2px;margin-bottom:16px;font-family:'DM Mono',monospace;}
+  .rv-item{padding:14px 16px;border-radius:8px;margin-bottom:10px;border:1px solid var(--border);}
+  .rv-item.ok{border-color:rgba(34,197,94,.25);background:rgba(34,197,94,.05);}
+  .rv-item.miss{border-color:rgba(239,68,68,.25);background:rgba(239,68,68,.05);}
+  .rv-q{font-size:13px;font-weight:600;margin-bottom:8px;line-height:1.4;}
+  .rv-a{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);line-height:1.6;}
+  .rv-a .c{color:var(--green);}
+  .rv-a .w{color:var(--red);}
+</style>
+</head>
+<body>
+<div class="screen active" id="name-screen">
+  <a class="back-link" href="index.html">← Back to subjects</a>
+  <div class="subject-tag">English · Chapter 17</div>
+  <h1>Describing My Routine</h1>
+  <p>25 questions · Weekday & weekend vocabulary, frequency adverbs, daily phrases</p>
+  <div class="name-box">
+    <input type="text" id="name-input" placeholder="Enter your name" maxlength="30" autocomplete="off">
+    <button class="btn-primary" onclick="startQuiz()">Start Quiz</button>
+  </div>
+</div>
+<div class="screen" id="quiz-screen">
+  <div class="quiz-header">
+    <div class="quiz-meta">Question <span id="q-num">1</span> of <span id="q-total">25</span></div>
+    <div class="quiz-meta">Score <span id="q-score">0</span></div>
+    <button class="quiz-back" onclick="goBack()">← Quit</button>
+  </div>
+  <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+  <div class="question-num" id="q-label"></div>
+  <div class="question-text" id="q-text"></div>
+  <div class="options" id="options"></div>
+  <div class="explanation" id="explanation"></div>
+  <div class="action-row">
+    <button class="quit-btn" id="quit-btn" onclick="goBack()">← Back to subjects</button>
+    <button class="next-btn" id="next-btn" onclick="nextQuestion()">Next Question →</button>
+  </div>
+</div>
+<div class="screen" id="results-screen">
+  <div class="result-name" id="result-name"></div>
+  <div class="score-ring">
+    <svg viewBox="0 0 160 160" width="160" height="160">
+      <circle class="ring-bg" cx="80" cy="80" r="70"/>
+      <circle class="ring-fill" id="ring-fill" cx="80" cy="80" r="70" stroke-dasharray="439.82" stroke-dashoffset="439.82" stroke="var(--green)"/>
+    </svg>
+    <div class="ring-text">
+      <div class="ring-pct" id="ring-pct">0%</div>
+      <div class="ring-label">SCORE</div>
+    </div>
+  </div>
+  <div class="result-title" id="res-title"></div>
+  <div class="result-sub" id="res-sub"></div>
+  <div class="result-verdict" id="res-verdict"></div>
+  <div class="result-actions">
+    <button class="btn-primary" onclick="retryQuiz()">Retry →</button>
+    <button class="btn-outline" onclick="window.location.href='index.html'">All Subjects</button>
+  </div>
+  <div class="review" id="review"></div>
+</div>
+<script>
+const BANK=[
+{q:"What does 'I usually get up at 7:00' mean?",opts:["I sometimes get up at 7:00 but often later","I always get up at exactly 7:00 with no exceptions","I get up at 7:00 most of the time as part of my normal routine","I never get up before 7:00 in the morning"],ans:2,exp:"'Usually' means most of the time — it is part of your normal routine but not always. It indicates a habit or regular pattern. Other frequency adverbs: always (100%), usually/normally (80%), often (60%), sometimes (40%), rarely (20%), never (0%)."},
+{q:"What does 'I normally go to work by bus' mean?",opts:["I always go to work by bus and have never used any other method","Going by bus is my typical way of travelling to work most days","I occasionally go by bus when other transport is unavailable","I used to go by bus but I no longer do so"],ans:1,exp:"'Normally' means this is the typical or expected behaviour — my regular way of doing something. Like 'usually', it indicates a habitual action. 'I usually/normally go to work by bus' = the bus is my regular method of transport."},
+{q:"What is the correct verb phrase for leaving home in the morning?",opts:["I leave home","I go out home","I exit home","I come home"],ans:0,exp:"'Leave home' = go away from home in the morning. The correct phrase is 'I leave home at 8:00.' 'Come home' = return to your home in the evening. These are opposite directions."},
+{q:"Which sentence correctly describes a morning routine?",opts:["I have a shower before I usually get dressed","I usually get up, have a shower, get dressed, and have breakfast","I breakfast, then shower, then get up every morning","I always do breakfast before I wake up"],ans:1,exp:"A typical morning routine in the correct order: get up → have a shower → get dressed → have breakfast → leave home. The verb phrases are: 'get up', 'have a shower', 'get dressed', 'have breakfast', 'leave home'."},
+{q:"What does 'finish work at 5:00' mean?",opts:["I stop working and go home at 5:00","I start my work shift at 5 in the evening","I take a break from work at 5:00 and return later","I work until midnight starting from 5:00"],ans:0,exp:"'Finish work' = stop working, end the working day. 'I finish work at 5:00' = my working day ends at five o'clock. The opposite is 'start work' = begin the working day."},
+{q:"What is the phrase for going to sleep at night?",opts:["I go to sleep","I go to bed","I sleep to bed","Both go to sleep and go to bed are correct"],ans:3,exp:"Both 'go to bed' and 'go to sleep' are correct. 'Go to bed' = get into your bed (the action). 'Go to sleep' = fall asleep (the result). 'I go to bed at 11:30' is the most common way to talk about your bedtime routine."},
+{q:"What does 'I have dinner at 6pm' use in terms of verb phrase?",opts:["'Make dinner' — when you prepare a meal","'Have dinner' — when you eat an evening meal","'Do dinner' — when you cook for others","'Take dinner' — formal British English for eating"],ans:1,exp:"'Have dinner/breakfast/lunch' = eat a meal. We use 'have' not 'take' or 'do' for meals. 'Have breakfast' = eat breakfast. 'Have lunch' = eat lunch. 'Have dinner' = eat the evening meal."},
+{q:"In Chapter 17, what do we call Saturday and Sunday?",opts:["The days off","The free days","The weekend","The rest days"],ans:2,exp:"Saturday and Sunday = the weekend. Weekdays = Monday to Friday. 'At the weekend' (British English) or 'on the weekend' (American English) means on Saturday and/or Sunday."},
+{q:"What does 'go shopping' mean in routine vocabulary?",opts:["To look at things in shops without buying anything","To visit shops to buy things you need","To work in a shop serving customers","To organise the delivery of goods to a shop"],ans:1,exp:"'Go shopping' = visit shops to buy things. It is a regular weekend activity. 'I go shopping on Saturdays' = I visit shops to buy food or other things on Saturdays. 'Do the shopping' = buy groceries specifically."},
+{q:"What is 'go for a walk' as a weekend activity?",opts:["To run quickly in a race","To drive to a scenic location and look at the view","To go outside and walk for enjoyment or exercise","To walk to work as an alternative to driving"],ans:2,exp:"'Go for a walk' = go outside and walk for pleasure, relaxation, or exercise — not for a specific destination. 'I often go for a walk at the weekend' = I walk for enjoyment. It is a leisure activity."},
+{q:"What does 'once a week' mean?",opts:["Every single day of the week without exception","One time every week — a weekly occurrence","Only on one specific day, always the same day","Twice every week on alternating days"],ans:1,exp:"'Once a week' = one time per week. Frequency expressions: once a week (1×), twice a week (2×), three times a week (3×), every day (daily). 'I go to the gym once a week' = one gym session per week."},
+{q:"What does 'twice a week' mean?",opts:["Every two weeks — once every fortnight","Only on weekends — once Saturday, once Sunday","Two times per week","Every other week alternating with once a week"],ans:2,exp:"'Twice a week' = two times per week. 'I go swimming twice a week' = two swimming sessions every week. You can also say 'two times a week' — both are correct."},
+{q:"Which sentence uses 'usually' correctly?",opts:["I usually to go to the gym on Mondays","I usually goes to the gym on Mondays","I usually go to the gym on Mondays","I go usually to the gym on Mondays"],ans:2,exp:"'I usually go to the gym on Mondays.' Frequency adverbs (usually, often, sometimes, never) go BEFORE the main verb but AFTER 'be'. 'I usually go' ✓ not 'I go usually' ✗. With 'be': 'I am usually tired on Mondays.' ✓"},
+{q:"What is the meaning of 'late after the usual time'?",opts:["Earlier than expected","On time — exactly at the planned time","After the normal or expected time","Very quickly and ahead of schedule"],ans:2,exp:"'Late' = after the usual or expected time. 'I get up late at the weekend' = I wake up after my normal weekday time. The opposite is 'early' = before the usual time. 'I usually get up early on weekdays.'"},
+{q:"What does 'go out' mean in the context of weekend activities?",opts:["To leave home and go somewhere for leisure — a bar, cinema, restaurant, etc.","To go to work on a weekend when normally you would be off","To take rubbish out of the house","To go outside in the garden"],ans:0,exp:"'Go out' = leave home to go somewhere for leisure or socialising — a restaurant, cinema, bar, friend's house. 'At the weekend, I go out with my friends' = we leave home together to socialise somewhere."},
+{q:"What does 'stay in' mean as a weekend activity?",opts:["To remain at home instead of going out","To stay late at work on a weekend","To visit family who live nearby","To book a hotel and stay overnight"],ans:0,exp:"'Stay in' = remain at home, not go out. 'I usually stay in on Sundays' = I don't go out on Sundays; I spend the day at home. The opposite is 'go out'."},
+{q:"What is the correct phrase for sleeping for seven hours?",opts:["I do seven hours sleep","I make seven hours sleep","I sleep seven hours a night","I take seven hours sleep"],ans:2,exp:"'I sleep seven hours a night' = I get seven hours of sleep each night. We use 'sleep' as a verb, not 'do sleep', 'make sleep', or 'take sleep'. 'How many hours do you sleep?' = 'How much sleep do you get?'"},
+{q:"Which is the correct way to say when you travel to work?",opts:["I go to work by bus most days","I travel work by bus most days","I take to work by bus most days","I ride work on bus most days"],ans:0,exp:"'I go to work by bus' = I use the bus as my method of transport to get to work. The pattern is: go/travel + to + place + by + transport. 'I go to school by car.' 'I travel to work on foot.'"},
+{q:"What does the phrase 'do exercise' mean?",opts:["To write about exercise in a notebook","To perform physical activity to keep fit","To watch exercise videos online","To teach exercise to other people"],ans:1,exp:"'Do exercise' = perform physical activity to stay healthy and fit. Related phrases: 'go to the gym', 'go for a run', 'go for a walk', 'play sport'. 'I do exercise three times a week.'"},
+{q:"What is the meaning of 'have a shower'?",opts:["To take a bath in a bathtub filled with water","To stand under running water to wash your body","To wash your face at the bathroom sink","To swim in a pool"],ans:1,exp:"'Have a shower' = stand under a stream of water (shower) to wash your body. British English prefers 'have a shower' and 'have a bath'. American English uses 'take a shower' and 'take a bath'."},
+{q:"Which frequency adverb means 'not at any time'?",opts:["Sometimes","Usually","Rarely","Never"],ans:3,exp:"'Never' = not at any time, 0% of the time. Frequency adverbs from most to least frequent: always → usually/normally → often → sometimes → rarely/hardly ever → never. 'I never go to bed after midnight.'"},
+{q:"What does 'I often go to the gym' mean?",opts:["I go to the gym every single day without exception","I go to the gym quite frequently — more often than not","I rarely go to the gym — perhaps once a month","I used to go to the gym but I have stopped"],ans:1,exp:"'Often' = quite frequently, more than sometimes but less than usually. It suggests a regular but not daily habit. 'I often go to the gym' = I go frequently, several times a week perhaps. Often is between 'usually' and 'sometimes'."},
+{q:"What is the correct order of daily activities in the morning?",opts:["Have breakfast → have a shower → get up → get dressed → leave home","Get dressed → get up → have a shower → have breakfast → leave home","Get up → have a shower → get dressed → have breakfast → leave home","Have breakfast → get up → get dressed → have a shower → leave home"],ans:2,exp:"The logical morning routine order from Chapter 17: get up (wake up and get out of bed) → have a shower (wash) → get dressed (put on clothes) → have breakfast (eat) → leave home (go out for the day)."},
+{q:"What is the meaning of 'at the weekend'?",opts:["During the working week — Monday to Friday","On the specific days of Saturday and Sunday","On public holidays only","During the evening hours of any day"],ans:1,exp:"'At the weekend' (British English) = on Saturday and/or Sunday. 'What do you do at the weekend?' = What are your activities on Saturday and Sunday? American English uses 'on the weekend'."},
+{q:"Which sentence is grammatically correct?",opts:["She finish work at five o'clock every day","She finishes work at five o'clock every day","She is finish work at five o'clock every day","She finishing work at five o'clock every day"],ans:1,exp:"'She finishes work at five o'clock every day.' In present simple tense, third person singular (he/she/it) adds -s or -es to the verb. 'She finish' ✗ → 'She finishes' ✓. This is a key grammar rule from the present simple tense lessons."}
+];
+let order=[],cur=0,picks={},playerName='',score=0;
+function shuffle(a){const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]];}return b;}
+function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');window.scrollTo(0,0);}
+function goBack(){if(confirm('Quit quiz?'))window.location.href='index.html';}
+function startQuiz(){playerName=document.getElementById('name-input').value.trim()||'Anonymous';order=shuffle(BANK.map((_,i)=>i));cur=0;picks={};score=0;document.getElementById('q-total').textContent=BANK.length;show('quiz-screen');render();}
+function render(){const idx=order[cur],q=BANK[idx],total=BANK.length;document.getElementById('q-num').textContent=cur+1;document.getElementById('q-score').textContent=score;document.getElementById('q-label').textContent=`Question ${cur+1} of ${total}`;document.getElementById('q-text').textContent=q.q;document.getElementById('progress-fill').style.width=((cur/total)*100)+'%';document.getElementById('explanation').className='explanation';document.getElementById('next-btn').className='next-btn';document.getElementById('quit-btn').className='quit-btn';const optEl=document.getElementById('options');optEl.innerHTML='';shuffle([0,1,2,3]).forEach((oi,li)=>{const btn=document.createElement('button');btn.className='opt-btn';btn.dataset.opt=oi;btn.innerHTML=`<span class="opt-letter">${'ABCD'[li]}</span><span>${q.opts[oi]}</span>`;btn.onclick=()=>select(oi,idx);optEl.appendChild(btn);});}
+function select(chosen,idx){const q=BANK[idx],ok=chosen===q.ans;picks[idx]=chosen;if(ok)score++;document.getElementById('q-score').textContent=score;document.querySelectorAll('.opt-btn').forEach(b=>{b.disabled=true;const oi=parseInt(b.dataset.opt);if(oi===q.ans)b.classList.add('correct');else if(oi===chosen&&!ok)b.classList.add('wrong');});if(!ok){const e=document.getElementById('explanation');e.textContent='✗ '+q.exp;e.classList.add('show');}const nb=document.getElementById('next-btn');nb.classList.add('show');nb.textContent=cur+1<BANK.length?'Next →':'See Results →';document.getElementById('quit-btn').classList.add('show');}
+function nextQuestion(){cur++;if(cur>=BANK.length)showResults();else{render();window.scrollTo(0,0);}}
+function showResults(){show('results-screen');const total=BANK.length,pct=Math.round((score/total)*100),passed=pct>=70;document.getElementById('result-name').textContent=playerName;document.getElementById('ring-pct').textContent=pct+'%';document.getElementById('ring-pct').style.color=passed?'var(--green)':'var(--red)';document.getElementById('ring-fill').style.stroke=passed?'var(--green)':'var(--red)';setTimeout(()=>{document.getElementById('ring-fill').style.strokeDashoffset=439.82-(439.82*pct/100);},100);document.getElementById('res-title').textContent=pct>=90?'Excellent!':pct>=70?'Passed!':'Needs Work';document.getElementById('res-sub').textContent=`${score} correct out of ${total}`;const v=document.getElementById('res-verdict');v.textContent=passed?'✓ Passed — above 70%':'✗ Below 70% — please retry';v.className='result-verdict '+(passed?'pass':'fail');const rv=document.getElementById('review');rv.innerHTML='<h3>Review</h3>';order.forEach(idx=>{const q=BANK[idx],ua=picks[idx],ok=ua===q.ans;const d=document.createElement('div');d.className='rv-item '+(ok?'ok':'miss');d.innerHTML=`<div class="rv-q">${q.q}</div><div class="rv-a">${ok?`<span class="c">✓ ${q.opts[q.ans]}</span>`:`<span class="w">✗ ${ua!==undefined?q.opts[ua]:'—'}</span><br><span class="c">✓ ${q.opts[q.ans]}</span><br><span style="color:var(--muted)">${q.exp}</span>`}</div>`;rv.appendChild(d);});}
+function retryQuiz(){order=shuffle(order);cur=0;picks={};score=0;document.getElementById('q-score').textContent=0;show('quiz-screen');render();}
+document.getElementById('name-input').addEventListener('keydown',e=>{if(e.key==='Enter')startQuiz();});
+</script>
+</body>
+</html>

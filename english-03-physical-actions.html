@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Physical Actions — July 2026 Exam</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📖</text></svg>">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@400;500&display=swap');
+  :root{--bg:#080810;--surface:#11111f;--border:#1e1e35;--purple:#7c3aed;--purple-l:#9d5bf0;--green:#22c55e;--red:#ef4444;--text:#e8e8f0;--muted:#7070a0;}
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Syne',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;align-items:center;justify-content:center;}
+  body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px);background-size:40px 40px;opacity:.4;pointer-events:none;z-index:0;}
+  .screen{position:relative;z-index:1;width:100%;max-width:660px;margin:0 auto;padding:24px 20px 48px;display:none;}
+  .screen.active{display:block;}
+  #name-screen{text-align:center;padding-top:80px;}
+  .back-link{display:inline-flex;align-items:center;gap:6px;font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);text-decoration:none;letter-spacing:1px;margin-bottom:48px;}
+  .back-link:hover{color:var(--purple-l);}
+  .subject-tag{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--purple-l);margin-bottom:12px;}
+  #name-screen h1{font-size:clamp(22px,5vw,36px);font-weight:800;line-height:1.15;margin-bottom:8px;background:linear-gradient(135deg,#fff 30%,var(--purple-l));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+  #name-screen p{color:var(--muted);font-family:'DM Mono',monospace;font-size:12px;margin-bottom:40px;}
+  .name-box{display:flex;flex-direction:column;align-items:center;gap:12px;}
+  .name-box input{width:100%;max-width:320px;padding:12px 16px;background:var(--surface);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:'Syne',sans-serif;font-size:15px;outline:none;text-align:center;}
+  .name-box input:focus{border-color:var(--purple);}
+  .name-box input::placeholder{color:var(--muted);}
+  .btn-primary{padding:12px 32px;background:var(--purple);color:#fff;border:none;border-radius:8px;font-family:'Syne',sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:background .2s;}
+  .btn-primary:hover{background:var(--purple-l);}
+  .quiz-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;}
+  .quiz-meta{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);}
+  .quiz-meta span{color:var(--purple-l);font-weight:500;}
+  .quiz-back{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);background:none;border:1px solid var(--border);padding:5px 10px;border-radius:6px;cursor:pointer;}
+  .quiz-back:hover{color:var(--text);border-color:var(--purple);}
+  .progress-bar{width:100%;height:3px;background:var(--border);border-radius:2px;margin-bottom:32px;overflow:hidden;}
+  .progress-fill{height:100%;background:linear-gradient(90deg,var(--purple),var(--purple-l));border-radius:2px;transition:width .3s ease;}
+  .question-num{font-family:'DM Mono',monospace;font-size:10px;color:var(--purple-l);letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;}
+  .question-text{font-size:clamp(15px,3vw,18px);font-weight:600;line-height:1.5;margin-bottom:28px;}
+  .options{display:flex;flex-direction:column;gap:10px;}
+  .opt-btn{display:flex;align-items:center;gap:12px;padding:13px 16px;background:var(--surface);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:'Syne',sans-serif;font-size:14px;cursor:pointer;text-align:left;transition:border-color .15s,background .15s;width:100%;}
+  .opt-btn:hover:not(:disabled){border-color:var(--purple);background:#16162a;}
+  .opt-btn .opt-letter{flex-shrink:0;width:26px;height:26px;border-radius:6px;background:var(--border);display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);}
+  .opt-btn:hover:not(:disabled) .opt-letter{background:var(--purple);color:#fff;}
+  .opt-btn.correct{border-color:var(--green);background:rgba(34,197,94,.1);}
+  .opt-btn.correct .opt-letter{background:var(--green);color:#fff;}
+  .opt-btn.wrong{border-color:var(--red);background:rgba(239,68,68,.1);}
+  .opt-btn.wrong .opt-letter{background:var(--red);color:#fff;}
+  .opt-btn:disabled{cursor:default;}
+  .explanation{display:none;margin-top:16px;padding:14px 16px;background:rgba(124,58,237,.1);border:1px solid rgba(124,58,237,.25);border-left:3px solid var(--purple);border-radius:8px;font-size:13px;line-height:1.6;color:#c4b5fd;font-family:'DM Mono',monospace;}
+  .explanation.show{display:block;}
+  .action-row{display:flex;gap:10px;margin-top:24px;}
+  .next-btn{flex:1;padding:13px;background:var(--purple);color:#fff;border:none;border-radius:8px;font-family:'Syne',sans-serif;font-size:14px;font-weight:700;cursor:pointer;display:none;}
+  .next-btn:hover{background:var(--purple-l);}
+  .next-btn.show{display:block;}
+  .quit-btn{padding:13px 18px;background:none;border:1px solid var(--border);border-radius:8px;color:var(--muted);font-family:'DM Mono',monospace;font-size:12px;cursor:pointer;display:none;white-space:nowrap;}
+  .quit-btn:hover{color:var(--text);border-color:var(--purple);}
+  .quit-btn.show{display:block;}
+  #results-screen{text-align:center;padding-top:40px;}
+  .result-name{font-family:'DM Mono',monospace;font-size:12px;color:var(--muted);margin-bottom:32px;}
+  .score-ring{position:relative;width:160px;height:160px;margin:0 auto 28px;}
+  .score-ring svg{transform:rotate(-90deg);}
+  .score-ring .ring-bg{fill:none;stroke:var(--border);stroke-width:10;}
+  .score-ring .ring-fill{fill:none;stroke-width:10;stroke-linecap:round;transition:stroke-dashoffset 1s ease,stroke .5s;}
+  .score-ring .ring-text{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+  .ring-pct{font-size:34px;font-weight:800;line-height:1;}
+  .ring-label{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);margin-top:4px;letter-spacing:1px;}
+  .result-title{font-size:24px;font-weight:800;margin-bottom:8px;}
+  .result-sub{font-family:'DM Mono',monospace;font-size:12px;color:var(--muted);margin-bottom:8px;}
+  .result-verdict{font-family:'DM Mono',monospace;font-size:12px;padding:8px 20px;border-radius:20px;display:inline-block;margin-bottom:32px;}
+  .result-verdict.pass{background:rgba(34,197,94,.12);color:var(--green);border:1px solid rgba(34,197,94,.3);}
+  .result-verdict.fail{background:rgba(239,68,68,.12);color:var(--red);border:1px solid rgba(239,68,68,.3);}
+  .result-actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:40px;}
+  .btn-outline{padding:11px 24px;background:none;border:1px solid var(--border);border-radius:8px;color:var(--muted);font-family:'Syne',sans-serif;font-size:13px;font-weight:600;cursor:pointer;}
+  .btn-outline:hover{border-color:var(--purple);color:var(--text);}
+  .review{text-align:left;}
+  .review h3{font-size:13px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:2px;margin-bottom:16px;font-family:'DM Mono',monospace;}
+  .rv-item{padding:14px 16px;border-radius:8px;margin-bottom:10px;border:1px solid var(--border);}
+  .rv-item.ok{border-color:rgba(34,197,94,.25);background:rgba(34,197,94,.05);}
+  .rv-item.miss{border-color:rgba(239,68,68,.25);background:rgba(239,68,68,.05);}
+  .rv-q{font-size:13px;font-weight:600;margin-bottom:8px;line-height:1.4;}
+  .rv-a{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);line-height:1.6;}
+  .rv-a .c{color:var(--green);}
+  .rv-a .w{color:var(--red);}
+</style>
+</head>
+<body>
+<div class="screen active" id="name-screen">
+  <a class="back-link" href="index.html">← Back to subjects</a>
+  <div class="subject-tag">English · Chapter 11</div>
+  <h1>Physical Actions</h1>
+  <p>25 questions · Body movements, irregular verbs & past simple forms</p>
+  <div class="name-box">
+    <input type="text" id="name-input" placeholder="Enter your name" maxlength="30" autocomplete="off">
+    <button class="btn-primary" onclick="startQuiz()">Start Quiz</button>
+  </div>
+</div>
+<div class="screen" id="quiz-screen">
+  <div class="quiz-header">
+    <div class="quiz-meta">Question <span id="q-num">1</span> of <span id="q-total">25</span></div>
+    <div class="quiz-meta">Score <span id="q-score">0</span></div>
+    <button class="quiz-back" onclick="goBack()">← Quit</button>
+  </div>
+  <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+  <div class="question-num" id="q-label"></div>
+  <div class="question-text" id="q-text"></div>
+  <div class="options" id="options"></div>
+  <div class="explanation" id="explanation"></div>
+  <div class="action-row">
+    <button class="quit-btn" id="quit-btn" onclick="goBack()">← Back to subjects</button>
+    <button class="next-btn" id="next-btn" onclick="nextQuestion()">Next Question →</button>
+  </div>
+</div>
+<div class="screen" id="results-screen">
+  <div class="result-name" id="result-name"></div>
+  <div class="score-ring">
+    <svg viewBox="0 0 160 160" width="160" height="160">
+      <circle class="ring-bg" cx="80" cy="80" r="70"/>
+      <circle class="ring-fill" id="ring-fill" cx="80" cy="80" r="70" stroke-dasharray="439.82" stroke-dashoffset="439.82" stroke="var(--green)"/>
+    </svg>
+    <div class="ring-text">
+      <div class="ring-pct" id="ring-pct">0%</div>
+      <div class="ring-label">SCORE</div>
+    </div>
+  </div>
+  <div class="result-title" id="res-title"></div>
+  <div class="result-sub" id="res-sub"></div>
+  <div class="result-verdict" id="res-verdict"></div>
+  <div class="result-actions">
+    <button class="btn-primary" onclick="retryQuiz()">Retry →</button>
+    <button class="btn-outline" onclick="window.location.href='index.html'">All Subjects</button>
+  </div>
+  <div class="review" id="review"></div>
+</div>
+<script>
+const BANK=[
+{q:"What is the past simple of 'walk'?",opts:["Walken","Walked","Walk","Woke"],ans:1,exp:"Walk → Walked. Regular verbs add -ed in past simple. 'She walked 5 miles yesterday.'"},
+{q:"What is the past simple of 'run'?",opts:["Runned","Runed","Ran","Run"],ans:2,exp:"Run → Ran. Irregular verb. 'I ran to the bus stop.' The past participle is 'run' but the simple past is 'ran'."},
+{q:"What is the past simple of 'fall'?",opts:["Falled","Fell","Fallen","Felled"],ans:1,exp:"Fall → Fell. Irregular verb. 'She fell over in the garden.' The past participle is 'fallen' but simple past is 'fell'."},
+{q:"What is the past simple of 'ride'?",opts:["Rided","Ridded","Rode","Rid"],ans:2,exp:"Ride → Rode. Irregular verb. 'I rode my bicycle to school.' Past participle: ridden."},
+{q:"What is the past simple of 'sit'?",opts:["Sitted","Set","Satted","Sat"],ans:3,exp:"Sit → Sat. Irregular verb. 'She sat down on the chair.' Past participle: sat."},
+{q:"What is the past simple of 'stand'?",opts:["Standed","Stood","Stod","Standed up"],ans:1,exp:"Stand → Stood. Irregular verb. 'I stood up when the teacher came in.' The verb 'stood up' = moved from sitting to standing."},
+{q:"What is the past simple of 'get on'?",opts:["Getted on","Got on","Gotten on","Get oned"],ans:1,exp:"Get on → Got on. Irregular verb. 'She got on the bus at the station.' Get → Got in past simple."},
+{q:"What is the past simple of 'give'?",opts:["Gived","Givenned","Gave","Given"],ans:2,exp:"Give → Gave. Irregular verb. 'He gave a book to his friend.' Past participle: given."},
+{q:"What is the past simple of 'climb'?",opts:["Climbed","Clumb","Clamb","Climd"],ans:0,exp:"Climb → Climbed. Regular verb — add -ed. 'They climbed up the mountain in the summer.'"},
+{q:"What does 'sit down' mean?",opts:["To move from a sitting position to a standing position","To move from standing to a seated position","To fall over unexpectedly","To lean against a wall"],ans:1,exp:"'Sit down' = move from standing to a seated position. The opposite is 'stand up' = move from sitting to standing. 'Please sit down' is a common classroom instruction."},
+{q:"What does 'fall over' mean?",opts:["To climb over something carefully","To lose balance and drop to the ground","To jump over an obstacle","To lean forward gently"],ans:1,exp:"'Fall over' = to lose balance and drop to the ground unintentionally. 'She fell over on the ice.' It is different from 'fall down' (which suggests falling from height)."},
+{q:"What does 'pick up' mean?",opts:["To throw something away","To push something across the floor","To lift something from a lower position","To put something down carefully"],ans:2,exp:"'Pick up' = to lift something from a lower position to a higher one using your hands. 'Pick up a baby' = lift the baby. 'Pick up a dictionary' = lift it from the table."},
+{q:"What does 'carry' mean?",opts:["To drop something on the floor","To hold something and take it from one place to another","To push something along a surface","To throw something to another person"],ans:1,exp:"'Carry' = to hold something and take it from one place to another. 'She carried a tray of food from the kitchen.' Used frequently in the hospitality industry."},
+{q:"What does 'push' mean?",opts:["To use force to move something towards you","To hold something and bring it closer","To use force to move something away from you","To lift something upwards"],ans:2,exp:"'Push' = to use force to move something away from you. The opposite is 'pull' = to use force to move something towards you. Push a door, pull a door."},
+{q:"What does 'hold' mean?",opts:["To drop something on purpose","To carry something with your hands and keep it supported","To throw something to another person","To push something forward"],ans:1,exp:"'Hold' = to have something in your hands and support it. 'Hold a baby' = keep the baby supported in your arms. 'Hold a ruler' = grip it in your hand."},
+{q:"What does 'drop' mean?",opts:["To pick something up from the floor","To carry something carefully to another room","To let something fall from your hands accidentally","To push something gently forward"],ans:2,exp:"'Drop' = to let something fall, usually accidentally. 'She dropped the glass and it broke.' In the kitchen context: 'Don't drop the tray.' The opposite of 'pick up'."},
+{q:"What does 'turn on' mean?",opts:["To make a device stop working by pressing the power button","To change direction while walking","To make a device start working — activate it","To spin something in a circle"],ans:2,exp:"'Turn on' = to make something start working by pressing a switch or button. 'Turn on the TV' = activate the TV. The opposite is 'turn off' = stop the device."},
+{q:"What does 'touch' mean?",opts:["To pick something up and carry it","To make contact with something using your hand or body","To look at something carefully without moving it","To push something away forcefully"],ans:1,exp:"'Touch' = to make physical contact with something using a part of your body, usually your hand. 'Don't touch the hot stove.' 'Touch your hair' = move your hand to your hair."},
+{q:"Which of these verbs is IRREGULAR in past simple?",opts:["Walk (walked)","Climb (climbed)","Dance (danced)","Run (ran)"],ans:3,exp:"Run → Ran is an irregular past simple. Walk, climb, and dance are all regular — they add -ed. Irregular verbs have unpredictable past forms that must be memorised."},
+{q:"What is the correct past simple of 'lie down'?",opts:["Lie downed","Laid down","Lied down","Lay down"],ans:3,exp:"Lie (lie down) → Lay down. Irregular verb. 'She lay down on the bed.' Note: 'lay' is the simple past of 'lie' (to recline). This is one of the most commonly confused verb pairs."},
+{q:"What is the correct sentence? She _____ into the swimming pool.",opts:["Dived / dived","Jump / jumped","Dove / dove","Jumped"],ans:3,exp:"'She jumped into the swimming pool.' Jumped is the past simple of 'jump' (regular verb + -ed). In Chapter 11, 'jump' is one of the body movement verbs listed."},
+{q:"What is the past simple of 'dance'?",opts:["Danced","Danct","Danceed","Dane"],ans:0,exp:"Dance → Danced. Regular verb. Drop the final -e and add -d. 'We danced at the party last night.'"},
+{q:"What does 'stand up' mean?",opts:["To remain sitting still","To move from a sitting or lying position to an upright position","To fall over backwards","To lean against something"],ans:1,exp:"'Stand up' = to move from a sitting or lying position to an upright standing position. 'Please stand up' = get to your feet. The opposite is 'sit down.'"},
+{q:"In the sentence 'She walked 5 miles yesterday', what tense is used?",opts:["Present simple","Present continuous","Simple past","Future simple"],ans:2,exp:"'She walked 5 miles yesterday' is simple past tense. 'Yesterday' is a past time marker. Walked = past simple of walk (regular verb + -ed)."},
+{q:"What is the correct past simple form of 'get off'?",opts:["Getted off","Get offed","Got off","Gotten off"],ans:2,exp:"Get off → Got off. 'She got off the bus at the market.' Get → Got in simple past. Irregular verb. 'Get on' and 'get off' are both common phrasal verbs for transport."}
+];
+let order=[],cur=0,picks={},playerName='',score=0;
+function shuffle(a){const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]];}return b;}
+function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');window.scrollTo(0,0);}
+function goBack(){if(confirm('Quit quiz?'))window.location.href='index.html';}
+function startQuiz(){playerName=document.getElementById('name-input').value.trim()||'Anonymous';order=shuffle(BANK.map((_,i)=>i));cur=0;picks={};score=0;document.getElementById('q-total').textContent=BANK.length;show('quiz-screen');render();}
+function render(){const idx=order[cur],q=BANK[idx],total=BANK.length;document.getElementById('q-num').textContent=cur+1;document.getElementById('q-score').textContent=score;document.getElementById('q-label').textContent=`Question ${cur+1} of ${total}`;document.getElementById('q-text').textContent=q.q;document.getElementById('progress-fill').style.width=((cur/total)*100)+'%';document.getElementById('explanation').className='explanation';document.getElementById('next-btn').className='next-btn';document.getElementById('quit-btn').className='quit-btn';const optEl=document.getElementById('options');optEl.innerHTML='';shuffle([0,1,2,3]).forEach((oi,li)=>{const btn=document.createElement('button');btn.className='opt-btn';btn.dataset.opt=oi;btn.innerHTML=`<span class="opt-letter">${'ABCD'[li]}</span><span>${q.opts[oi]}</span>`;btn.onclick=()=>select(oi,idx);optEl.appendChild(btn);});}
+function select(chosen,idx){const q=BANK[idx],ok=chosen===q.ans;picks[idx]=chosen;if(ok)score++;document.getElementById('q-score').textContent=score;document.querySelectorAll('.opt-btn').forEach(b=>{b.disabled=true;const oi=parseInt(b.dataset.opt);if(oi===q.ans)b.classList.add('correct');else if(oi===chosen&&!ok)b.classList.add('wrong');});if(!ok){const e=document.getElementById('explanation');e.textContent='✗ '+q.exp;e.classList.add('show');}const nb=document.getElementById('next-btn');nb.classList.add('show');nb.textContent=cur+1<BANK.length?'Next →':'See Results →';document.getElementById('quit-btn').classList.add('show');}
+function nextQuestion(){cur++;if(cur>=BANK.length)showResults();else{render();window.scrollTo(0,0);}}
+function showResults(){show('results-screen');const total=BANK.length,pct=Math.round((score/total)*100),passed=pct>=70;document.getElementById('result-name').textContent=playerName;document.getElementById('ring-pct').textContent=pct+'%';document.getElementById('ring-pct').style.color=passed?'var(--green)':'var(--red)';document.getElementById('ring-fill').style.stroke=passed?'var(--green)':'var(--red)';setTimeout(()=>{document.getElementById('ring-fill').style.strokeDashoffset=439.82-(439.82*pct/100);},100);document.getElementById('res-title').textContent=pct>=90?'Excellent!':pct>=70?'Passed!':'Needs Work';document.getElementById('res-sub').textContent=`${score} correct out of ${total}`;const v=document.getElementById('res-verdict');v.textContent=passed?'✓ Passed — above 70%':'✗ Below 70% — please retry';v.className='result-verdict '+(passed?'pass':'fail');const rv=document.getElementById('review');rv.innerHTML='<h3>Review</h3>';order.forEach(idx=>{const q=BANK[idx],ua=picks[idx],ok=ua===q.ans;const d=document.createElement('div');d.className='rv-item '+(ok?'ok':'miss');d.innerHTML=`<div class="rv-q">${q.q}</div><div class="rv-a">${ok?`<span class="c">✓ ${q.opts[q.ans]}</span>`:`<span class="w">✗ ${ua!==undefined?q.opts[ua]:'—'}</span><br><span class="c">✓ ${q.opts[q.ans]}</span><br><span style="color:var(--muted)">${q.exp}</span>`}</div>`;rv.appendChild(d);});}
+function retryQuiz(){order=shuffle(order);cur=0;picks={};score=0;document.getElementById('q-score').textContent=0;show('quiz-screen');render();}
+document.getElementById('name-input').addEventListener('keydown',e=>{if(e.key==='Enter')startQuiz();});
+</script>
+</body>
+</html>

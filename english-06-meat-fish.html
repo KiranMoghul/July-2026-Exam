@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Meat & Fish — July 2026 Exam</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📖</text></svg>">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@400;500&display=swap');
+  :root{--bg:#080810;--surface:#11111f;--border:#1e1e35;--purple:#7c3aed;--purple-l:#9d5bf0;--green:#22c55e;--red:#ef4444;--text:#e8e8f0;--muted:#7070a0;}
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Syne',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;align-items:center;justify-content:center;}
+  body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px);background-size:40px 40px;opacity:.4;pointer-events:none;z-index:0;}
+  .screen{position:relative;z-index:1;width:100%;max-width:660px;margin:0 auto;padding:24px 20px 48px;display:none;}
+  .screen.active{display:block;}
+  #name-screen{text-align:center;padding-top:80px;}
+  .back-link{display:inline-flex;align-items:center;gap:6px;font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);text-decoration:none;letter-spacing:1px;margin-bottom:48px;}
+  .back-link:hover{color:var(--purple-l);}
+  .subject-tag{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--purple-l);margin-bottom:12px;}
+  #name-screen h1{font-size:clamp(22px,5vw,36px);font-weight:800;line-height:1.15;margin-bottom:8px;background:linear-gradient(135deg,#fff 30%,var(--purple-l));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+  #name-screen p{color:var(--muted);font-family:'DM Mono',monospace;font-size:12px;margin-bottom:40px;}
+  .name-box{display:flex;flex-direction:column;align-items:center;gap:12px;}
+  .name-box input{width:100%;max-width:320px;padding:12px 16px;background:var(--surface);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:'Syne',sans-serif;font-size:15px;outline:none;text-align:center;}
+  .name-box input:focus{border-color:var(--purple);}
+  .name-box input::placeholder{color:var(--muted);}
+  .btn-primary{padding:12px 32px;background:var(--purple);color:#fff;border:none;border-radius:8px;font-family:'Syne',sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:background .2s;}
+  .btn-primary:hover{background:var(--purple-l);}
+  .quiz-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;}
+  .quiz-meta{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);}
+  .quiz-meta span{color:var(--purple-l);font-weight:500;}
+  .quiz-back{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);background:none;border:1px solid var(--border);padding:5px 10px;border-radius:6px;cursor:pointer;}
+  .quiz-back:hover{color:var(--text);border-color:var(--purple);}
+  .progress-bar{width:100%;height:3px;background:var(--border);border-radius:2px;margin-bottom:32px;overflow:hidden;}
+  .progress-fill{height:100%;background:linear-gradient(90deg,var(--purple),var(--purple-l));border-radius:2px;transition:width .3s ease;}
+  .question-num{font-family:'DM Mono',monospace;font-size:10px;color:var(--purple-l);letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;}
+  .question-text{font-size:clamp(15px,3vw,18px);font-weight:600;line-height:1.5;margin-bottom:28px;}
+  .options{display:flex;flex-direction:column;gap:10px;}
+  .opt-btn{display:flex;align-items:center;gap:12px;padding:13px 16px;background:var(--surface);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:'Syne',sans-serif;font-size:14px;cursor:pointer;text-align:left;width:100%;}
+  .opt-btn:hover:not(:disabled){border-color:var(--purple);background:#16162a;}
+  .opt-btn .opt-letter{flex-shrink:0;width:26px;height:26px;border-radius:6px;background:var(--border);display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);}
+  .opt-btn:hover:not(:disabled) .opt-letter{background:var(--purple);color:#fff;}
+  .opt-btn.correct{border-color:var(--green);background:rgba(34,197,94,.1);}
+  .opt-btn.correct .opt-letter{background:var(--green);color:#fff;}
+  .opt-btn.wrong{border-color:var(--red);background:rgba(239,68,68,.1);}
+  .opt-btn.wrong .opt-letter{background:var(--red);color:#fff;}
+  .opt-btn:disabled{cursor:default;}
+  .explanation{display:none;margin-top:16px;padding:14px 16px;background:rgba(124,58,237,.1);border:1px solid rgba(124,58,237,.25);border-left:3px solid var(--purple);border-radius:8px;font-size:13px;line-height:1.6;color:#c4b5fd;font-family:'DM Mono',monospace;}
+  .explanation.show{display:block;}
+  .action-row{display:flex;gap:10px;margin-top:24px;}
+  .next-btn{flex:1;padding:13px;background:var(--purple);color:#fff;border:none;border-radius:8px;font-family:'Syne',sans-serif;font-size:14px;font-weight:700;cursor:pointer;display:none;}
+  .next-btn:hover{background:var(--purple-l);}
+  .next-btn.show{display:block;}
+  .quit-btn{padding:13px 18px;background:none;border:1px solid var(--border);border-radius:8px;color:var(--muted);font-family:'DM Mono',monospace;font-size:12px;cursor:pointer;display:none;white-space:nowrap;}
+  .quit-btn:hover{color:var(--text);border-color:var(--purple);}
+  .quit-btn.show{display:block;}
+  #results-screen{text-align:center;padding-top:40px;}
+  .result-name{font-family:'DM Mono',monospace;font-size:12px;color:var(--muted);margin-bottom:32px;}
+  .score-ring{position:relative;width:160px;height:160px;margin:0 auto 28px;}
+  .score-ring svg{transform:rotate(-90deg);}
+  .score-ring .ring-bg{fill:none;stroke:var(--border);stroke-width:10;}
+  .score-ring .ring-fill{fill:none;stroke-width:10;stroke-linecap:round;transition:stroke-dashoffset 1s ease,stroke .5s;}
+  .score-ring .ring-text{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+  .ring-pct{font-size:34px;font-weight:800;line-height:1;}
+  .ring-label{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);margin-top:4px;letter-spacing:1px;}
+  .result-title{font-size:24px;font-weight:800;margin-bottom:8px;}
+  .result-sub{font-family:'DM Mono',monospace;font-size:12px;color:var(--muted);margin-bottom:8px;}
+  .result-verdict{font-family:'DM Mono',monospace;font-size:12px;padding:8px 20px;border-radius:20px;display:inline-block;margin-bottom:32px;}
+  .result-verdict.pass{background:rgba(34,197,94,.12);color:var(--green);border:1px solid rgba(34,197,94,.3);}
+  .result-verdict.fail{background:rgba(239,68,68,.12);color:var(--red);border:1px solid rgba(239,68,68,.3);}
+  .result-actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:40px;}
+  .btn-outline{padding:11px 24px;background:none;border:1px solid var(--border);border-radius:8px;color:var(--muted);font-family:'Syne',sans-serif;font-size:13px;font-weight:600;cursor:pointer;}
+  .btn-outline:hover{border-color:var(--purple);color:var(--text);}
+  .review{text-align:left;}
+  .review h3{font-size:13px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:2px;margin-bottom:16px;font-family:'DM Mono',monospace;}
+  .rv-item{padding:14px 16px;border-radius:8px;margin-bottom:10px;border:1px solid var(--border);}
+  .rv-item.ok{border-color:rgba(34,197,94,.25);background:rgba(34,197,94,.05);}
+  .rv-item.miss{border-color:rgba(239,68,68,.25);background:rgba(239,68,68,.05);}
+  .rv-q{font-size:13px;font-weight:600;margin-bottom:8px;line-height:1.4;}
+  .rv-a{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);line-height:1.6;}
+  .rv-a .c{color:var(--green);}
+  .rv-a .w{color:var(--red);}
+</style>
+</head>
+<body>
+<div class="screen active" id="name-screen">
+  <a class="back-link" href="index.html">← Back to subjects</a>
+  <div class="subject-tag">English · Chapter 24</div>
+  <h1>Naming Meat & Fish</h1>
+  <p>20 questions · Meat types, seafood, animal sources & food vocabulary</p>
+  <div class="name-box">
+    <input type="text" id="name-input" placeholder="Enter your name" maxlength="30" autocomplete="off">
+    <button class="btn-primary" onclick="startQuiz()">Start Quiz</button>
+  </div>
+</div>
+<div class="screen" id="quiz-screen">
+  <div class="quiz-header">
+    <div class="quiz-meta">Question <span id="q-num">1</span> of <span id="q-total">20</span></div>
+    <div class="quiz-meta">Score <span id="q-score">0</span></div>
+    <button class="quiz-back" onclick="goBack()">← Quit</button>
+  </div>
+  <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+  <div class="question-num" id="q-label"></div>
+  <div class="question-text" id="q-text"></div>
+  <div class="options" id="options"></div>
+  <div class="explanation" id="explanation"></div>
+  <div class="action-row">
+    <button class="quit-btn" id="quit-btn" onclick="goBack()">← Back to subjects</button>
+    <button class="next-btn" id="next-btn" onclick="nextQuestion()">Next Question →</button>
+  </div>
+</div>
+<div class="screen" id="results-screen">
+  <div class="result-name" id="result-name"></div>
+  <div class="score-ring">
+    <svg viewBox="0 0 160 160" width="160" height="160">
+      <circle class="ring-bg" cx="80" cy="80" r="70"/>
+      <circle class="ring-fill" id="ring-fill" cx="80" cy="80" r="70" stroke-dasharray="439.82" stroke-dashoffset="439.82" stroke="var(--green)"/>
+    </svg>
+    <div class="ring-text">
+      <div class="ring-pct" id="ring-pct">0%</div>
+      <div class="ring-label">SCORE</div>
+    </div>
+  </div>
+  <div class="result-title" id="res-title"></div>
+  <div class="result-sub" id="res-sub"></div>
+  <div class="result-verdict" id="res-verdict"></div>
+  <div class="result-actions">
+    <button class="btn-primary" onclick="retryQuiz()">Retry →</button>
+    <button class="btn-outline" onclick="window.location.href='index.html'">All Subjects</button>
+  </div>
+  <div class="review" id="review"></div>
+</div>
+<script>
+const BANK=[
+{q:"Which animal does beef come from?",opts:["Sheep","Pig","Cow","Chicken"],ans:2,exp:"Beef comes from a cow. Cow → beef. This is the English word for the meat — we don't say 'cow meat'. Other examples: pig → pork, sheep → lamb, chicken → chicken (same word for animal and meat)."},
+{q:"Which animal does lamb come from?",opts:["Cow","Sheep / lamb","Pig","Duck"],ans:1,exp:"Lamb comes from sheep. Sheep/lamb → lamb (the meat). Young sheep are called lambs, and the meat is called lamb. Adult sheep meat is sometimes called mutton."},
+{q:"Which animal does pork come from?",opts:["Cow","Sheep","Chicken","Pig"],ans:3,exp:"Pork comes from a pig. Pig → pork. From a pig we also get ham, bacon, and sausages. 'Do you eat pork or bacon?' is a question from the chapter. Muslims do not eat pork."},
+{q:"What type of meat is bacon?",opts:["A type of beef from the hindquarter of a cow","A type of chicken processed and sliced thinly","A cured/smoked meat that comes from a pig","A type of lamb from young sheep under six months"],ans:2,exp:"Bacon is a cured or smoked meat that comes from a pig. Like ham and sausages, bacon is a pork product. 'From a pig we also get: ham, sausages, bacon.' — directly from Chapter 24."},
+{q:"Which of the following is a type of SEAFOOD?",opts:["Lamb","Pork","Bacon","Salmon"],ans:3,exp:"Salmon is a fish and therefore seafood. The seafood category in Chapter 24 includes: fish (salmon, tuna) and shellfish/seafood (squid, prawns, mussels, crab). Lamb, pork, and bacon are all meat from land animals."},
+{q:"What is the category name for prawns, mussels, and crab?",opts:["Meat","Poultry","Seafood","Dairy"],ans:2,exp:"Prawns, mussels, crab, and squid are all seafood. The chapter divides animal protein into meat (beef, pork, lamb, chicken, duck) and seafood/fish (salmon, tuna, squid, prawns, mussels, crab)."},
+{q:"Which of the following is NOT a type of fish listed in Chapter 24?",opts:["Salmon","Tuna","Prawn","Squid"],ans:2,exp:"Prawns are NOT fish — they are shellfish/seafood. Fish in Chapter 24: salmon and tuna. Seafood (not strictly fish): squid, prawns, mussels, crab. The chapter separates 'fish' from 'seafood'."},
+{q:"What kind of meat is chicken?",opts:["Red meat — from a large land mammal","Seafood — caught from the ocean","Poultry — from a bird","Processed meat — made from mixed animal products"],ans:2,exp:"Chicken is poultry — meat from a bird. Other poultry in Chapter 24: duck. Poultry is a sub-category of meat. 'Do you eat pork or bacon?' / 'Cow, pig, lamb/sheep, chicken, duck' — these are the meat animals listed."},
+{q:"From which animal do we get duck meat?",opts:["A type of sheep that lives near water","A bird — the duck","A young cow bred for its tender meat","A type of large fish"],ans:1,exp:"Duck meat comes from a duck — a bird. Duck is poultry, like chicken. In Chapter 24 the animals listed for meat are: cow (beef), pig (pork/ham/bacon/sausages), sheep/lamb (lamb), chicken (chicken), duck (duck)."},
+{q:"What is tuna?",opts:["A type of shellfish with a hard outer shell","A large fish used for steaks and tinned food","A type of lamb cut from the shoulder","A cured pork product similar to bacon"],ans:1,exp:"Tuna is a large fish — widely eaten as steaks or in tinned form (tinned tuna). In Chapter 24, tuna is listed under 'fish' along with salmon. It is seafood but specifically a fish, not shellfish."},
+{q:"Which of the following is a shellfish?",opts:["Tuna","Salmon","Mussels","Duck"],ans:2,exp:"Mussels are shellfish — they have shells and live in water. Other shellfish/seafood in Chapter 24: crab, prawns, squid. Fish (no shell): salmon, tuna. Shellfish are a type of seafood."},
+{q:"What is the English word for the meat from a cow?",opts:["Pork","Mutton","Beef","Veal"],ans:2,exp:"The meat from a cow is called beef. This is an important vocabulary distinction in English — the animal and the meat often have different names. Cow → beef, pig → pork, sheep → lamb/mutton."},
+{q:"What products can we get from a pig?",opts:["Beef, veal, and mince","Lamb, mutton, and offal","Pork, ham, bacon, and sausages","Chicken, duck, and turkey"],ans:2,exp:"From a pig we get: pork (the main meat), ham (cured leg), bacon (cured/smoked side), and sausages. Chapter 24 spotlight: 'From a pig we also get: ham, pork, sausages, bacon.'"},
+{q:"What is squid?",opts:["A type of large fish with fins and scales","A shellfish/seafood — a soft sea creature with tentacles","A type of cured pork similar to salami","A freshwater fish found in rivers and lakes"],ans:1,exp:"Squid is a seafood — a soft-bodied sea creature with tentacles. It is eaten in many cuisines. In Chapter 24 it is listed under seafood along with prawns, mussels, and crab. It is NOT a fish (no fins or scales)."},
+{q:"Which question would you use to ask if someone eats pork?",opts:["Do you like pork or beef?","Do you eat pork or bacon?","Can you cook pork or chicken?","Have you tried pork or lamb?"],ans:1,exp:"'Do you eat pork or bacon?' is the exact question from Chapter 24. This is important for hospitality professionals to ask guests about dietary restrictions, especially when pork is on the menu."},
+{q:"What is the difference between 'fish' and 'seafood' in Chapter 24?",opts:["Fish and seafood are identical — there is no difference between the two terms","Fish specifically refers to finned creatures (salmon, tuna) while seafood is a broader term that includes fish AND shellfish (prawns, crab, mussels, squid)","Fish is only for freshwater creatures while seafood is only for saltwater creatures","Fish is the raw ingredient while seafood refers only to cooked preparations"],ans:1,exp:"In Chapter 24: Fish = finned sea creatures (salmon, tuna). Seafood = broader category including fish AND shellfish/crustaceans (squid, prawns, mussels, crab). All fish is seafood, but not all seafood is fish."},
+{q:"Which word correctly completes the sentence: 'Salmon is different because it is a ___.'?",opts:["Meat","Bird","Fish","Shellfish"],ans:2,exp:"'Salmon is different because it is a fish.' In Chapter 24 Exercise 1, students identify the odd one out. Salmon is in a list of meats — it is the odd one out because it is a fish, not a land meat."},
+{q:"What is ham?",opts:["A type of beef cut from the leg of a cow","A cured meat product that comes from the leg of a pig","A type of chicken breast processed and sliced","A type of large prawn found in warm waters"],ans:1,exp:"Ham is a cured meat from the leg of a pig. It is a pork product. Chapter 24: 'From a pig we also get: ham, pork, sausages, bacon.' Ham is often served cold in sandwiches or warm with meals."},
+{q:"Which of the following groups are ALL seafood?",opts:["Beef, lamb, pork, chicken","Salmon, tuna, squid, prawns, mussels, crab","Bacon, ham, sausages, duck","Salmon, bacon, chicken, squid"],ans:1,exp:"Salmon, tuna, squid, prawns, mussels, and crab are ALL seafood. They all come from the sea. Beef, lamb, pork, and chicken are meat from land animals. Bacon, ham, and sausages are pork products."},
+{q:"Why is it important for hospitality workers to know meat and fish vocabulary?",opts:["It is only required for chefs who cook the food — not for serving staff","Hospitality workers must be able to describe menu items, answer guest questions about ingredients, and accommodate dietary restrictions such as no pork or seafood allergies","It is only important when working in international restaurants — not local ones","Meat and fish vocabulary is needed only for purchasing food — not for service"]  ,ans:1,exp:"Hospitality professionals must know meat and fish vocabulary to: describe dishes on the menu to guests, answer questions about ingredients, take accurate orders, and communicate dietary restrictions (no pork, shellfish allergy, vegetarian) to the kitchen. This is core professional English for the hospitality industry."}
+];
+let order=[],cur=0,picks={},playerName='',score=0;
+function shuffle(a){const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]];}return b;}
+function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');window.scrollTo(0,0);}
+function goBack(){if(confirm('Quit quiz?'))window.location.href='index.html';}
+function startQuiz(){playerName=document.getElementById('name-input').value.trim()||'Anonymous';order=shuffle(BANK.map((_,i)=>i));cur=0;picks={};score=0;document.getElementById('q-total').textContent=BANK.length;show('quiz-screen');render();}
+function render(){const idx=order[cur],q=BANK[idx],total=BANK.length;document.getElementById('q-num').textContent=cur+1;document.getElementById('q-score').textContent=score;document.getElementById('q-label').textContent=`Question ${cur+1} of ${total}`;document.getElementById('q-text').textContent=q.q;document.getElementById('progress-fill').style.width=((cur/total)*100)+'%';document.getElementById('explanation').className='explanation';document.getElementById('next-btn').className='next-btn';document.getElementById('quit-btn').className='quit-btn';const optEl=document.getElementById('options');optEl.innerHTML='';shuffle([0,1,2,3]).forEach((oi,li)=>{const btn=document.createElement('button');btn.className='opt-btn';btn.dataset.opt=oi;btn.innerHTML=`<span class="opt-letter">${'ABCD'[li]}</span><span>${q.opts[oi]}</span>`;btn.onclick=()=>select(oi,idx);optEl.appendChild(btn);});}
+function select(chosen,idx){const q=BANK[idx],ok=chosen===q.ans;picks[idx]=chosen;if(ok)score++;document.getElementById('q-score').textContent=score;document.querySelectorAll('.opt-btn').forEach(b=>{b.disabled=true;const oi=parseInt(b.dataset.opt);if(oi===q.ans)b.classList.add('correct');else if(oi===chosen&&!ok)b.classList.add('wrong');});if(!ok){const e=document.getElementById('explanation');e.textContent='✗ '+q.exp;e.classList.add('show');}const nb=document.getElementById('next-btn');nb.classList.add('show');nb.textContent=cur+1<BANK.length?'Next →':'See Results →';document.getElementById('quit-btn').classList.add('show');}
+function nextQuestion(){cur++;if(cur>=BANK.length)showResults();else{render();window.scrollTo(0,0);}}
+function showResults(){show('results-screen');const total=BANK.length,pct=Math.round((score/total)*100),passed=pct>=70;document.getElementById('result-name').textContent=playerName;document.getElementById('ring-pct').textContent=pct+'%';document.getElementById('ring-pct').style.color=passed?'var(--green)':'var(--red)';document.getElementById('ring-fill').style.stroke=passed?'var(--green)':'var(--red)';setTimeout(()=>{document.getElementById('ring-fill').style.strokeDashoffset=439.82-(439.82*pct/100);},100);document.getElementById('res-title').textContent=pct>=90?'Excellent!':pct>=70?'Passed!':'Needs Work';document.getElementById('res-sub').textContent=`${score} correct out of ${total}`;const v=document.getElementById('res-verdict');v.textContent=passed?'✓ Passed — above 70%':'✗ Below 70% — please retry';v.className='result-verdict '+(passed?'pass':'fail');const rv=document.getElementById('review');rv.innerHTML='<h3>Review</h3>';order.forEach(idx=>{const q=BANK[idx],ua=picks[idx],ok=ua===q.ans;const d=document.createElement('div');d.className='rv-item '+(ok?'ok':'miss');d.innerHTML=`<div class="rv-q">${q.q}</div><div class="rv-a">${ok?`<span class="c">✓ ${q.opts[q.ans]}</span>`:`<span class="w">✗ ${ua!==undefined?q.opts[ua]:'—'}</span><br><span class="c">✓ ${q.opts[q.ans]}</span><br><span style="color:var(--muted)">${q.exp}</span>`}</div>`;rv.appendChild(d);});}
+function retryQuiz(){order=shuffle(order);cur=0;picks={};score=0;document.getElementById('q-score').textContent=0;show('quiz-screen');render();}
+document.getElementById('name-input').addEventListener('keydown',e=>{if(e.key==='Enter')startQuiz();});
+</script>
+</body>
+</html>

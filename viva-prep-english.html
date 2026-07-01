@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>English & GPDP Viva Prep — July 2026</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📖</text></svg>">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@400;500&display=swap');
+  :root{--bg:#080810;--surface:#11111f;--border:#1e1e35;--purple:#7c3aed;--purple-l:#9d5bf0;--green:#22c55e;--text:#e8e8f0;--muted:#7070a0;}
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Syne',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
+  body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px);background-size:40px 40px;opacity:.4;pointer-events:none;z-index:0;}
+  .wrap{position:relative;z-index:1;max-width:820px;margin:0 auto;padding:0 20px 80px;}
+  header{padding:48px 0 32px;text-align:center;}
+  .back-link{display:inline-flex;align-items:center;gap:6px;font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);text-decoration:none;letter-spacing:1px;margin-bottom:32px;transition:color .2s;}
+  .back-link:hover{color:var(--purple-l);}
+  .eyebrow{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--purple-l);margin-bottom:10px;}
+  h1{font-size:clamp(26px,5vw,42px);font-weight:800;background:linear-gradient(135deg,#fff 30%,var(--purple-l));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:8px;}
+  header p{color:var(--muted);font-family:'DM Mono',monospace;font-size:12px;}
+  .overall-progress{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:20px 24px;margin-bottom:36px;}
+  .op-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;}
+  .op-label{font-size:13px;font-weight:600;}
+  .op-count{font-family:'DM Mono',monospace;font-size:12px;color:var(--purple-l);}
+  .bar-track{height:6px;background:var(--border);border-radius:3px;overflow:hidden;}
+  .bar-fill{height:100%;background:linear-gradient(90deg,var(--purple),var(--green));border-radius:3px;transition:width .4s ease;}
+  .section{margin-bottom:32px;}
+  .section-header{display:flex;align-items:center;gap:10px;margin-bottom:16px;padding-bottom:10px;border-bottom:1px solid var(--border);}
+  .section-icon{font-size:20px;}
+  .section-title{font-size:16px;font-weight:700;}
+  .section-badge{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);padding:3px 8px;border:1px solid var(--border);border-radius:20px;}
+  .item{display:flex;gap:14px;padding:14px 16px;background:var(--surface);border:1px solid var(--border);border-radius:8px;margin-bottom:8px;cursor:pointer;transition:border-color .15s,background .15s;}
+  .item:hover{border-color:var(--purple);background:#13132a;}
+  .item.checked{border-color:rgba(34,197,94,.3);background:rgba(34,197,94,.05);}
+  .item.checked .item-title{color:var(--muted);text-decoration:line-through;}
+  .check-box{flex-shrink:0;width:22px;height:22px;border-radius:6px;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;transition:border-color .15s,background .15s;margin-top:1px;}
+  .item.checked .check-box{background:var(--green);border-color:var(--green);}
+  .check-mark{display:none;color:#fff;font-size:13px;font-weight:700;}
+  .item.checked .check-mark{display:block;}
+  .item-body{flex:1;min-width:0;}
+  .item-title{font-size:14px;font-weight:600;margin-bottom:4px;transition:color .15s;}
+  .item-desc{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);line-height:1.6;}
+  .tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;}
+  .tag{font-family:'DM Mono',monospace;font-size:10px;padding:2px 8px;border-radius:12px;background:rgba(124,58,237,.12);color:var(--purple-l);border:1px solid rgba(124,58,237,.2);}
+  .reset-btn{display:block;margin:32px auto 0;padding:11px 28px;background:none;border:1px solid var(--border);border-radius:8px;color:var(--muted);font-family:'DM Mono',monospace;font-size:12px;cursor:pointer;transition:color .2s,border-color .2s;}
+  .reset-btn:hover{color:var(--text);border-color:var(--purple);}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <a class="back-link" href="index.html">← Back to subjects</a>
+    <div class="eyebrow">English & GPDP · Viva Preparation</div>
+    <h1>English & GPDP Viva Prep</h1>
+    <p>Tick each topic as you revise it · Progress saves in your browser</p>
+  </header>
+
+  <div class="overall-progress">
+    <div class="op-top">
+      <span class="op-label">Overall Progress</span>
+      <span class="op-count" id="op-count">0 / 0 topics reviewed</span>
+    </div>
+    <div class="bar-track"><div class="bar-fill" id="bar-fill" style="width:0%"></div></div>
+  </div>
+
+  <!-- TELLING THE TIME & NUMBERS -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-icon">🕐</span>
+      <span class="section-title">Telling the Time & Numbers</span>
+      <span class="section-badge">Ch. 2</span>
+    </div>
+    <div class="item" onclick="toggle(this)" id="e-time">
+      <div class="check-box"><span class="check-mark">✓</span></div>
+      <div class="item-body">
+        <div class="item-title">Clock Expressions</div>
+        <div class="item-desc">O'clock = exact hour (:00). Half past = 30 mins after. Quarter past = 15 mins after. Quarter to = 15 mins before next hour. Five/ten/twenty past/to for other times. Nearly = almost the next hour. Just after = just past the hour.</div>
+        <div class="tags"><span class="tag">3:00 = three o'clock</span><span class="tag">7:30 = half past seven</span><span class="tag">6:45 = quarter to seven</span><span class="tag">9:50 = ten to ten</span></div>
+      </div>
+    </div>
+    <div class="item" onclick="toggle(this)" id="e-numbers">
+      <div class="check-box"><span class="check-mark">✓</span></div>
+      <div class="item-body">
+        <div class="item-title">Numbers in Words</div>
+        <div class="item-desc">21–99: hyphen (twenty-one). 100 = one hundred. 1,000 = one thousand. British English uses 'and' between hundreds and smaller numbers (one hundred and fifty). 'About' = approximately. 1,000,000 = one million.</div>
+        <div class="tags"><span class="tag">1,250 = one thousand two hundred and fifty</span><span class="tag">about = approximate</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- COUNTRIES & NATIONALITIES -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-icon">🌍</span>
+      <span class="section-title">Countries & Nationalities</span>
+      <span class="section-badge">Ch. 4</span>
+    </div>
+    <div class="item" onclick="toggle(this)" id="e-countries">
+      <div class="check-box"><span class="check-mark">✓</span></div>
+      <div class="item-body">
+        <div class="item-title">Key Country → Nationality → Language</div>
+        <div class="item-desc">France→French. Germany→German. Italy→Italian. Spain→Spanish. Brazil→Brazilian→Portuguese (NOT Spanish). China→Chinese. Japan→Japanese. Australia→Australian→English. Czech Republic→Czech. Hungary→Hungarian. Saudi Arabia→Saudi Arabian→Arabic. Turkey→Turkish. South Korea→South Korean→Korean.</div>
+        <div class="tags"><span class="tag">Brazil speaks Portuguese</span><span class="tag">-ian / -ish / -ese endings</span></div>
+      </div>
+    </div>
+    <div class="item" onclick="toggle(this)" id="e-uk">
+      <div class="check-box"><span class="check-mark">✓</span></div>
+      <div class="item-body">
+        <div class="item-title">UK / Britain Distinction</div>
+        <div class="item-desc">Great Britain = England + Wales + Scotland. UK = England + Wales + Scotland + Northern Ireland. People from Scotland are Scottish AND British — NOT English. English refers ONLY to people from England. People from Wales are Welsh and British.</div>
+        <div class="tags"><span class="tag">Scottish = British ≠ English</span><span class="tag">UK has 4 nations</span></div>
+      </div>
+    </div>
+    <div class="item" onclick="toggle(this)" id="e-regions">
+      <div class="check-box"><span class="check-mark">✓</span></div>
+      <div class="item-body">
+        <div class="item-title">World Regions</div>
+        <div class="item-desc">Europe: France, Germany, Italy, Spain, Greece, Hungary, Czech Republic, Russia, Portugal, Turkey. Asia/Far East: Japan, China, South Korea, Thailand. North America: USA, Canada. South America: Brazil, Argentina. Middle East: Saudi Arabia, Egypt. Australasia: Australia.</div>
+        <div class="tags"><span class="tag">Japan = Far East</span><span class="tag">Argentina = South America</span><span class="tag">Egypt = Middle East</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PHYSICAL ACTIONS -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-icon">🏃</span>
+      <span class="section-title">Physical Actions</span>
+      <span class="section-badge">Ch. 11</span>
+    </div>
+    <div class="item" onclick="toggle(this)" id="e-actions">
+      <div class="check-box"><span class="check-mark">✓</span></div>
+      <div class="item-body">
+        <div class="item-title">Action Verbs & Meanings</div>
+        <div class="item-desc">Pick up = lift from below. Carry = hold and move. Push = move away from you. Pull = move towards you. Hold = keep supported. Drop = let fall. Turn on/off = activate/deactivate. Touch = make contact. Stand up = rise from sitting. Sit down = move from standing to seated. Fall over = lose balance. Go for a walk = walk for pleasure.</div>
+        <div class="tags"><span class="tag">push ≠ pull</span><span class="tag">stand up ↔ sit down</span></div>
+      </div>
+    </div>
+    <div class="item" onclick="toggle(this)" id="e-irregular">
+      <div class="check-box"><span class="check-mark">✓</span></div>
+      <div class="item-body">
+        <div class="item-title">Irregular Past Simple Verbs</div>
+        <div class="item-desc">Run→Ran. Fall→Fell. Ride→Rode. Sit→Sat. Stand→Stood. Give→Gave. Get (on/off)→Got. Lie down→Lay down. Walk/Climb/Dance are REGULAR (+ed). Irregular = must memorise — no -ed pattern.</div>
+        <div class="tags"><span class="tag">run→ran</span><span class="tag">fall→fell</span><span class="tag">ride→rode</span><span class="tag">sit→sat</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DESCRIBING MY ROUTINE -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-icon">📅</span>
+      <span class="section-title">Describing My Routine</span>
+      <span class="section-badge">Ch. 17</span>
+    </div>
+    <div class="item" onclick="toggle(this)" id="e-routine">
+      <div class="check-box"><span class="check-mark">✓</span></div>
+      <div class="item-body">
+        <div class="item-title">Daily Routine Phrases & Order</div>
+        <div class="item-desc">Morning order: get up → have a shower → get dressed → have breakfast → leave home. Evening: finish work → come home → have dinner → go to bed. Key verbs: have (breakfast/shower/dinner), go (to work/shopping/for a walk), leave (home), finish (work).</div>
+        <div class="tags"><span class="tag">get up → shower → dressed → breakfast → leave</span></div>
+      </div>
+    </div>
+    <div class="item" onclick="toggle(this)" id="e-frequency">
+      <div class="check-box"><span class="check-mark">✓</span></div>
+      <div class="item-body">
+        <div class="item-title">Frequency Adverbs & Expressions</div>
+        <div class="item-desc">Always (100%) → usually/normally → often → sometimes → rarely → never (0%). Position: BEFORE main verb, AFTER 'be'. Once a week (1×), twice a week (2×). Go out = leave for leisure. Stay in = remain at home. Weekend = Saturday and Sunday.</div>
+        <div class="tags"><span class="tag">I usually GO (before verb)</span><span class="tag">I am USUALLY tired (after be)</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- GRAMMAR -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-icon">📐</span>
+      <span class="section-title">Grammar: Present Simple & Simple Past</span>
+      <span class="section-badge">Handout</span>
+    </div>
+    <div class="item" onclick="toggle(this)" id="e-present">
+      <div class="check-box"><span class="check-mark">✓</span></div>
+      <div class="item-body">
+        <div class="item-title">Present Simple</div>
+        <div class="item-desc">Use: daily habits, likes/dislikes, general truths. Positive: I/You/We/They + base verb. He/She/It + verb+s (she eats, he lives). Negative: don't (I/You/We/They) or doesn't (He/She/It) + base verb. Questions: Do/Does + subject + base verb? 'Does he eat?' NOT 'Does he eats?'</div>
+        <div class="tags"><span class="tag">she eat✗ → she eats✓</span><span class="tag">doesn't eat✓ NOT doesn't eats✗</span></div>
+      </div>
+    </div>
+    <div class="item" onclick="toggle(this)" id="e-continuous">
+      <div class="check-box"><span class="check-mark">✓</span></div>
+      <div class="item-body">
+        <div class="item-title">Present Continuous</div>
+        <div class="item-desc">Use: actions happening RIGHT NOW. Form: am/is/are + verb-ing. I am cooking. She is watching. They are reading. Questions: Is she going? Are they waiting? Negative contractions: I'm not, He isn't / He's not, They aren't / They're not.</div>
+        <div class="tags"><span class="tag">am/is/are + -ing</span><span class="tag">Is she cooking? ✓</span></div>
+      </div>
+    </div>
+    <div class="item" onclick="toggle(this)" id="e-past">
+      <div class="check-box"><span class="check-mark">✓</span></div>
+      <div class="item-body">
+        <div class="item-title">Simple Past</div>
+        <div class="item-desc">Use: completed past actions. Regular: verb + -ed (walked, danced, climbed). Irregular: sleep→slept, run→ran, ride→rode, sit→sat. Negative: didn't + BASE verb (NOT past form). 'She didn't walk' ✓ NOT 'She didn't walked' ✗. Questions: Did + subject + base verb?</div>
+        <div class="tags"><span class="tag">didn't + base verb always</span><span class="tag">Did he sleep?✓ NOT slept✗</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MEAT & FISH -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-icon">🥩</span>
+      <span class="section-title">Naming Meat & Fish</span>
+      <span class="section-badge">Ch. 24</span>
+    </div>
+    <div class="item" onclick="toggle(this)" id="e-meat">
+      <div class="check-box"><span class="check-mark">✓</span></div>
+      <div class="item-body">
+        <div class="item-title">Meat & Seafood Vocabulary</div>
+        <div class="item-desc">Cow→Beef. Pig→Pork, Ham, Bacon, Sausages. Sheep/Lamb→Lamb. Chicken→Chicken (poultry). Duck→Duck (poultry). Fish: Salmon, Tuna. Seafood: Squid, Prawns, Mussels, Crab. Fish = finned sea creatures. Seafood = broader (includes fish + shellfish). All fish is seafood but not all seafood is fish.</div>
+        <div class="tags"><span class="tag">cow=beef</span><span class="tag">pig=pork/ham/bacon</span><span class="tag">fish ⊂ seafood</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- COMMUNICATION SKILLS -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-icon">🗣️</span>
+      <span class="section-title">Communication Skills</span>
+      <span class="section-badge">Topic 07</span>
+    </div>
+    <div class="item" onclick="toggle(this)" id="e-comm-def">
+      <div class="check-box"><span class="check-mark">✓</span></div>
+      <div class="item-body">
+        <div class="item-title">Definition & 5 Elements</div>
+        <div class="item-desc">Communication = exchanging ideas, feelings, thoughts, and information between two or more people. Effective communication = receiver understands clearly without confusion. 5 elements: Sender, Message, Receiver, Medium, Feedback. Without feedback = communication is incomplete.</div>
+        <div class="tags"><span class="tag">5 elements</span><span class="tag">no feedback = incomplete</span></div>
+      </div>
+    </div>
+    <div class="item" onclick="toggle(this)" id="e-7cs">
+      <div class="check-box"><span class="check-mark">✓</span></div>
+      <div class="item-body">
+        <div class="item-title">The 7 C's of Communication</div>
+        <div class="item-desc">Clear (no ambiguity) · Concise (brief, no waffle) · Concrete (specific, facts-based) · Correct (accurate grammar, right facts) · Coherent (logically organised) · Complete (all information included) · Courteous (polite, respectful).</div>
+        <div class="tags"><span class="tag">Clear</span><span class="tag">Concise</span><span class="tag">Concrete</span><span class="tag">Correct</span><span class="tag">Coherent</span><span class="tag">Complete</span><span class="tag">Courteous</span></div>
+      </div>
+    </div>
+    <div class="item" onclick="toggle(this)" id="e-verbal-nonverbal">
+      <div class="check-box"><span class="check-mark">✓</span></div>
+      <div class="item-body">
+        <div class="item-title">Verbal vs Non-Verbal</div>
+        <div class="item-desc">Verbal = spoken or written words (conversations, emails, presentations). Non-verbal = body language, facial expressions, tone, gestures — up to 90% of communication. Non-verbal is often unconscious. Types: Facial expressions, Body language, Gestures, Eye contact (Gaze), Paralinguistics (tone/pitch/speed), Haptics (touch), Proxemics (personal space), Chronemics (use of time).</div>
+        <div class="tags"><span class="tag">non-verbal = up to 90%</span><span class="tag">often unconscious</span></div>
+      </div>
+    </div>
+    <div class="item" onclick="toggle(this)" id="e-body-lang">
+      <div class="check-box"><span class="check-mark">✓</span></div>
+      <div class="item-body">
+        <div class="item-title">Body Language: Positive vs Negative</div>
+        <div class="item-desc">Positive: upright posture, open hands, friendly smile, firm handshake, good eye contact, leaning forward, nodding. Negative: crossed arms (defensive), avoiding eye contact (nervous/dishonest), slouching (disinterest), weak handshake (insecurity), looking down (lack of confidence). First impressions are formed through body language before words.</div>
+        <div class="tags"><span class="tag">crossed arms = defensive</span><span class="tag">nod = agreement</span></div>
+      </div>
+    </div>
+    <div class="item" onclick="toggle(this)" id="e-barriers">
+      <div class="check-box"><span class="check-mark">✓</span></div>
+      <div class="item-body">
+        <div class="item-title">Barriers & How to Remove Them</div>
+        <div class="item-desc">Barriers: Noise (physical), Language barrier (linguistic), Lack of attention/Poor listening, Wrong body language, Stress/Anger (emotional), Cultural differences. Remove: speak slowly and clearly, use simple words, stay calm, listen carefully, use positive body language, avoid distractions, use visual aids, repeat key information.</div>
+        <div class="tags"><span class="tag">physical / emotional / linguistic / psychological</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- INTERVIEW & PROFESSIONAL SKILLS -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-icon">🎤</span>
+      <span class="section-title">Interview & Professional Skills</span>
+      <span class="section-badge">Topic 08</span>
+    </div>
+    <div class="item" onclick="toggle(this)" id="e-interview-qs">
+      <div class="check-box"><span class="check-mark">✓</span></div>
+      <div class="item-body">
+        <div class="item-title">8 Common Interview Questions</div>
+        <div class="item-desc">1. Tell me about yourself → professional intro, skills, goals. 2. Why do you want this job? → motivation/interest. 3. What are your strengths? → self-awareness, positive skills. 4. What are your weaknesses? → honesty, areas for growth. 5. Why should we hire you? → your value proposition. 6. What are your future goals? → ambition, direction. 7. Tell me about a challenge you faced. 8. Do you have any questions for us?</div>
+        <div class="tags"><span class="tag">8 questions for final exam</span><span class="tag">4 questions for progress test</span></div>
+      </div>
+    </div>
+    <div class="item" onclick="toggle(this)" id="e-interview-dos">
+      <div class="check-box"><span class="check-mark">✓</span></div>
+      <div class="item-body">
+        <div class="item-title">Interview Do's & Don'ts</div>
+        <div class="item-desc">DO: dress professionally, arrive on time, maintain eye contact, sit with good posture, answer confidently, listen carefully, smile, use formal language, ask relevant questions at end, prepare examples. DON'T: use mobile phone, interrupt, speak too fast, slouch, show negative attitude, lack confidence. Interview = two-way process.</div>
+        <div class="tags"><span class="tag">mobile phone = serious mistake</span><span class="tag">2-way process</span></div>
+      </div>
+    </div>
+    <div class="item" onclick="toggle(this)" id="e-grooming">
+      <div class="check-box"><span class="check-mark">✓</span></div>
+      <div class="item-body">
+        <div class="item-title">Grooming & Professional Appearance</div>
+        <div class="item-desc">Uniform: all accessories, no stains/wrinkles. Shirt cuff gap: ½ to 1 inch visible. Shoes & socks: plain black, socks cover ankle. Hair: neatly tied back, no unkempt styles. Beard: clean and trimmed. Nails: short, trimmed, clean — no nail polish. Makeup: soft and discreet, no strong lipstick. Jewellery: minimal. Fragrance: mild only. Well-groomed = approachable, confident, competent.</div>
+        <div class="tags"><span class="tag">cuff gap = ½–1 inch</span><span class="tag">socks cover ankle</span><span class="tag">no nail polish</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- GPDP: HOSPITALITY & MBTI -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-icon">🏨</span>
+      <span class="section-title">Hospitality Overview & Hotel Departments</span>
+      <span class="section-badge">GPDP 01</span>
+    </div>
+    <div class="item" onclick="toggle(this)" id="g-hospitality">
+      <div class="check-box"><span class="check-mark">✓</span></div>
+      <div class="item-body">
+        <div class="item-title">3 Sectors of Hospitality</div>
+        <div class="item-desc">1. Restaurants & Food Service: restaurants, catering, bars/taverns, private chefs, food trucks, quick service. 2. Lodging: motels, campgrounds, boutique hotels, full-service hotels, B&B. 3. Travel & Tourism: transportation, event planning, conferences, convention centres, destination marketing, media publications. Hospitality = part of the service industry, NOT standalone.</div>
+        <div class="tags"><span class="tag">food service / lodging / travel & tourism</span></div>
+      </div>
+    </div>
+    <div class="item" onclick="toggle(this)" id="g-departments">
+      <div class="check-box"><span class="check-mark">✓</span></div>
+      <div class="item-body">
+        <div class="item-title">7 Hotel Departments</div>
+        <div class="item-desc">1. Front Office · 2. Housekeeping · 3. Food and Beverage · 4. Finance · 5. Human Resources · 6. Sales and Marketing · 7. Security and Maintenance. General Manager = top of organisational structure. Hotels/resorts/cruise lines heavily rely on tourism to attract guests.</div>
+        <div class="tags"><span class="tag">7 departments</span><span class="tag">GM = top</span></div>
+      </div>
+    </div>
+    <div class="item" onclick="toggle(this)" id="g-mbti">
+      <div class="check-box"><span class="check-mark">✓</span></div>
+      <div class="item-body">
+        <div class="item-title">MBTI — 4 Dichotomies & 16 Types</div>
+        <div class="item-desc">MBTI = Myers-Briggs Type Indicator. Developed by Isabel Briggs Myers & Katherine Cook Briggs. Inspired by Carl Jung. 16 personality types. Does NOT measure intelligence. No right or wrong answers — self-reflective tool. Purpose: enhance self-awareness and improve communication. 4 dichotomies: E/I (energy direction) · S/N (information) · T/F (decisions) · J/P (organisation).</div>
+        <div class="tags"><span class="tag">E/I · S/N · T/F · J/P</span><span class="tag">16 types</span><span class="tag">not intelligence</span></div>
+      </div>
+    </div>
+    <div class="item" onclick="toggle(this)" id="g-mbti2">
+      <div class="check-box"><span class="check-mark">✓</span></div>
+      <div class="item-body">
+        <div class="item-title">MBTI Dichotomies in Detail</div>
+        <div class="item-desc">E vs I: where you direct energy — outward (people/environment) vs inward (thoughts/reflection). S vs N: how you take in info — concrete facts/present vs patterns/possibilities/big picture. T vs F: how you make decisions — logic/objectivity vs personal values/impact on others. J vs P: how you organise — structured/planned vs flexible/spontaneous.</div>
+        <div class="tags"><span class="tag">E=outward / I=inward</span><span class="tag">S=facts / N=patterns</span><span class="tag">T=logic / F=values</span><span class="tag">J=planned / P=flexible</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- GPDP: VALUES, ETHICS, SELF-AWARENESS, SMART -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-icon">🎯</span>
+      <span class="section-title">Values, Work Ethics, Self-Awareness & SMART Goals</span>
+      <span class="section-badge">GPDP 02</span>
+    </div>
+    <div class="item" onclick="toggle(this)" id="g-values">
+      <div class="check-box"><span class="check-mark">✓</span></div>
+      <div class="item-body">
+        <div class="item-title">Values & Work Ethics</div>
+        <div class="item-desc">Values = fundamental beliefs that influence attitude and determine what is meaningful and important — the things we consider good, desirable, worthwhile. Work ethics = set of values and attitudes individuals bring to jobs, enabling decisions with integrity. Strong work ethics in hospitality: honesty, responsibility, quality, service, discipline, humility, teamwork. Opposite of ethical: theft, violence, dishonesty, neglect.</div>
+        <div class="tags"><span class="tag">7 work ethics</span><span class="tag">theft/violence/dishonesty = unethical</span></div>
+      </div>
+    </div>
+    <div class="item" onclick="toggle(this)" id="g-self">
+      <div class="check-box"><span class="check-mark">✓</span></div>
+      <div class="item-body">
+        <div class="item-title">Self-Awareness</div>
+        <div class="item-desc">Self-awareness = ability to understand your own thoughts, emotions, strengths, and areas for improvement. It is a HABIT that can be developed through regular reflection and practice. Strengths = positive traits you perform well (organised, confident, team player). Weaknesses = areas needing improvement (poor time management, public speaking). Self-awareness helps answer interview questions confidently.</div>
+        <div class="tags"><span class="tag">habit = can be developed</span><span class="tag">strengths vs weaknesses</span></div>
+      </div>
+    </div>
+    <div class="item" onclick="toggle(this)" id="g-smart">
+      <div class="check-box"><span class="check-mark">✓</span></div>
+      <div class="item-body">
+        <div class="item-title">Goal Setting & SMART</div>
+        <div class="item-desc">Goal setting = deciding what you want, breaking into steps, taking action. Without goals = lose focus (like a trip without a destination). 5 key questions: What can I do now? What do I want? What should I do? Who can help? How will I know I've succeeded? SMART: Specific (clear/precise) · Measurable (trackable indicators) · Achievable (realistic) · Relevant (career-aligned) · Time-based (clear deadline).</div>
+        <div class="tags"><span class="tag">S·M·A·R·T</span><span class="tag">5 key goal questions</span></div>
+      </div>
+    </div>
+  </div>
+
+  <button class="reset-btn" onclick="resetAll()">↺ Reset all checkboxes</button>
+</div>
+
+<script>
+const KEYS=[
+  'e-time','e-numbers',
+  'e-countries','e-uk','e-regions',
+  'e-actions','e-irregular',
+  'e-routine','e-frequency',
+  'e-present','e-continuous','e-past',
+  'e-meat',
+  'e-comm-def','e-7cs','e-verbal-nonverbal','e-body-lang','e-barriers',
+  'e-interview-qs','e-interview-dos','e-grooming',
+  'g-hospitality','g-departments','g-mbti','g-mbti2',
+  'g-values','g-self','g-smart'
+];
+const TOTAL=KEYS.length;
+function loadState(){KEYS.forEach(k=>{if(localStorage.getItem('eviva_'+k)==='1'){const el=document.getElementById(k);if(el)el.classList.add('checked');}});updateBar();}
+function toggle(el){el.classList.toggle('checked');const k=el.id;if(el.classList.contains('checked')){localStorage.setItem('eviva_'+k,'1');}else{localStorage.removeItem('eviva_'+k);}updateBar();}
+function updateBar(){const done=KEYS.filter(k=>localStorage.getItem('eviva_'+k)==='1').length;const pct=Math.round((done/TOTAL)*100);document.getElementById('op-count').textContent=done+' / '+TOTAL+' topics reviewed';document.getElementById('bar-fill').style.width=pct+'%';}
+function resetAll(){if(!confirm('Reset all checkboxes?'))return;KEYS.forEach(k=>localStorage.removeItem('eviva_'+k));document.querySelectorAll('.item').forEach(el=>el.classList.remove('checked'));updateBar();}
+loadState();
+</script>
+</body>
+</html>

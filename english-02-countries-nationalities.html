@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Countries & Nationalities — July 2026 Exam</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📖</text></svg>">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@400;500&display=swap');
+  :root{--bg:#080810;--surface:#11111f;--border:#1e1e35;--purple:#7c3aed;--purple-l:#9d5bf0;--green:#22c55e;--red:#ef4444;--text:#e8e8f0;--muted:#7070a0;}
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Syne',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;align-items:center;justify-content:center;}
+  body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px);background-size:40px 40px;opacity:.4;pointer-events:none;z-index:0;}
+  .screen{position:relative;z-index:1;width:100%;max-width:660px;margin:0 auto;padding:24px 20px 48px;display:none;}
+  .screen.active{display:block;}
+  #name-screen{text-align:center;padding-top:80px;}
+  .back-link{display:inline-flex;align-items:center;gap:6px;font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);text-decoration:none;letter-spacing:1px;margin-bottom:48px;transition:color .2s;}
+  .back-link:hover{color:var(--purple-l);}
+  .subject-tag{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--purple-l);margin-bottom:12px;}
+  #name-screen h1{font-size:clamp(22px,5vw,36px);font-weight:800;line-height:1.15;margin-bottom:8px;background:linear-gradient(135deg,#fff 30%,var(--purple-l));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+  #name-screen p{color:var(--muted);font-family:'DM Mono',monospace;font-size:12px;margin-bottom:40px;}
+  .name-box{display:flex;flex-direction:column;align-items:center;gap:12px;}
+  .name-box input{width:100%;max-width:320px;padding:12px 16px;background:var(--surface);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:'Syne',sans-serif;font-size:15px;outline:none;text-align:center;transition:border-color .2s;}
+  .name-box input:focus{border-color:var(--purple);}
+  .name-box input::placeholder{color:var(--muted);}
+  .btn-primary{padding:12px 32px;background:var(--purple);color:#fff;border:none;border-radius:8px;font-family:'Syne',sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:background .2s,transform .1s;}
+  .btn-primary:hover{background:var(--purple-l);transform:translateY(-1px);}
+  .quiz-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;}
+  .quiz-meta{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);}
+  .quiz-meta span{color:var(--purple-l);font-weight:500;}
+  .quiz-back{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);background:none;border:1px solid var(--border);padding:5px 10px;border-radius:6px;cursor:pointer;}
+  .quiz-back:hover{color:var(--text);border-color:var(--purple);}
+  .progress-bar{width:100%;height:3px;background:var(--border);border-radius:2px;margin-bottom:32px;overflow:hidden;}
+  .progress-fill{height:100%;background:linear-gradient(90deg,var(--purple),var(--purple-l));border-radius:2px;transition:width .3s ease;}
+  .question-num{font-family:'DM Mono',monospace;font-size:10px;color:var(--purple-l);letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;}
+  .question-text{font-size:clamp(15px,3vw,18px);font-weight:600;line-height:1.5;margin-bottom:28px;}
+  .options{display:flex;flex-direction:column;gap:10px;}
+  .opt-btn{display:flex;align-items:center;gap:12px;padding:13px 16px;background:var(--surface);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:'Syne',sans-serif;font-size:14px;cursor:pointer;text-align:left;transition:border-color .15s,background .15s;width:100%;}
+  .opt-btn:hover:not(:disabled){border-color:var(--purple);background:#16162a;}
+  .opt-btn .opt-letter{flex-shrink:0;width:26px;height:26px;border-radius:6px;background:var(--border);display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);transition:background .15s,color .15s;}
+  .opt-btn:hover:not(:disabled) .opt-letter{background:var(--purple);color:#fff;}
+  .opt-btn.correct{border-color:var(--green);background:rgba(34,197,94,.1);}
+  .opt-btn.correct .opt-letter{background:var(--green);color:#fff;}
+  .opt-btn.wrong{border-color:var(--red);background:rgba(239,68,68,.1);}
+  .opt-btn.wrong .opt-letter{background:var(--red);color:#fff;}
+  .opt-btn:disabled{cursor:default;}
+  .explanation{display:none;margin-top:16px;padding:14px 16px;background:rgba(124,58,237,.1);border:1px solid rgba(124,58,237,.25);border-left:3px solid var(--purple);border-radius:8px;font-size:13px;line-height:1.6;color:#c4b5fd;font-family:'DM Mono',monospace;}
+  .explanation.show{display:block;}
+  .action-row{display:flex;gap:10px;margin-top:24px;}
+  .next-btn{flex:1;padding:13px;background:var(--purple);color:#fff;border:none;border-radius:8px;font-family:'Syne',sans-serif;font-size:14px;font-weight:700;cursor:pointer;display:none;transition:background .2s;}
+  .next-btn:hover{background:var(--purple-l);}
+  .next-btn.show{display:block;}
+  .quit-btn{padding:13px 18px;background:none;border:1px solid var(--border);border-radius:8px;color:var(--muted);font-family:'DM Mono',monospace;font-size:12px;cursor:pointer;display:none;white-space:nowrap;}
+  .quit-btn:hover{color:var(--text);border-color:var(--purple);}
+  .quit-btn.show{display:block;}
+  #results-screen{text-align:center;padding-top:40px;}
+  .result-name{font-family:'DM Mono',monospace;font-size:12px;color:var(--muted);margin-bottom:32px;}
+  .score-ring{position:relative;width:160px;height:160px;margin:0 auto 28px;}
+  .score-ring svg{transform:rotate(-90deg);}
+  .score-ring .ring-bg{fill:none;stroke:var(--border);stroke-width:10;}
+  .score-ring .ring-fill{fill:none;stroke-width:10;stroke-linecap:round;transition:stroke-dashoffset 1s ease,stroke .5s;}
+  .score-ring .ring-text{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+  .ring-pct{font-size:34px;font-weight:800;line-height:1;}
+  .ring-label{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);margin-top:4px;letter-spacing:1px;}
+  .result-title{font-size:24px;font-weight:800;margin-bottom:8px;}
+  .result-sub{font-family:'DM Mono',monospace;font-size:12px;color:var(--muted);margin-bottom:8px;}
+  .result-verdict{font-family:'DM Mono',monospace;font-size:12px;padding:8px 20px;border-radius:20px;display:inline-block;margin-bottom:32px;}
+  .result-verdict.pass{background:rgba(34,197,94,.12);color:var(--green);border:1px solid rgba(34,197,94,.3);}
+  .result-verdict.fail{background:rgba(239,68,68,.12);color:var(--red);border:1px solid rgba(239,68,68,.3);}
+  .result-actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:40px;}
+  .btn-outline{padding:11px 24px;background:none;border:1px solid var(--border);border-radius:8px;color:var(--muted);font-family:'Syne',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:border-color .2s,color .2s;}
+  .btn-outline:hover{border-color:var(--purple);color:var(--text);}
+  .review{text-align:left;}
+  .review h3{font-size:13px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:2px;margin-bottom:16px;font-family:'DM Mono',monospace;}
+  .rv-item{padding:14px 16px;border-radius:8px;margin-bottom:10px;border:1px solid var(--border);}
+  .rv-item.ok{border-color:rgba(34,197,94,.25);background:rgba(34,197,94,.05);}
+  .rv-item.miss{border-color:rgba(239,68,68,.25);background:rgba(239,68,68,.05);}
+  .rv-q{font-size:13px;font-weight:600;margin-bottom:8px;line-height:1.4;}
+  .rv-a{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);line-height:1.6;}
+  .rv-a .c{color:var(--green);}
+  .rv-a .w{color:var(--red);}
+</style>
+</head>
+<body>
+<div class="screen active" id="name-screen">
+  <a class="back-link" href="index.html">← Back to subjects</a>
+  <div class="subject-tag">English · Chapter 4</div>
+  <h1>Countries & Nationalities</h1>
+  <p>25 questions · Country names, nationalities, languages & regions</p>
+  <div class="name-box">
+    <input type="text" id="name-input" placeholder="Enter your name" maxlength="30" autocomplete="off">
+    <button class="btn-primary" onclick="startQuiz()">Start Quiz</button>
+  </div>
+</div>
+<div class="screen" id="quiz-screen">
+  <div class="quiz-header">
+    <div class="quiz-meta">Question <span id="q-num">1</span> of <span id="q-total">25</span></div>
+    <div class="quiz-meta">Score <span id="q-score">0</span></div>
+    <button class="quiz-back" onclick="goBack()">← Quit</button>
+  </div>
+  <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+  <div class="question-num" id="q-label"></div>
+  <div class="question-text" id="q-text"></div>
+  <div class="options" id="options"></div>
+  <div class="explanation" id="explanation"></div>
+  <div class="action-row">
+    <button class="quit-btn" id="quit-btn" onclick="goBack()">← Back to subjects</button>
+    <button class="next-btn" id="next-btn" onclick="nextQuestion()">Next Question →</button>
+  </div>
+</div>
+<div class="screen" id="results-screen">
+  <div class="result-name" id="result-name"></div>
+  <div class="score-ring">
+    <svg viewBox="0 0 160 160" width="160" height="160">
+      <circle class="ring-bg" cx="80" cy="80" r="70"/>
+      <circle class="ring-fill" id="ring-fill" cx="80" cy="80" r="70" stroke-dasharray="439.82" stroke-dashoffset="439.82" stroke="var(--green)"/>
+    </svg>
+    <div class="ring-text">
+      <div class="ring-pct" id="ring-pct">0%</div>
+      <div class="ring-label">SCORE</div>
+    </div>
+  </div>
+  <div class="result-title" id="res-title"></div>
+  <div class="result-sub" id="res-sub"></div>
+  <div class="result-verdict" id="res-verdict"></div>
+  <div class="result-actions">
+    <button class="btn-primary" onclick="retryQuiz()">Retry →</button>
+    <button class="btn-outline" onclick="window.location.href='index.html'">All Subjects</button>
+  </div>
+  <div class="review" id="review"></div>
+</div>
+<script>
+const BANK=[
+{q:"What is the nationality of someone from France?",opts:["Francian","Frenchish","French","Francese"],ans:2,exp:"France → French. The nationality adjective is 'French'. Language: French. 'I come from France. I am French.'"},
+{q:"What language do people from Germany speak?",opts:["Germanic","Dutch","Austrian","German"],ans:3,exp:"Germany → German → German (language). Germans speak German. Note: Dutch is the language of the Netherlands, not Germany."},
+{q:"What is the nationality of someone from Italy?",opts:["Italish","Italian","Italese","Italic"],ans:1,exp:"Italy → Italian. 'I come from Italy. I am Italian.' Language: Italian."},
+{q:"What is the nationality of someone from Spain?",opts:["Spanish","Spaniard","Spanisher","Spanisian"],ans:0,exp:"Spain → Spanish. People from Spain are Spanish and speak Spanish. Note: people from Argentina, Mexico, and many other countries also speak Spanish."},
+{q:"What language do people from Brazil speak?",opts:["Spanish","Brazilian","Portuguese","English"],ans:2,exp:"Brazil → Brazilian → Portuguese. This is a common mistake — Brazilians speak Portuguese, not Spanish. Brazil is the only country in South America where Portuguese is the main language."},
+{q:"What is the nationality of someone from China?",opts:["Chinish","Chinese","Chinean","Chinian"],ans:1,exp:"China → Chinese. The language is Chinese (Mandarin or Cantonese depending on the region). The nationality ends in -ese."},
+{q:"What is the nationality of someone from Japan?",opts:["Japenese","Japanish","Japanian","Japanese"],ans:3,exp:"Japan → Japanese. Language: Japanese. The nationality ends in -ese. 'I am Japanese. I come from Japan.'"},
+{q:"What language do Australians speak?",opts:["Australian","New Zealandish","English","Pacific"],ans:2,exp:"Australia → Australian → English. Australians speak English. 'Australians speak Australian' is incorrect — the language is English."},
+{q:"What is the nationality of someone from The Czech Republic?",opts:["Czechian","Czechish","Czech","Czechese"],ans:2,exp:"The Czech Republic → Czech. People are Czech and speak Czech. This is one of the nationalities that stays the same as the country adjective."},
+{q:"What is the nationality and language of someone from Hungary?",opts:["Hungarese and Hungarese","Hungarian and Hungarian","Hungarish and Hungarish","Hungariese and Hungariese"],ans:1,exp:"Hungary → Hungarian → Hungarian (language). Both the nationality and the language are 'Hungarian'."},
+{q:"What is the nationality of someone from Saudi Arabia?",opts:["Saudi","Arabian","Arab","Saudi Arabian"],ans:3,exp:"Saudi Arabia → Saudi Arabian. Language: Arabic. Note: Arab refers to the broader ethnic/cultural group, while Saudi Arabian refers specifically to people from Saudi Arabia."},
+{q:"Which area of the world does Japan belong to?",opts:["The Middle East","Europe","Asia / The Far East","North America"],ans:2,exp:"Japan is in Asia, specifically the Far East. Other Far East countries include China, South Korea, and Thailand."},
+{q:"Which area of the world does Argentina belong to?",opts:["Central America","North America","South America","The Middle East"],ans:2,exp:"Argentina is in South America. Argentina is in the south of South America. Other South American countries include Brazil, Colombia, and Peru."},
+{q:"Which area of the world does Egypt belong to?",opts:["The Middle East","Asia","Europe","North America"],ans:0,exp:"Egypt is in Africa and the Middle East. Saudi Arabia, Egypt, and Turkey are all associated with the Middle East region."},
+{q:"What is the correct nationality for someone from The United States?",opts:["United Statesian","North American","Americano","American"],ans:3,exp:"The United States → American. Language: English. Note: 'American' technically refers to anyone from the Americas, but it is widely used to refer to people from the USA."},
+{q:"What is the nationality and language of people from Turkey?",opts:["Turkic and Turkic","Turkish and Turkish","Turkan and Turkan","Turkese and Turkese"],ans:1,exp:"Turkey → Turkish → Turkish (language). 'I am Turkish. I come from Turkey. I speak Turkish.'"},
+{q:"People from Greece are called what?",opts:["Greekish","Grecian","Greek","Greecean"],ans:2,exp:"Greece → Greek. Language: Greek. 'I come from Greece. I am Greek. I speak Greek.' This is the same word for the country adjective, nationality, and language."},
+{q:"What is the nationality of someone from Russia?",opts:["Russish","Russianese","Russic","Russian"],ans:3,exp:"Russia → Russian → Russian (language). 'I am Russian. I come from Russia. I speak Russian.'"},
+{q:"Which country is in the Middle East and has Arabic as its language?",opts:["Thailand","Mexico","Canada","Saudi Arabia"],ans:3,exp:"Saudi Arabia is in the Middle East. People are Saudi Arabian and speak Arabic. Egypt also speaks Arabic and is associated with the Middle East."},
+{q:"Scotland, Wales, and Northern Ireland are part of which country?",opts:["Ireland","Great Britain / The UK","France","Australia"],ans:1,exp:"Great Britain = England, Wales, and Scotland. The United Kingdom (UK) = England, Wales, Scotland, and Northern Ireland. People from England, Wales, and Scotland are British. Only people from England are English."},
+{q:"Are people from Scotland called English or British?",opts:["English — because they speak English","Scottish and British — but NOT English","British and English — both are correct","Scottish only — British is only for English people"],ans:1,exp:"People from Scotland are Scottish (their specific nationality) and British (UK citizens) — but NOT English. English refers only to people from England. This is an important distinction in the book."},
+{q:"What language do people in Canada typically speak?",opts:["Canadian","French only","English (and also French in some areas)","American English"],ans:2,exp:"Canada → Canadian → English (and French). Canada has two official languages: English and French. Quebec province is predominantly French-speaking. Nationality: Canadian."},
+{q:"How do you correctly ask someone where they come from?",opts:["From where you are?","Where do you come from? / Where are you from?","Which country are you?","Where is your country from?"],ans:1,exp:"The correct questions are 'Where do you come from?' and 'Where are you from?' Both are natural and polite ways to ask about someone's nationality or origin."},
+{q:"Which of these nationalities ends in -ian?",opts:["French","Japanese","Turkish","Italian"],ans:3,exp:"Italian ends in -ian. Many nationalities end in -ian: Italian, Russian, Australian, Brazilian, Canadian, Hungarian, Indian. Others end in -ish (Spanish, Turkish, British) or -ese (Chinese, Japanese)."},
+{q:"What is the nationality of someone from South Korea?",opts:["South Korean","Koreanian","Koreanish","Koreanese"],ans:0,exp:"South Korea → South Korean. Language: Korean. 'I come from South Korea. I am South Korean. I speak Korean.'"}
+];
+let order=[],cur=0,picks={},playerName='',score=0;
+function shuffle(a){const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]];}return b;}
+function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');window.scrollTo(0,0);}
+function goBack(){if(confirm('Quit quiz?'))window.location.href='index.html';}
+function startQuiz(){playerName=document.getElementById('name-input').value.trim()||'Anonymous';order=shuffle(BANK.map((_,i)=>i));cur=0;picks={};score=0;document.getElementById('q-total').textContent=BANK.length;show('quiz-screen');render();}
+function render(){const idx=order[cur],q=BANK[idx],total=BANK.length;document.getElementById('q-num').textContent=cur+1;document.getElementById('q-score').textContent=score;document.getElementById('q-label').textContent=`Question ${cur+1} of ${total}`;document.getElementById('q-text').textContent=q.q;document.getElementById('progress-fill').style.width=((cur/total)*100)+'%';document.getElementById('explanation').className='explanation';document.getElementById('next-btn').className='next-btn';document.getElementById('quit-btn').className='quit-btn';const optEl=document.getElementById('options');optEl.innerHTML='';shuffle([0,1,2,3]).forEach((oi,li)=>{const btn=document.createElement('button');btn.className='opt-btn';btn.dataset.opt=oi;btn.innerHTML=`<span class="opt-letter">${'ABCD'[li]}</span><span>${q.opts[oi]}</span>`;btn.onclick=()=>select(oi,idx);optEl.appendChild(btn);});}
+function select(chosen,idx){const q=BANK[idx],ok=chosen===q.ans;picks[idx]=chosen;if(ok)score++;document.getElementById('q-score').textContent=score;document.querySelectorAll('.opt-btn').forEach(b=>{b.disabled=true;const oi=parseInt(b.dataset.opt);if(oi===q.ans)b.classList.add('correct');else if(oi===chosen&&!ok)b.classList.add('wrong');});if(!ok){const e=document.getElementById('explanation');e.textContent='✗ '+q.exp;e.classList.add('show');}const nb=document.getElementById('next-btn');nb.classList.add('show');nb.textContent=cur+1<BANK.length?'Next →':'See Results →';document.getElementById('quit-btn').classList.add('show');}
+function nextQuestion(){cur++;if(cur>=BANK.length)showResults();else{render();window.scrollTo(0,0);}}
+function showResults(){show('results-screen');const total=BANK.length,pct=Math.round((score/total)*100),passed=pct>=70;document.getElementById('result-name').textContent=playerName;document.getElementById('ring-pct').textContent=pct+'%';document.getElementById('ring-pct').style.color=passed?'var(--green)':'var(--red)';document.getElementById('ring-fill').style.stroke=passed?'var(--green)':'var(--red)';setTimeout(()=>{document.getElementById('ring-fill').style.strokeDashoffset=439.82-(439.82*pct/100);},100);document.getElementById('res-title').textContent=pct>=90?'Excellent!':pct>=70?'Passed!':'Needs Work';document.getElementById('res-sub').textContent=`${score} correct out of ${total}`;const v=document.getElementById('res-verdict');v.textContent=passed?'✓ Passed — above 70%':'✗ Below 70% — please retry';v.className='result-verdict '+(passed?'pass':'fail');const rv=document.getElementById('review');rv.innerHTML='<h3>Review</h3>';order.forEach(idx=>{const q=BANK[idx],ua=picks[idx],ok=ua===q.ans;const d=document.createElement('div');d.className='rv-item '+(ok?'ok':'miss');d.innerHTML=`<div class="rv-q">${q.q}</div><div class="rv-a">${ok?`<span class="c">✓ ${q.opts[q.ans]}</span>`:`<span class="w">✗ ${ua!==undefined?q.opts[ua]:'—'}</span><br><span class="c">✓ ${q.opts[q.ans]}</span><br><span style="color:var(--muted)">${q.exp}</span>`}</div>`;rv.appendChild(d);});}
+function retryQuiz(){order=shuffle(order);cur=0;picks={};score=0;document.getElementById('q-score').textContent=0;show('quiz-screen');render();}
+document.getElementById('name-input').addEventListener('keydown',e=>{if(e.key==='Enter')startQuiz();});
+</script>
+</body>
+</html>
